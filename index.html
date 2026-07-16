@@ -333,3 +333,298 @@
         <!-- Main Content -->
 
         <main id="content"></main>
+        <!-- Floating QR Check-In Button -->
+
+        <button
+            id="fab-checkin"
+            class="fab"
+            aria-label="QR Check In">
+
+            <span class="material-symbols-rounded">
+                qr_code_scanner
+            </span>
+
+        </button>
+
+        <!-- Officer Drawer -->
+
+        <aside
+            id="officer-drawer"
+            class="drawer">
+
+            <div class="drawer-header">
+
+                <div class="drawer-title">
+
+                    <span class="material-symbols-rounded">
+
+                        shield
+
+                    </span>
+
+                    <h3>Officer Panel</h3>
+
+                </div>
+
+                <button
+                    id="close-drawer"
+                    class="circle-btn">
+
+                    <span class="material-symbols-rounded">
+
+                        close
+
+                    </span>
+
+                </button>
+
+            </div>
+
+            <nav class="drawer-menu">
+
+                <button class="drawer-item">
+
+                    <span class="material-symbols-rounded">
+
+                        dashboard
+
+                    </span>
+
+                    Dashboard
+
+                </button>
+
+                <button class="drawer-item">
+
+                    <span class="material-symbols-rounded">
+
+                        groups
+
+                    </span>
+
+                    Members
+
+                </button>
+
+                <button class="drawer-item">
+
+                    <span class="material-symbols-rounded">
+
+                        event
+
+                    </span>
+
+                    Manage Events
+
+                </button>
+
+                <button class="drawer-item">
+
+                    <span class="material-symbols-rounded">
+
+                        campaign
+
+                    </span>
+
+                    Announcements
+
+                </button>
+
+                <button class="drawer-item">
+
+                    <span class="material-symbols-rounded">
+
+                        workspace_premium
+
+                    </span>
+
+                    Badges
+
+                </button>
+
+                <button class="drawer-item">
+
+                    <span class="material-symbols-rounded">
+
+                        assignment
+
+                    </span>
+
+                    Grade Requests
+
+                </button>
+
+                <button class="drawer-item">
+
+                    <span class="material-symbols-rounded">
+
+                        gavel
+
+                    </span>
+
+                    Grievances
+
+                </button>
+
+                <button class="drawer-item">
+
+                    <span class="material-symbols-rounded">
+
+                        leaderboard
+
+                    </span>
+
+                    Leaderboard
+
+                </button>
+
+                <button class="drawer-item">
+
+                    <span class="material-symbols-rounded">
+
+                        analytics
+
+                    </span>
+
+                    Analytics
+
+                </button>
+
+            </nav>
+
+        </aside>
+
+        <!-- Overlay -->
+
+        <div
+            id="overlay"
+            class="overlay"></div>
+
+        <!-- Toast -->
+
+        <div
+            id="toast-container"></div>
+
+        <!-- Modal -->
+
+        <div
+            id="modal-container"></div>
+
+        <!-- Install Prompt -->
+
+        <section
+            id="install-banner"
+            class="install-banner hidden">
+
+            <div>
+
+                <h4>
+
+                    Install PolSci App
+
+                </h4>
+
+                <p>
+
+                    Access the organization faster,
+                    even when you're offline.
+
+                </p>
+
+            </div>
+
+            <button
+                id="install-btn"
+                class="btn-primary">
+
+                Install
+
+            </button>
+
+        </section>
+
+        <!-- Bottom Navigation -->
+
+        <nav class="bottom-nav">
+
+            <button
+                class="nav-item active"
+                data-screen="home">
+
+                <span class="material-symbols-rounded">
+
+                    home
+
+                </span>
+
+                <small>Home</small>
+
+            </button>
+
+            <button
+                class="nav-item"
+                data-screen="events">
+
+                <span class="material-symbols-rounded">
+
+                    event
+
+                </span>
+
+                <small>Events</small>
+
+            </button>
+
+            <button
+                class="nav-item"
+                data-screen="learning">
+
+                <span class="material-symbols-rounded">
+
+                    menu_book
+
+                </span>
+
+                <small>Learning</small>
+
+            </button>
+
+            <button
+                class="nav-item"
+                data-screen="profile">
+
+                <span class="material-symbols-rounded">
+
+                    person
+
+                </span>
+
+                <small>Profile</small>
+
+            </button>
+
+        </nav>
+
+    </section>
+
+    <script src="app.js"></script>
+
+    <script>
+
+        if ('serviceWorker' in navigator) {
+
+            window.addEventListener('load', () => {
+
+                navigator.serviceWorker
+                    .register('service-worker.js')
+                    .catch(console.error);
+
+            });
+
+        }
+
+    </script>
+
+</body>
+
+</html>
