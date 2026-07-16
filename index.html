@@ -1,52 +1,335 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <meta name="theme-color" content="#0038A8">
-  <meta name="description" content="PolSci Org PWA">
-  <link rel="manifest" href="manifest.json">
-  <link rel="apple-touch-icon" href="icons/icon-192.png">
-  <title>PolSci Org</title>
-  <style>
-    /* embedded styles – see style.css below */
-  </style>
+    <meta charset="UTF-8" />
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+    <title>Political Science Student Organization</title>
+
+    <meta name="theme-color" content="#759954">
+    <meta name="description"
+        content="Political Science Student Organization Progressive Web Application">
+
+    <link rel="manifest" href="manifest.json">
+
+    <link rel="apple-touch-icon"
+        href="icons/icon-192.png">
+
+    <!-- Google Font -->
+    <link rel="preconnect"
+        href="https://fonts.googleapis.com">
+
+    <link rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <!-- Material Symbols -->
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,500,1,0" />
+
+    <link rel="stylesheet"
+        href="style.css">
 </head>
+
 <body>
-  <!-- App Shell -->
-  <div id="app">
-    <!-- Login screen -->
-    <div id="login-screen" class="screen active">
-      <h1>PolSci Org</h1>
-      <div class="login-box">
-        <select id="role-select">
-          <option value="member">Member</option>
-          <option value="officer">Officer</option>
-          <option value="grievance">Grievance Committee</option>
-          <option value="adviser">Adviser/Dean</option>
-        </select>
-        <input type="text" id="student-id" placeholder="Student ID">
-        <input type="password" id="password" placeholder="Password (any)">
-        <button id="login-btn">Log In</button>
-      </div>
+
+    <!-- Background Decorations -->
+
+    <div class="bg-gradient"></div>
+
+    <div class="bg-circle bg-one"></div>
+    <div class="bg-circle bg-two"></div>
+    <div class="bg-circle bg-three"></div>
+
+    <!-- Loading Screen -->
+
+    <div id="loading-screen">
+
+        <div class="loader-logo">
+
+            <div class="loader-ring"></div>
+
+            <div class="loader-icon">
+
+                <span class="material-symbols-rounded">
+
+                    account_balance
+
+                </span>
+
+            </div>
+
+        </div>
+
+        <h2>Political Science</h2>
+
+        <p>Student Organization</p>
+
     </div>
 
-    <!-- Main navigation after login -->
-    <div id="main-screen" class="screen">
-      <header>
-        <h2 id="screen-title">Home</h2>
-        <button id="logout-btn" class="icon-btn">⏻</button>
-      </header>
-      <main id="content"></main>
-      <nav class="bottom-nav">
-        <button data-screen="home">🏠 Home</button>
-        <button data-screen="events">📅 Events</button>
-        <button data-screen="learning">📚 Learn</button>
-        <button data-screen="profile">👤 Profile</button>
-      </nav>
-    </div>
-  </div>
+    <!-- LOGIN -->
 
-  <script src="app.js"></script>
-</body>
-</html>
+    <section
+        id="login-screen"
+        class="screen active">
+
+        <div class="login-wrapper">
+
+            <div class="hero">
+
+                <div class="hero-icon">
+
+                    <span class="material-symbols-rounded">
+
+                        account_balance
+
+                    </span>
+
+                </div>
+
+                <h1>
+
+                    Political Science
+
+                    Student Organization
+
+                </h1>
+
+                <p>
+
+                    Your all-in-one organization hub.
+
+                    Manage attendance, events,
+
+                    achievements, announcements,
+
+                    grievances and learning resources.
+
+                </p>
+
+            </div>
+
+            <div class="login-card">
+
+                <div class="login-header">
+
+                    <h2>Welcome Back</h2>
+
+                    <span>
+
+                        Sign in to continue
+
+                    </span>
+
+                </div>
+
+                <div class="form-group">
+
+                    <label>
+
+                        Student ID
+
+                    </label>
+
+                    <div class="input-box">
+
+                        <span class="material-symbols-rounded">
+
+                            badge
+
+                        </span>
+
+                        <input
+                            id="student-id"
+                            type="text"
+                            placeholder="2026-00001">
+                    </div>
+
+                </div>
+
+                <div class="form-group">
+
+                    <label>Password</label>
+
+                    <div class="input-box">
+
+                        <span class="material-symbols-rounded">
+
+                            lock
+
+                        </span>
+
+                        <input
+                            id="password"
+                            type="password"
+                            placeholder="Enter password">
+
+                    </div>
+
+                </div>
+
+                <div class="form-group">
+
+                    <label>
+
+                        Login As
+
+                    </label>
+
+                    <div class="input-box">
+
+                        <span class="material-symbols-rounded">
+
+                            groups
+
+                        </span>
+
+                        <select id="role-select">
+
+                            <option value="member">
+
+                                Member
+
+                            </option>
+
+                            <option value="officer">
+
+                                Officer
+
+                            </option>
+
+                            <option value="grievance">
+
+                                Grievance Committee
+
+                            </option>
+
+                            <option value="adviser">
+
+                                Adviser / Dean
+
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+                <button
+                    id="login-btn"
+                    class="btn-primary">
+
+                    <span
+                        class="material-symbols-rounded">
+
+                        login
+
+                    </span>
+
+                    Login
+
+                </button>
+
+                <div class="login-footer">
+
+                    <button
+                        class="text-btn">
+
+                        About Organization
+
+                    </button>
+
+                    <button
+                        class="text-btn">
+
+                        Install App
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- APP -->
+
+    <section
+        id="main-screen"
+        class="screen">
+
+        <!-- Header -->
+
+        <header class="top-header">
+
+            <div class="header-left">
+
+                <span
+                    id="greeting">
+
+                    Good Afternoon
+
+                </span>
+
+                <h2 id="screen-title">
+
+                    Dashboard
+
+                </h2>
+
+            </div>
+
+            <div class="header-actions">
+
+                <button
+                    class="circle-btn">
+
+                    <span class="material-symbols-rounded">
+
+                        notifications
+
+                    </span>
+
+                    <span class="badge-dot"></span>
+
+                </button>
+
+                <button
+                    id="officer-menu-btn"
+                    class="circle-btn">
+
+                    <span class="material-symbols-rounded">
+
+                        admin_panel_settings
+
+                    </span>
+
+                </button>
+
+                <button
+                    id="logout-btn"
+                    class="circle-btn">
+
+                    <span class="material-symbols-rounded">
+
+                        logout
+
+                    </span>
+
+                </button>
+
+            </div>
+
+        </header>
+
+        <!-- Main Content -->
+
+        <main id="content"></main>
