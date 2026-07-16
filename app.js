@@ -1918,24 +1918,22 @@ const Officer = {
 };
 
 // ================================================================
-// MODULE: App - Main Entry & Routing
+// MODULE: App - Main Controller (modified for separate pages)
 // ================================================================
 const App = {
     init() {
-        if (Auth.init()) {
-            this.showMain();
-        } else {
-            this.showLogin();
-        }
-
+        // Set up all event listeners
         this.setupListeners();
 
+        // Dark mode
         if (localStorage.getItem('darkMode') === 'true') {
             document.body.classList.add('dark');
         }
 
+        // PWA setup
         this.setupPWA();
 
+        // Service worker registration (only once)
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('service-worker.js')
@@ -1943,40 +1941,24 @@ const App = {
             });
         }
 
-        setTimeout(() => UI.hideLoading(), 500);
+        // Show the dashboard (home) after init
+        this.navigate('home');
+        NotifCenter.updateBadge();
+
+        // Set greeting
+        this.updateGreeting();
     },
 
     setupListeners() {
-        document.getElementById('login-btn')?.addEventListener('click', () => {
-            const studentId = document.getElementById('student-id').value.trim();
-            const password = document.getElementById('password').value.trim();
-            const role = document.getElementById('role-select').value;
-
-            const result = Auth.login(studentId, password, role);
-            if (result.success) {
-                this.showMain();
-                UI.toast({ message: `Welcome, ${result.user.name}!`, type: 'success' });
-                NotifCenter.updateBadge();
-            } else {
-                UI.toast({ message: result.message, type: 'error' });
-            }
-        });
-
-        document.getElementById('password')?.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter') document.getElementById('login-btn').click();
-        });
-        document.getElementById('student-id')?.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter') document.getElementById('login-btn').click();
-        });
-
+        // ============= LOGOUT BUTTON (redirect to login.html) =============
         document.getElementById('logout-btn')?.addEventListener('click', () => {
             if (confirm('Are you sure you want to logout?')) {
                 Auth.logout();
-                this.showLogin();
-                UI.toast({ message: 'Logged out.', type: 'info' });
+                window.location.href = 'login.html';
             }
         });
 
+        // ============= BOTTOM NAVIGATION =============
         document.querySelectorAll('.nav-item').forEach(btn => {
             btn.addEventListener('click', () => {
                 document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
@@ -1986,6 +1968,7 @@ const App = {
             });
         });
 
+        // ============= OFFICER DRAWER =============
         document.getElementById('officer-menu-btn')?.addEventListener('click', () => {
             if (!Auth.isOfficer()) {
                 return UI.toast({ message: 'Officer access only.', type: 'warning' });
@@ -2013,22 +1996,37 @@ const App = {
             });
         });
 
+        // ============= FAB CHECKIN =============
         document.getElementById('fab-checkin')?.addEventListener('click', () => {
             this.handleCheckin();
         });
 
+        // ============= NOTIFICATIONS =============
         document.getElementById('notif-btn')?.addEventListener('click', () => {
             NotifCenter.render();
         });
 
-        document.getElementById('install-prompt-btn')?.addEventListener('click', () => {
-            if (window.deferredPrompt) {
-                window.deferredPrompt.prompt();
-            } else {
-                UI.toast({ message: 'Install the app from your browser menu.', type: 'info' });
-            }
+        // ============= INSTALL PROMPT (shared) =============
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            window.deferredPrompt = e;
+            document.getElementById('install-banner')?.classList.remove('hidden');
+            document.getElementById('install-btn')?.addEventListener('click', () => {
+                if (window.deferredPrompt) {
+                    window.deferredPrompt.prompt();
+                    window.deferredPrompt.userChoice.then(() => {
+                        document.getElementById('install-banner').classList.add('hidden');
+                    });
+                }
+            });
         });
 
+        window.addEventListener('appinstalled', () => {
+            document.getElementById('install-banner')?.classList.add('hidden');
+            UI.toast({ message: '🎉 App installed successfully!', type: 'success' });
+        });
+
+        // ============= GLOBAL FUNCTIONS for inline onclick =============
         window.__nav = (screen) => this.navigate(screen);
         window.__checkin = () => this.handleCheckin();
         window.__showGrievance = () => Grievance.showForm();
@@ -2094,37 +2092,6 @@ const App = {
             URL.revokeObjectURL(url);
         };
         window.__showGrievanceForm = () => Grievance.showForm();
-
-        window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault();
-            window.deferredPrompt = e;
-            document.getElementById('install-banner')?.classList.remove('hidden');
-            document.getElementById('install-btn')?.addEventListener('click', () => {
-                if (window.deferredPrompt) {
-                    window.deferredPrompt.prompt();
-                    window.deferredPrompt.userChoice.then(() => {
-                        document.getElementById('install-banner').classList.add('hidden');
-                    });
-                }
-            });
-        });
-
-        window.addEventListener('appinstalled', () => {
-            document.getElementById('install-banner')?.classList.add('hidden');
-            UI.toast({ message: '🎉 App installed successfully!', type: 'success' });
-        });
-    },
-
-    showLogin() {
-        document.getElementById('login-screen').classList.add('active');
-        document.getElementById('main-screen').classList.remove('active');
-    },
-
-    showMain() {
-        document.getElementById('login-screen').classList.remove('active');
-        document.getElementById('main-screen').classList.add('active');
-        this.navigate('home');
-        NotifCenter.updateBadge();
     },
 
     navigate(screen) {
@@ -2157,6 +2124,10 @@ const App = {
                 Dashboard.render();
         }
 
+        this.updateGreeting();
+    },
+
+    updateGreeting() {
         const hour = new Date().getHours();
         let greeting = 'Good Evening';
         if (hour < 12) greeting = 'Good Morning';
@@ -2243,8 +2214,20 @@ const App = {
 };
 
 // ================================================================
-// START APP
+// EXPORT all modules for use in separate pages (login.html, index.html)
 // ================================================================
-document.addEventListener('DOMContentLoaded', () => {
-    App.init();
-});
+export {
+    Storage,
+    Auth,
+    UI,
+    NotifCenter,
+    Gamification,
+    Dashboard,
+    Events,
+    Profile,
+    Leaderboard,
+    Grievance,
+    Learning,
+    Officer,
+    App
+};
