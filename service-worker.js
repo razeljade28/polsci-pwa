@@ -2,6 +2,8 @@ const CACHE_NAME = 'polsci-v1';
 const urlsToCache = [
   '/',
   '/index.html',
+  '/login.html',
+  '/signup.html',      // <-- added
   '/style.css',
   '/app.js',
   '/manifest.json'

@@ -48,7 +48,8 @@ const Storage = {
                 badges: ['b1'],
                 achievements: ['Debate Winner Q1'],
                 gradeConvRequested: false,
-                email: 'juan@example.com'
+                email: 'juan@example.com',
+                password: 'demo123' // for demo
             }, {
                 studentId: 'officer1',
                 name: 'Maria Santos',
@@ -61,7 +62,8 @@ const Storage = {
                 badges: ['b5', 'b3'],
                 achievements: ['Best Leader 2025'],
                 gradeConvRequested: false,
-                email: 'maria@example.com'
+                email: 'maria@example.com',
+                password: 'demo123'
             }, {
                 studentId: '2024-0002',
                 name: 'Pedro Reyes',
@@ -74,7 +76,8 @@ const Storage = {
                 badges: [],
                 achievements: [],
                 gradeConvRequested: false,
-                email: 'pedro@example.com'
+                email: 'pedro@example.com',
+                password: 'demo123'
             }, {
                 studentId: '2024-0003',
                 name: 'Ana Flores',
@@ -87,7 +90,8 @@ const Storage = {
                 badges: ['b2'],
                 achievements: ['Top Performer Q2'],
                 gradeConvRequested: false,
-                email: 'ana@example.com'
+                email: 'ana@example.com',
+                password: 'demo123'
             }, {
                 studentId: '2024-0004',
                 name: 'Carlos Mendoza',
@@ -100,7 +104,8 @@ const Storage = {
                 badges: ['b1', 'b4'],
                 achievements: ['Quiz Bee Champion 2025', 'Debate Finalist'],
                 gradeConvRequested: true,
-                email: 'carlos@example.com'
+                email: 'carlos@example.com',
+                password: 'demo123'
             }],
             grievances: [{
                 id: 'g1',
@@ -250,7 +255,13 @@ const Auth = {
         let data = Storage.getAppData();
         let member = data.members.find(m => m.studentId === studentId);
 
-        if (!member) {
+        // Check password (for demo, we allow any non-empty password if no password stored)
+        if (member) {
+            if (member.password && member.password !== password) {
+                return { success: false, message: 'Invalid password.' };
+            }
+        } else {
+            // If member doesn't exist, create one (for backward compatibility)
             member = {
                 studentId,
                 name: studentId,
@@ -263,7 +274,8 @@ const Auth = {
                 badges: [],
                 achievements: [],
                 gradeConvRequested: false,
-                email: ''
+                email: '',
+                password: password // store plain (demo only)
             };
             data.members.push(member);
             Storage.saveAppData(data);
@@ -280,6 +292,38 @@ const Auth = {
         });
 
         return { success: true, user: this.currentUser };
+    },
+
+    // ========== NEW: SIGNUP METHOD ==========
+    signup(studentId, password, name, year, course) {
+        // Check if student ID already exists
+        const data = Storage.getAppData();
+        const existing = data.members.find(m => m.studentId === studentId);
+        if (existing) {
+            return { success: false, message: 'Student ID already registered.' };
+        }
+
+        // Create new member
+        const newMember = {
+            studentId,
+            name: name || studentId,
+            year: year || '1',
+            course: course || 'B.A. Political Science',
+            position: '',
+            membership: 'Active',
+            exp: 0,
+            attendance: [],
+            badges: [],
+            achievements: [],
+            gradeConvRequested: false,
+            email: '',
+            password: password // In production, hash this!
+        };
+
+        data.members.push(newMember);
+        Storage.saveAppData(data);
+
+        return { success: true, user: newMember };
     },
 
     logout() {
@@ -1918,22 +1962,18 @@ const Officer = {
 };
 
 // ================================================================
-// MODULE: App - Main Controller (modified for separate pages)
+// MODULE: App - Main Controller
 // ================================================================
 const App = {
     init() {
-        // Set up all event listeners
         this.setupListeners();
 
-        // Dark mode
         if (localStorage.getItem('darkMode') === 'true') {
             document.body.classList.add('dark');
         }
 
-        // PWA setup
         this.setupPWA();
 
-        // Service worker registration (only once)
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('service-worker.js')
@@ -1941,16 +1981,13 @@ const App = {
             });
         }
 
-        // Show the dashboard (home) after init
         this.navigate('home');
         NotifCenter.updateBadge();
-
-        // Set greeting
         this.updateGreeting();
     },
 
     setupListeners() {
-        // ============= LOGOUT BUTTON (redirect to login.html) =============
+        // Logout
         document.getElementById('logout-btn')?.addEventListener('click', () => {
             if (confirm('Are you sure you want to logout?')) {
                 Auth.logout();
@@ -1958,7 +1995,7 @@ const App = {
             }
         });
 
-        // ============= BOTTOM NAVIGATION =============
+        // Navigation
         document.querySelectorAll('.nav-item').forEach(btn => {
             btn.addEventListener('click', () => {
                 document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
@@ -1968,7 +2005,7 @@ const App = {
             });
         });
 
-        // ============= OFFICER DRAWER =============
+        // Officer drawer
         document.getElementById('officer-menu-btn')?.addEventListener('click', () => {
             if (!Auth.isOfficer()) {
                 return UI.toast({ message: 'Officer access only.', type: 'warning' });
@@ -1996,17 +2033,17 @@ const App = {
             });
         });
 
-        // ============= FAB CHECKIN =============
+        // FAB
         document.getElementById('fab-checkin')?.addEventListener('click', () => {
             this.handleCheckin();
         });
 
-        // ============= NOTIFICATIONS =============
+        // Notifications
         document.getElementById('notif-btn')?.addEventListener('click', () => {
             NotifCenter.render();
         });
 
-        // ============= INSTALL PROMPT (shared) =============
+        // Install prompt
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             window.deferredPrompt = e;
@@ -2026,7 +2063,7 @@ const App = {
             UI.toast({ message: '🎉 App installed successfully!', type: 'success' });
         });
 
-        // ============= GLOBAL FUNCTIONS for inline onclick =============
+        // Global functions
         window.__nav = (screen) => this.navigate(screen);
         window.__checkin = () => this.handleCheckin();
         window.__showGrievance = () => Grievance.showForm();
@@ -2214,7 +2251,7 @@ const App = {
 };
 
 // ================================================================
-// EXPORT all modules for use in separate pages (login.html, index.html)
+// EXPORT all modules
 // ================================================================
 export {
     Storage,
