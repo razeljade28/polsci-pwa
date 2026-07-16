@@ -3,628 +3,240 @@
 
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport"
-        content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 
     <title>Political Science Student Organization</title>
 
-    <meta name="theme-color" content="#759954">
-    <meta name="description"
-        content="Political Science Student Organization Progressive Web Application">
+    <meta name="theme-color" content="#759954" />
+    <meta name="description" content="Political Science Student Organization Progressive Web Application" />
 
-    <link rel="manifest" href="manifest.json">
-
-    <link rel="apple-touch-icon"
-        href="icons/icon-192.png">
+    <link rel="manifest" href="manifest.json" />
+    <link rel="apple-touch-icon" href="icons/icon-192.png" />
 
     <!-- Google Font -->
-    <link rel="preconnect"
-        href="https://fonts.googleapis.com">
-
-    <link rel="preconnect"
-        href="https://fonts.gstatic.com"
-        crossorigin>
-
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
-        rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
 
     <!-- Material Symbols -->
-    <link rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,500,1,0" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,500,1,0" />
 
-    <link rel="stylesheet"
-        href="style.css">
+    <!-- Main styles -->
+    <link rel="stylesheet" href="style.css" />
 </head>
 
 <body>
 
     <!-- Background Decorations -->
-
     <div class="bg-gradient"></div>
-
     <div class="bg-circle bg-one"></div>
     <div class="bg-circle bg-two"></div>
     <div class="bg-circle bg-three"></div>
 
     <!-- Loading Screen -->
-
     <div id="loading-screen">
-
         <div class="loader-logo">
-
             <div class="loader-ring"></div>
-
             <div class="loader-icon">
-
-                <span class="material-symbols-rounded">
-
-                    account_balance
-
-                </span>
-
+                <span class="material-symbols-rounded">account_balance</span>
             </div>
-
         </div>
-
         <h2>Political Science</h2>
-
         <p>Student Organization</p>
-
     </div>
 
-    <!-- LOGIN -->
-
-    <section
-        id="login-screen"
-        class="screen active">
-
+    <!-- ===================================================== -->
+    <!-- LOGIN SCREEN -->
+    <!-- ===================================================== -->
+    <section id="login-screen" class="screen active">
         <div class="login-wrapper">
-
             <div class="hero">
-
                 <div class="hero-icon">
-
-                    <span class="material-symbols-rounded">
-
-                        account_balance
-
-                    </span>
-
+                    <span class="material-symbols-rounded">account_balance</span>
                 </div>
-
-                <h1>
-
-                    Political Science
-
-                    Student Organization
-
-                </h1>
-
-                <p>
-
-                    Your all-in-one organization hub.
-
-                    Manage attendance, events,
-
-                    achievements, announcements,
-
-                    grievances and learning resources.
-
-                </p>
-
+                <h1>Political Science<br />Student Organization</h1>
+                <p>Your all-in-one organization hub. Manage attendance, events, achievements, announcements, grievances and learning resources.</p>
             </div>
 
             <div class="login-card">
-
                 <div class="login-header">
-
                     <h2>Welcome Back</h2>
-
-                    <span>
-
-                        Sign in to continue
-
-                    </span>
-
+                    <span>Sign in to continue</span>
                 </div>
 
                 <div class="form-group">
-
-                    <label>
-
-                        Student ID
-
-                    </label>
-
+                    <label>Student ID</label>
                     <div class="input-box">
-
-                        <span class="material-symbols-rounded">
-
-                            badge
-
-                        </span>
-
-                        <input
-                            id="student-id"
-                            type="text"
-                            placeholder="2026-00001">
+                        <span class="material-symbols-rounded">badge</span>
+                        <input id="student-id" type="text" placeholder="2026-00001" autocomplete="username" />
                     </div>
-
                 </div>
 
                 <div class="form-group">
-
                     <label>Password</label>
-
                     <div class="input-box">
-
-                        <span class="material-symbols-rounded">
-
-                            lock
-
-                        </span>
-
-                        <input
-                            id="password"
-                            type="password"
-                            placeholder="Enter password">
-
+                        <span class="material-symbols-rounded">lock</span>
+                        <input id="password" type="password" placeholder="Enter password" autocomplete="current-password" />
                     </div>
-
                 </div>
 
                 <div class="form-group">
-
-                    <label>
-
-                        Login As
-
-                    </label>
-
+                    <label>Login As</label>
                     <div class="input-box">
-
-                        <span class="material-symbols-rounded">
-
-                            groups
-
-                        </span>
-
+                        <span class="material-symbols-rounded">groups</span>
                         <select id="role-select">
-
-                            <option value="member">
-
-                                Member
-
-                            </option>
-
-                            <option value="officer">
-
-                                Officer
-
-                            </option>
-
-                            <option value="grievance">
-
-                                Grievance Committee
-
-                            </option>
-
-                            <option value="adviser">
-
-                                Adviser / Dean
-
-                            </option>
-
+                            <option value="member">Member</option>
+                            <option value="officer">Officer</option>
+                            <option value="grievance">Grievance Committee</option>
+                            <option value="adviser">Adviser / Dean</option>
                         </select>
-
                     </div>
-
                 </div>
 
-                <button
-                    id="login-btn"
-                    class="btn-primary">
-
-                    <span
-                        class="material-symbols-rounded">
-
-                        login
-
-                    </span>
-
+                <button id="login-btn" class="btn-primary">
+                    <span class="material-symbols-rounded">login</span>
                     Login
-
                 </button>
 
                 <div class="login-footer">
-
-                    <button
-                        class="text-btn">
-
-                        About Organization
-
-                    </button>
-
-                    <button
-                        class="text-btn">
-
-                        Install App
-
-                    </button>
-
+                    <button class="text-btn" onclick="alert('PolSci Org v2.0 • Built with ❤️')">About</button>
+                    <button class="text-btn" id="install-prompt-btn">Install App</button>
                 </div>
-
             </div>
-
         </div>
-
     </section>
 
-    <!-- APP -->
+    <!-- ===================================================== -->
+    <!-- MAIN APP -->
+    <!-- ===================================================== -->
+    <section id="main-screen" class="screen">
 
-    <section
-        id="main-screen"
-        class="screen">
-
-        <!-- Header -->
-
+        <!-- Top Header -->
         <header class="top-header">
-
             <div class="header-left">
-
-                <span
-                    id="greeting">
-
-                    Good Afternoon
-
-                </span>
-
-                <h2 id="screen-title">
-
-                    Dashboard
-
-                </h2>
-
+                <span id="greeting">Good Afternoon</span>
+                <h2 id="screen-title">Dashboard</h2>
             </div>
-
             <div class="header-actions">
-
-                <button
-                    class="circle-btn">
-
-                    <span class="material-symbols-rounded">
-
-                        notifications
-
-                    </span>
-
-                    <span class="badge-dot"></span>
-
+                <button class="circle-btn" id="notif-btn">
+                    <span class="material-symbols-rounded">notifications</span>
+                    <span class="badge-dot" id="notif-dot"></span>
                 </button>
-
-                <button
-                    id="officer-menu-btn"
-                    class="circle-btn">
-
-                    <span class="material-symbols-rounded">
-
-                        admin_panel_settings
-
-                    </span>
-
+                <button class="circle-btn" id="officer-menu-btn">
+                    <span class="material-symbols-rounded">admin_panel_settings</span>
                 </button>
-
-                <button
-                    id="logout-btn"
-                    class="circle-btn">
-
-                    <span class="material-symbols-rounded">
-
-                        logout
-
-                    </span>
-
+                <button class="circle-btn" id="logout-btn">
+                    <span class="material-symbols-rounded">logout</span>
                 </button>
-
             </div>
-
         </header>
 
         <!-- Main Content -->
-
         <main id="content"></main>
-        <!-- Floating QR Check-In Button -->
 
-        <button
-            id="fab-checkin"
-            class="fab"
-            aria-label="QR Check In">
-
-            <span class="material-symbols-rounded">
-                qr_code_scanner
-            </span>
-
+        <!-- FAB: QR Check-In -->
+        <button id="fab-checkin" class="fab" aria-label="QR Check In">
+            <span class="material-symbols-rounded">qr_code_scanner</span>
         </button>
 
-        <!-- Officer Drawer -->
-
-        <aside
-            id="officer-drawer"
-            class="drawer">
-
+        <!-- ===================================================== -->
+        <!-- OFFICER DRAWER -->
+        <!-- ===================================================== -->
+        <aside id="officer-drawer" class="drawer">
             <div class="drawer-header">
-
                 <div class="drawer-title">
-
-                    <span class="material-symbols-rounded">
-
-                        shield
-
-                    </span>
-
+                    <span class="material-symbols-rounded">shield</span>
                     <h3>Officer Panel</h3>
-
                 </div>
-
-                <button
-                    id="close-drawer"
-                    class="circle-btn">
-
-                    <span class="material-symbols-rounded">
-
-                        close
-
-                    </span>
-
+                <button id="close-drawer" class="circle-btn">
+                    <span class="material-symbols-rounded">close</span>
                 </button>
-
             </div>
-
             <nav class="drawer-menu">
-
-                <button class="drawer-item">
-
-                    <span class="material-symbols-rounded">
-
-                        dashboard
-
-                    </span>
-
-                    Dashboard
-
+                <button class="drawer-item" data-officer="dashboard">
+                    <span class="material-symbols-rounded">dashboard</span> Dashboard
                 </button>
-
-                <button class="drawer-item">
-
-                    <span class="material-symbols-rounded">
-
-                        groups
-
-                    </span>
-
-                    Members
-
+                <button class="drawer-item" data-officer="members">
+                    <span class="material-symbols-rounded">groups</span> Members
                 </button>
-
-                <button class="drawer-item">
-
-                    <span class="material-symbols-rounded">
-
-                        event
-
-                    </span>
-
-                    Manage Events
-
+                <button class="drawer-item" data-officer="manage-events">
+                    <span class="material-symbols-rounded">event</span> Manage Events
                 </button>
-
-                <button class="drawer-item">
-
-                    <span class="material-symbols-rounded">
-
-                        campaign
-
-                    </span>
-
-                    Announcements
-
+                <button class="drawer-item" data-officer="announcements">
+                    <span class="material-symbols-rounded">campaign</span> Announcements
                 </button>
-
-                <button class="drawer-item">
-
-                    <span class="material-symbols-rounded">
-
-                        workspace_premium
-
-                    </span>
-
-                    Badges
-
+                <button class="drawer-item" data-officer="badges">
+                    <span class="material-symbols-rounded">workspace_premium</span> Badges
                 </button>
-
-                <button class="drawer-item">
-
-                    <span class="material-symbols-rounded">
-
-                        assignment
-
-                    </span>
-
-                    Grade Requests
-
+                <button class="drawer-item" data-officer="grade-requests">
+                    <span class="material-symbols-rounded">assignment</span> Grade Requests
                 </button>
-
-                <button class="drawer-item">
-
-                    <span class="material-symbols-rounded">
-
-                        gavel
-
-                    </span>
-
-                    Grievances
-
+                <button class="drawer-item" data-officer="grievances">
+                    <span class="material-symbols-rounded">gavel</span> Grievances
                 </button>
-
-                <button class="drawer-item">
-
-                    <span class="material-symbols-rounded">
-
-                        leaderboard
-
-                    </span>
-
-                    Leaderboard
-
+                <button class="drawer-item" data-officer="leaderboard">
+                    <span class="material-symbols-rounded">leaderboard</span> Leaderboard
                 </button>
-
-                <button class="drawer-item">
-
-                    <span class="material-symbols-rounded">
-
-                        analytics
-
-                    </span>
-
-                    Analytics
-
+                <button class="drawer-item" data-officer="analytics">
+                    <span class="material-symbols-rounded">analytics</span> Analytics
                 </button>
-
             </nav>
-
         </aside>
 
         <!-- Overlay -->
+        <div id="overlay" class="overlay"></div>
 
-        <div
-            id="overlay"
-            class="overlay"></div>
+        <!-- Toast Container -->
+        <div id="toast-container"></div>
 
-        <!-- Toast -->
+        <!-- Modal Container -->
+        <div id="modal-container"></div>
 
-        <div
-            id="toast-container"></div>
-
-        <!-- Modal -->
-
-        <div
-            id="modal-container"></div>
-
-        <!-- Install Prompt -->
-
-        <section
-            id="install-banner"
-            class="install-banner hidden">
-
+        <!-- Install Banner -->
+        <section id="install-banner" class="install-banner hidden">
             <div>
-
-                <h4>
-
-                    Install PolSci App
-
-                </h4>
-
-                <p>
-
-                    Access the organization faster,
-                    even when you're offline.
-
-                </p>
-
+                <h4>Install PolSci App</h4>
+                <p>Access the organization faster, even when you're offline.</p>
             </div>
-
-            <button
-                id="install-btn"
-                class="btn-primary">
-
-                Install
-
-            </button>
-
+            <button id="install-btn" class="btn-primary">Install</button>
         </section>
 
-        <!-- Bottom Navigation -->
-
+        <!-- ===================================================== -->
+        <!-- BOTTOM NAVIGATION -->
+        <!-- ===================================================== -->
         <nav class="bottom-nav">
-
-            <button
-                class="nav-item active"
-                data-screen="home">
-
-                <span class="material-symbols-rounded">
-
-                    home
-
-                </span>
-
+            <button class="nav-item active" data-screen="home">
+                <span class="material-symbols-rounded">home</span>
                 <small>Home</small>
-
             </button>
-
-            <button
-                class="nav-item"
-                data-screen="events">
-
-                <span class="material-symbols-rounded">
-
-                    event
-
-                </span>
-
+            <button class="nav-item" data-screen="events">
+                <span class="material-symbols-rounded">event</span>
                 <small>Events</small>
-
             </button>
-
-            <button
-                class="nav-item"
-                data-screen="learning">
-
-                <span class="material-symbols-rounded">
-
-                    menu_book
-
-                </span>
-
+            <button class="nav-item" data-screen="learning">
+                <span class="material-symbols-rounded">menu_book</span>
                 <small>Learning</small>
-
             </button>
-
-            <button
-                class="nav-item"
-                data-screen="profile">
-
-                <span class="material-symbols-rounded">
-
-                    person
-
-                </span>
-
+            <button class="nav-item" data-screen="profile">
+                <span class="material-symbols-rounded">person</span>
                 <small>Profile</small>
-
             </button>
-
         </nav>
 
     </section>
 
-    <script src="app.js"></script>
+    <!-- Main application script (module) -->
+    <script type="module" src="app.js"></script>
 
+    <!-- Service worker registration -->
     <script>
-
         if ('serviceWorker' in navigator) {
-
             window.addEventListener('load', () => {
-
-                navigator.serviceWorker
-                    .register('service-worker.js')
+                navigator.serviceWorker.register('service-worker.js')
                     .catch(console.error);
-
             });
-
         }
-
     </script>
-
 </body>
 
 </html>
