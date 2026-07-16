@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>PolSci Org – Sign Up</title>
+    <title>SEPOLSCIS – Sign Up</title>
     <meta name="theme-color" content="#759954" />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -29,7 +29,7 @@
                     <span class="material-symbols-rounded">how_to_reg</span>
                 </div>
                 <h1>Create Account</h1>
-                <p>Join the Political Science Student Organization</p>
+                <p>Join SEPOLSCIS – Student Excellence in Political Science</p>
             </div>
 
             <div class="login-card">
@@ -104,7 +104,7 @@
                 </div>
 
                 <div class="login-footer" style="margin-top:12px;">
-                    <button class="text-btn" onclick="alert('PolSci Org v2.0')">About</button>
+                    <button class="text-btn" onclick="alert('SEPOLSCIS v2.0')">About</button>
                     <button class="text-btn" id="install-prompt-btn">Install App</button>
                 </div>
             </div>
@@ -118,7 +118,6 @@
     <script type="module">
         import { Auth, UI } from './app.js';
 
-        // Redirect if already logged in
         if (Auth.init()) {
             window.location.href = 'index.html';
         }
@@ -133,7 +132,6 @@
             const password = document.getElementById('signup-password').value;
             const confirm = document.getElementById('signup-confirm').value;
 
-            // Validation
             if (!studentId || !name || !course || !password || !confirm) {
                 return UI.toast({ message: 'Please fill in all fields.', type: 'error' });
             }
