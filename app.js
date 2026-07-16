@@ -49,7 +49,7 @@ const Storage = {
                 achievements: ['Debate Winner Q1'],
                 gradeConvRequested: false,
                 email: 'juan@example.com',
-                password: 'demo123' // for demo
+                password: 'demo123'
             }, {
                 studentId: 'officer1',
                 name: 'Maria Santos',
@@ -255,13 +255,11 @@ const Auth = {
         let data = Storage.getAppData();
         let member = data.members.find(m => m.studentId === studentId);
 
-        // Check password (for demo, we allow any non-empty password if no password stored)
         if (member) {
             if (member.password && member.password !== password) {
                 return { success: false, message: 'Invalid password.' };
             }
         } else {
-            // If member doesn't exist, create one (for backward compatibility)
             member = {
                 studentId,
                 name: studentId,
@@ -275,7 +273,7 @@ const Auth = {
                 achievements: [],
                 gradeConvRequested: false,
                 email: '',
-                password: password // store plain (demo only)
+                password: password
             };
             data.members.push(member);
             Storage.saveAppData(data);
@@ -294,16 +292,13 @@ const Auth = {
         return { success: true, user: this.currentUser };
     },
 
-    // ========== NEW: SIGNUP METHOD ==========
     signup(studentId, password, name, year, course) {
-        // Check if student ID already exists
         const data = Storage.getAppData();
         const existing = data.members.find(m => m.studentId === studentId);
         if (existing) {
             return { success: false, message: 'Student ID already registered.' };
         }
 
-        // Create new member
         const newMember = {
             studentId,
             name: name || studentId,
@@ -317,7 +312,7 @@ const Auth = {
             achievements: [],
             gradeConvRequested: false,
             email: '',
-            password: password // In production, hash this!
+            password: password
         };
 
         data.members.push(newMember);
@@ -1966,24 +1961,34 @@ const Officer = {
 // ================================================================
 const App = {
     init() {
-        this.setupListeners();
+        try {
+            this.setupListeners();
 
-        if (localStorage.getItem('darkMode') === 'true') {
-            document.body.classList.add('dark');
+            if (localStorage.getItem('darkMode') === 'true') {
+                document.body.classList.add('dark');
+            }
+
+            this.setupPWA();
+
+            if ('serviceWorker' in navigator) {
+                window.addEventListener('load', () => {
+                    navigator.serviceWorker.register('service-worker.js')
+                        .catch(() => console.log('SW registration failed'));
+                });
+            }
+
+            this.navigate('home');
+            NotifCenter.updateBadge();
+            this.updateGreeting();
+
+            // ✅ FIX: Hide the loading screen
+            UI.hideLoading();
+
+        } catch (err) {
+            console.error('App init error:', err);
+            // Still hide the loading screen even if something fails
+            UI.hideLoading();
         }
-
-        this.setupPWA();
-
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('service-worker.js')
-                    .catch(() => console.log('SW registration failed'));
-            });
-        }
-
-        this.navigate('home');
-        NotifCenter.updateBadge();
-        this.updateGreeting();
     },
 
     setupListeners() {
