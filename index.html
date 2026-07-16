@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#0038A8">
+  <meta name="description" content="PolSci Org PWA">
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <title>PolSci Org</title>
+  <style>
+    /* embedded styles – see style.css below */
+  </style>
+</head>
+<body>
+  <!-- App Shell -->
+  <div id="app">
+    <!-- Login screen -->
+    <div id="login-screen" class="screen active">
+      <h1>PolSci Org</h1>
+      <div class="login-box">
+        <select id="role-select">
+          <option value="member">Member</option>
+          <option value="officer">Officer</option>
+          <option value="grievance">Grievance Committee</option>
+          <option value="adviser">Adviser/Dean</option>
+        </select>
+        <input type="text" id="student-id" placeholder="Student ID">
+        <input type="password" id="password" placeholder="Password (any)">
+        <button id="login-btn">Log In</button>
+      </div>
+    </div>
+
+    <!-- Main navigation after login -->
+    <div id="main-screen" class="screen">
+      <header>
+        <h2 id="screen-title">Home</h2>
+        <button id="logout-btn" class="icon-btn">⏻</button>
+      </header>
+      <main id="content"></main>
+      <nav class="bottom-nav">
+        <button data-screen="home">🏠 Home</button>
+        <button data-screen="events">📅 Events</button>
+        <button data-screen="learning">📚 Learn</button>
+        <button data-screen="profile">👤 Profile</button>
+      </nav>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
