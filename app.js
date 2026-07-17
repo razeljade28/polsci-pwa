@@ -79,3 +79,18 @@ const Learning = {
     `;
   }
 };
+export {
+  Storage,
+  Auth,
+  UI,
+  NotifCenter,
+  Gamification,
+  Dashboard,
+  Events,
+  Profile,
+  Leaderboard,
+  Grievance,
+  Learning,
+  Officer,
+  App
+};
