@@ -33,7 +33,6 @@
         <div class="loader-logo">
             <div class="loader-ring"></div>
             <div class="loader-icon">
-                <!-- Inline SVG icon instead of missing logo.png -->
                 <svg viewBox="0 0 100 100" width="60" height="60">
                     <rect width="100" height="100" rx="20" fill="#759954" />
                     <text x="50" y="70" font-size="60" text-anchor="middle" fill="white" font-family="sans-serif">⚖️</text>
@@ -152,11 +151,26 @@
     <script type="module">
         import { Auth, App } from './app.js';
 
-        // Init auth and start app
         (async function() {
-            if (await Auth.init()) {
-                App.init();
-            } else {
+            try {
+                const loggedIn = await Auth.init();
+                if (loggedIn) {
+                    // Double-check user exists
+                    const user = Auth.currentUser;
+                    if (user && Storage.getMember(user.studentId)) {
+                        App.init();
+                        return;
+                    } else {
+                        // Something went wrong – clear and redirect
+                        Auth.logout();
+                    }
+                }
+                // If not logged in or error, go to login
+                window.location.href = 'login.html';
+            } catch (e) {
+                console.error('Fatal app init error:', e);
+                UI.toast({ message: 'Error loading app. Please refresh.', type: 'error' });
+                // Still redirect to login as fallback
                 window.location.href = 'login.html';
             }
         })();

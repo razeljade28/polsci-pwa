@@ -29,18 +29,35 @@ const C = {
 };
 
 // ================================================================
-// UTILITY: Password Hashing
+// UTILITY: Password Hashing (with fallback)
 // ================================================================
 async function hashPassword(password) {
-  const encoder = new TextEncoder();
-  const data = encoder.encode(password + 'SEPOLSCIS_SALT');
-  const hash = await crypto.subtle.digest('SHA-256', data);
-  return Array.from(new Uint8Array(hash))
-    .map(b => b.toString(16).padStart(2, '0'))
-    .join('');
+  try {
+    const encoder = new TextEncoder();
+    const data = encoder.encode(password + 'SEPOLSCIS_SALT');
+    const hash = await crypto.subtle.digest('SHA-256', data);
+    return Array.from(new Uint8Array(hash))
+      .map(b => b.toString(16).padStart(2, '0'))
+      .join('');
+  } catch (e) {
+    console.warn('Crypto not available, using simple hash fallback');
+    // Fallback (not secure, but better than plain text)
+    let hash = 0;
+    for (let i = 0; i < password.length; i++) {
+      const char = password.charCodeAt(i);
+      hash = ((hash << 5) - hash) + char;
+      hash |= 0;
+    }
+    return 'fallback_' + hash;
+  }
 }
 
 async function verifyPassword(password, hash) {
+  if (hash.startsWith('fallback_')) {
+    // Simple fallback verification
+    const simpleHash = await hashPassword(password);
+    return simpleHash === hash;
+  }
   const hashed = await hashPassword(password);
   return hashed === hash;
 }
@@ -84,7 +101,7 @@ const EventService = {
 };
 
 // ================================================================
-// MODULE: Storage (with migration helpers)
+// MODULE: Storage (with migration & error handling)
 // ================================================================
 const Storage = {
   get(key) {
@@ -134,7 +151,7 @@ const Storage = {
         achievements: ['Debate Winner Q1'],
         gradeConvRequested: false,
         email: 'juan@example.com',
-        password: '', // will be hashed on first login
+        password: '',
         role: 'member',
       }, {
         studentId: 'officer1',
@@ -321,48 +338,56 @@ const Storage = {
       this.saveAppData(data);
     }
   },
-  // Migration: hash all plain-text passwords on load
+  // Migration: hash all plain-text passwords on load (with error handling)
   async migratePasswords() {
-    const data = this.getAppData();
-    let changed = false;
-    for (const member of data.members) {
-      if (member.password && member.password.length < 60 && !member.password.startsWith('$2')) {
-        // Plain text, hash it
-        member.password = await hashPassword(member.password);
-        changed = true;
+    try {
+      const data = this.getAppData();
+      let changed = false;
+      for (const member of data.members) {
+        if (member.password && member.password.length < 60 && !member.password.startsWith('fallback_')) {
+          member.password = await hashPassword(member.password);
+          changed = true;
+        }
       }
-    }
-    if (changed) {
-      this.saveAppData(data);
+      if (changed) {
+        this.saveAppData(data);
+      }
+    } catch (e) {
+      console.warn('Password migration failed:', e);
     }
   }
 };
 
 // ================================================================
-// MODULE: Auth (with hashing, role assignment, session)
+// MODULE: Auth (with robust validation)
 // ================================================================
 const Auth = {
   currentUser: null,
   sessionTimer: null,
 
   async init() {
-    await Storage.migratePasswords(); // ensure all passwords are hashed
-    this.currentUser = Storage.getCurrentUser();
-    if (this.currentUser) {
-      const member = Storage.getMember(this.currentUser.studentId);
-      if (member) {
-        // Ensure role is taken from stored member
-        this.currentUser = { ...member, role: member.role || C.ROLES.MEMBER };
-        Storage.setCurrentUser(this.currentUser);
-        this.startSessionTimer();
-        return true;
-      } else {
-        Storage.removeCurrentUser();
-        this.currentUser = null;
-        return false;
+    try {
+      await Storage.migratePasswords();
+      this.currentUser = Storage.getCurrentUser();
+      if (this.currentUser) {
+        const member = Storage.getMember(this.currentUser.studentId);
+        if (member) {
+          this.currentUser = { ...member, role: member.role || C.ROLES.MEMBER };
+          Storage.setCurrentUser(this.currentUser);
+          this.startSessionTimer();
+          return true;
+        } else {
+          // Stale user – remove and return false
+          Storage.removeCurrentUser();
+          this.currentUser = null;
+          return false;
+        }
       }
+      return false;
+    } catch (e) {
+      console.error('Auth.init error:', e);
+      return false;
     }
-    return false;
   },
 
   startSessionTimer() {
@@ -399,19 +424,17 @@ const Auth = {
       return { success: false, message: 'Account not found. Please sign up.' };
     }
 
-    // If password is still plain text (migration missed), hash it
+    // If password is plain text (migration missed), hash it
     let isValid = false;
-    if (member.password && member.password.length < 60 && !member.password.startsWith('$2')) {
-      // Plain text, hash it
-      const hashed = await hashPassword(member.password);
-      member.password = hashed;
+    if (member.password && member.password.length < 60 && !member.password.startsWith('fallback_')) {
+      member.password = await hashPassword(member.password);
       Storage.saveAppData(data);
     }
 
     if (member.password) {
       isValid = await verifyPassword(password, member.password);
     } else {
-      // No password set – treat as new, set it
+      // No password set – set it now
       member.password = await hashPassword(password);
       Storage.saveAppData(data);
       isValid = true;
@@ -1259,7 +1282,7 @@ const Events = {
 };
 
 // ================================================================
-// MODULE: Profile (unchanged but with edit option)
+// MODULE: Profile (with edit option)
 // ================================================================
 const Profile = {
   render() {
@@ -1385,7 +1408,6 @@ const Profile = {
     }
   },
 
-  // New: edit profile
   edit() {
     const user = Auth.currentUser;
     if (!user) return;
