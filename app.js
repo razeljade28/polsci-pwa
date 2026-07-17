@@ -1,9 +1,4 @@
 // ================================================================
-// SEPOLSCIS - Complete Application Logic
-// All features: Streak, Quests, Quizzes, Resources, Charts, etc.
-// ================================================================
-
-// ================================================================
 // MODULE: Storage
 // ================================================================
 const Storage = {
@@ -22,17 +17,6 @@ const Storage = {
             data = this.getDefaultData();
             this.set('appData', data);
         }
-        // Ensure new fields exist for future features
-        if (!data.auditLog) data.auditLog = [];
-        if (!data.quests) data.quests = this.getDefaultQuests();
-        if (!data.quizzes) data.quizzes = this.getDefaultQuizzes();
-        if (!data.resources) data.resources = this.getDefaultResources();
-        if (!data.streaks) data.streaks = {};
-        if (!data.readResources) data.readResources = [];
-        if (!data.quizAttempts) data.quizAttempts = [];
-        if (!data.settings) data.settings = { multiplier: 1 };
-        if (!data.onboardingCompleted) data.onboardingCompleted = false;
-        this.saveAppData(data);
         return data;
     },
     saveAppData(data) {
@@ -65,11 +49,7 @@ const Storage = {
                 achievements: ['Debate Winner Q1'],
                 gradeConvRequested: false,
                 email: 'juan@example.com',
-                password: 'demo123',
-                avatar: null,
-                streak: 0,
-                lastLogin: null,
-                questProgress: {}
+                password: 'demo123'
             }, {
                 studentId: 'officer1',
                 name: 'Maria Santos',
@@ -83,11 +63,7 @@ const Storage = {
                 achievements: ['Best Leader 2025'],
                 gradeConvRequested: false,
                 email: 'maria@example.com',
-                password: 'demo123',
-                avatar: null,
-                streak: 0,
-                lastLogin: null,
-                questProgress: {}
+                password: 'demo123'
             }, {
                 studentId: '2024-0002',
                 name: 'Pedro Reyes',
@@ -101,11 +77,7 @@ const Storage = {
                 achievements: [],
                 gradeConvRequested: false,
                 email: 'pedro@example.com',
-                password: 'demo123',
-                avatar: null,
-                streak: 0,
-                lastLogin: null,
-                questProgress: {}
+                password: 'demo123'
             }, {
                 studentId: '2024-0003',
                 name: 'Ana Flores',
@@ -119,11 +91,7 @@ const Storage = {
                 achievements: ['Top Performer Q2'],
                 gradeConvRequested: false,
                 email: 'ana@example.com',
-                password: 'demo123',
-                avatar: null,
-                streak: 0,
-                lastLogin: null,
-                questProgress: {}
+                password: 'demo123'
             }, {
                 studentId: '2024-0004',
                 name: 'Carlos Mendoza',
@@ -137,11 +105,7 @@ const Storage = {
                 achievements: ['Quiz Bee Champion 2025', 'Debate Finalist'],
                 gradeConvRequested: true,
                 email: 'carlos@example.com',
-                password: 'demo123',
-                avatar: null,
-                streak: 0,
-                lastLogin: null,
-                questProgress: {}
+                password: 'demo123'
             }],
             grievances: [{
                 id: 'g1',
@@ -167,7 +131,7 @@ const Storage = {
                 resolution: ''
             }],
             announcements: [
-                'Welcome to SEPOLSCIS! Please complete your profile.',
+                'Welcome to PolSci Org! Please complete your profile.',
                 'General Assembly on July 20 at Room 101. See you there!',
                 'Debate Competition registration is now open until July 22.'
             ],
@@ -179,81 +143,85 @@ const Storage = {
                 news: 'Latest updates from the department...',
                 government: 'Recent government policies and updates...',
                 reviewer: 'Midterm reviewer for POLSCI 101...'
-            },
-            auditLog: [],
-            quests: [],
-            quizzes: [],
-            resources: [],
-            streaks: {},
-            readResources: [],
-            quizAttempts: [],
-            settings: { multiplier: 1 },
-            onboardingCompleted: false
+            }
         };
     },
-    getDefaultQuests() {
-        return [
-            { id: 'q1', title: 'First Check-In', desc: 'Attend your first event', icon: '✅', goal: 1, progress: 0, reward: 25, type: 'checkin' },
-            { id: 'q2', title: 'Active Week', desc: 'Attend 3 events in a week', icon: '📅', goal: 3, progress: 0, reward: 75, type: 'checkin_weekly' },
-            { id: 'q3', title: 'Streak Starter', desc: 'Maintain a 3-day streak', icon: '🔥', goal: 3, progress: 0, reward: 50, type: 'streak' },
-            { id: 'q4', title: 'Debate Star', desc: 'Win a debate competition', icon: '🎤', goal: 1, progress: 0, reward: 100, type: 'win_debate' },
-            { id: 'q5', title: 'Volunteer Hero', desc: 'Volunteer at 2 events', icon: '🤝', goal: 2, progress: 0, reward: 80, type: 'volunteer' },
-            { id: 'q6', title: 'Quiz Master', desc: 'Score 80%+ on a quiz', icon: '🏆', goal: 1, progress: 0, reward: 50, type: 'quiz_high_score' },
-            { id: 'q7', title: 'Badge Collector', desc: 'Earn 3 badges', icon: '🏅', goal: 3, progress: 0, reward: 100, type: 'badges' },
-            { id: 'q8', title: 'Perfect Month', desc: 'Attend 10 events in a month', icon: '📆', goal: 10, progress: 0, reward: 150, type: 'attendance_monthly' },
-            { id: 'q9', title: 'Resource Reader', desc: 'Read 5 resources', icon: '📖', goal: 5, progress: 0, reward: 60, type: 'read_resources' },
-            { id: 'q10', title: 'Community Leader', desc: 'Check-in 5 times', icon: '👥', goal: 5, progress: 0, reward: 40, type: 'checkins_total' },
-            { id: 'q11', title: 'Social Butterfly', desc: 'Comment on 3 announcements', icon: '💬', goal: 3, progress: 0, reward: 45, type: 'comments' },
-            { id: 'q12', title: 'Event Host', desc: 'Create an event (officers)', icon: '🎉', goal: 1, progress: 0, reward: 60, type: 'create_event' },
-        ];
+    getCurrentUser() {
+        return this.get('currentUser');
     },
-    getDefaultQuizzes() {
-        return [{
-            id: 'qz1',
-            title: 'Political Science Basics',
-            description: 'Test your knowledge of political science fundamentals.',
-            questions: [
-                { q: 'What is the study of politics and power?', options: ['Sociology', 'Political Science', 'Economics', 'History'], answer: 1 },
-                { q: 'Which philosopher wrote "The Republic"?', options: ['Aristotle', 'Plato', 'Socrates', 'Machiavelli'], answer: 1 },
-                { q: 'What is the social contract theory?', options: ['Agreement between people and government', 'Economic theory', 'Religious doctrine', 'Military strategy'], answer: 0 },
-                { q: 'Which branch of government interprets laws?', options: ['Executive', 'Legislative', 'Judicial', 'Administrative'], answer: 2 },
-                { q: 'What is democracy?', options: ['Rule by one', 'Rule by the people', 'Rule by the few', 'Rule by the military'], answer: 1 },
-            ],
-            expReward: 50
-        }, {
-            id: 'qz2',
-            title: 'Philippine Government',
-            description: 'Test your knowledge of the Philippine political system.',
-            questions: [
-                { q: 'What is the current constitution of the Philippines?', options: ['1987 Constitution', '1973 Constitution', '1935 Constitution', '1899 Constitution'], answer: 0 },
-                { q: 'How many branches does the Philippine government have?', options: ['2', '3', '4', '5'], answer: 1 },
-                { q: 'Who is the head of the executive branch?', options: ['President', 'Vice President', 'Senate President', 'Chief Justice'], answer: 0 },
-                { q: 'What is the legislative branch called?', options: ['Congress', 'Parliament', 'Assembly', 'Council'], answer: 0 },
-                { q: 'Which house of Congress has 24 members?', options: ['House of Representatives', 'Senate', 'Supreme Court', 'Cabinet'], answer: 1 },
-            ],
-            expReward: 75
-        }, {
-            id: 'qz3',
-            title: 'International Relations',
-            description: 'Test your understanding of global politics.',
-            questions: [
-                { q: 'What is the UN?', options: ['United Nations', 'Universal Network', 'Union of Nations', 'United Negotiations'], answer: 0 },
-                { q: 'Which country has the most veto power in the UN Security Council?', options: ['USA', 'Russia', 'China', 'All five permanent members'], answer: 3 },
-                { q: 'What is NATO?', options: ['North Atlantic Treaty Organization', 'National Association of Trade Organizations', 'North American Trade Alliance', 'None'], answer: 0 },
-                { q: 'What is the European Union?', options: ['Economic and political union', 'Military alliance', 'Cultural organization', 'Trade bloc only'], answer: 0 },
-                { q: 'Which is not a permanent member of the UN Security Council?', options: ['USA', 'Russia', 'China', 'Germany'], answer: 3 },
-            ],
-            expReward: 100
-        }];
+    setCurrentUser(user) {
+        this.set('currentUser', user);
     },
-    getDefaultResources() {
-        return [
-            { id: 'r1', title: 'Introduction to Political Science', type: 'pdf', url: '#', thumbnail: '📄', description: 'A comprehensive overview of political science.' },
-            { id: 'r2', title: 'Philippine Constitution (1987)', type: 'pdf', url: '#', thumbnail: '📄', description: 'Full text of the 1987 Philippine Constitution.' },
-            { id: 'r3', title: 'Comparative Politics Lecture', type: 'video', url: '#', thumbnail: '🎬', description: 'Video lecture on comparative political systems.' },
-            { id: 'r4', title: 'Political Theory Reading List', type: 'link', url: '#', thumbnail: '🔗', description: 'Curated list of essential political theory readings.' },
-            { id: 'r5', title: 'Current Events in Government', type: 'link', url: '#', thumbnail: '📰', description: 'Stay updated with the latest government news.' },
-        ];
+    removeCurrentUser() {
+        this.remove('currentUser');
+    },
+    getMember(studentId) {
+        const data = this.getAppData();
+        return data.members.find(m => m.studentId === studentId) || null;
+    },
+    updateMember(studentId, updates) {
+        const data = this.getAppData();
+        const idx = data.members.findIndex(m => m.studentId === studentId);
+        if (idx === -1) return null;
+        data.members[idx] = { ...data.members[idx], ...updates };
+        this.saveAppData(data);
+        return data.members[idx];
+    },
+    addEvent(event) {
+        const data = this.getAppData();
+        event.id = Date.now();
+        data.events.push(event);
+        this.saveAppData(data);
+        return event;
+    },
+    deleteEvent(id) {
+        const data = this.getAppData();
+        data.events = data.events.filter(e => e.id !== id);
+        this.saveAppData(data);
+    },
+    addAnnouncement(text) {
+        const data = this.getAppData();
+        data.announcements.unshift(text);
+        this.saveAppData(data);
+    },
+    addGrievance(g) {
+        const data = this.getAppData();
+        g.id = 'g' + Date.now();
+        g.createdAt = new Date().toISOString();
+        g.updatedAt = g.createdAt;
+        data.grievances.push(g);
+        this.saveAppData(data);
+        return g;
+    },
+    updateGrievance(id, updates) {
+        const data = this.getAppData();
+        const idx = data.grievances.findIndex(g => g.id === id);
+        if (idx === -1) return null;
+        data.grievances[idx] = { ...data.grievances[idx], ...updates, updatedAt: new Date().toISOString() };
+        this.saveAppData(data);
+        return data.grievances[idx];
+    },
+    addNotification(notif) {
+        const data = this.getAppData();
+        notif.id = 'n' + Date.now();
+        notif.read = false;
+        notif.createdAt = new Date().toISOString();
+        if (!data.notifications) data.notifications = [];
+        data.notifications.unshift(notif);
+        this.saveAppData(data);
+        return notif;
+    },
+    getUnreadCount() {
+        const data = this.getAppData();
+        if (!data.notifications) return 0;
+        return data.notifications.filter(n => !n.read).length;
+    },
+    markAllRead() {
+        const data = this.getAppData();
+        if (data.notifications) {
+            data.notifications.forEach(n => n.read = true);
+            this.saveAppData(data);
+        }
     }
 };
 
@@ -270,8 +238,6 @@ const Auth = {
             if (member) {
                 this.currentUser = { ...member, role: this.currentUser.role || 'member' };
                 Storage.setCurrentUser(this.currentUser);
-                // Check streak on login
-                this.updateStreak(member.studentId);
                 return true;
             } else {
                 Storage.removeCurrentUser();
@@ -307,11 +273,7 @@ const Auth = {
                 achievements: [],
                 gradeConvRequested: false,
                 email: '',
-                password: password,
-                avatar: null,
-                streak: 0,
-                lastLogin: null,
-                questProgress: {}
+                password: password
             };
             data.members.push(member);
             Storage.saveAppData(data);
@@ -320,23 +282,12 @@ const Auth = {
         this.currentUser = { ...member, role };
         Storage.setCurrentUser(this.currentUser);
 
-        // Update streak
-        this.updateStreak(studentId);
-
         Storage.addNotification({
             type: 'info',
             title: 'Welcome back!',
             message: `You logged in as ${member.name}`,
             icon: 'login'
         });
-
-        // Check if onboarding completed
-        if (!data.onboardingCompleted) {
-            // Show onboarding
-            setTimeout(() => {
-                Onboarding.start();
-            }, 500);
-        }
 
         return { success: true, user: this.currentUser };
     },
@@ -361,15 +312,10 @@ const Auth = {
             achievements: [],
             gradeConvRequested: false,
             email: '',
-            password: password,
-            avatar: null,
-            streak: 0,
-            lastLogin: null,
-            questProgress: {}
+            password: password
         };
 
         data.members.push(newMember);
-        data.onboardingCompleted = false; // New user needs onboarding
         Storage.saveAppData(data);
 
         return { success: true, user: newMember };
@@ -394,64 +340,6 @@ const Auth = {
 
     getRole() {
         return this.currentUser ? this.currentUser.role : 'member';
-    },
-
-    // ========== STREAK SYSTEM ==========
-    updateStreak(studentId) {
-        const data = Storage.getAppData();
-        const member = data.members.find(m => m.studentId === studentId);
-        if (!member) return;
-
-        const today = new Date().toISOString().split('T')[0];
-        const lastLogin = member.lastLogin || '';
-
-        if (lastLogin === today) return; // already logged in today
-
-        const yesterday = new Date();
-        yesterday.setDate(yesterday.getDate() - 1);
-        const yestStr = yesterday.toISOString().split('T')[0];
-
-        if (lastLogin === yestStr) {
-            member.streak = (member.streak || 0) + 1;
-        } else {
-            member.streak = 1; // reset streak
-        }
-
-        member.lastLogin = today;
-        Storage.saveAppData(data);
-
-        // Check for streak quest progress
-        Quests.updateProgress(studentId, 'streak', member.streak);
-
-        // If streak milestone, give bonus EXP
-        if (member.streak % 7 === 0 && member.streak > 0) {
-            Gamification.addExp(studentId, 20, '7-day streak bonus!');
-            NotifCenter.add('Streak Milestone!', `🔥 ${member.streak}-day streak! +20 EXP bonus!`, 'success', 'local_fire_department');
-        }
-
-        // Update current user
-        if (this.currentUser && this.currentUser.studentId === studentId) {
-            this.currentUser.streak = member.streak;
-            Storage.setCurrentUser(this.currentUser);
-        }
-    },
-
-    // ========== FORGOT PASSWORD ==========
-    requestPasswordReset(studentId) {
-        const data = Storage.getAppData();
-        const member = data.members.find(m => m.studentId === studentId);
-        if (!member) {
-            return { success: false, message: 'Student ID not found.' };
-        }
-        // In production: send email with reset link
-        // For demo: generate a temporary password
-        const tempPassword = Math.random().toString(36).slice(-8);
-        member.password = tempPassword;
-        Storage.saveAppData(data);
-        // Simulate email
-        console.log(`Password reset for ${member.name}: new password is ${tempPassword}`);
-        NotifCenter.add('Password Reset', `A temporary password has been sent to ${member.email || 'your email'}.`, 'info', 'lock_open');
-        return { success: true, message: `Temporary password sent. Check your email (or console).` };
     }
 };
 
@@ -626,29 +514,6 @@ const UI = {
         }
         html += `</div>`;
         return html;
-    },
-
-    // Profile picture upload (base64)
-    uploadAvatar(file, callback) {
-        const reader = new FileReader();
-        reader.onload = (e) => {
-            // Create a canvas to crop to square
-            const img = new Image();
-            img.onload = () => {
-                const canvas = document.createElement('canvas');
-                const size = Math.min(img.width, img.height);
-                canvas.width = 200;
-                canvas.height = 200;
-                const ctx = canvas.getContext('2d');
-                const sx = (img.width - size) / 2;
-                const sy = (img.height - size) / 2;
-                ctx.drawImage(img, sx, sy, size, size, 0, 0, 200, 200);
-                const dataUrl = canvas.toDataURL('image/jpeg', 0.8);
-                callback(dataUrl);
-            };
-            img.src = e.target.result;
-        };
-        reader.readAsDataURL(file);
     }
 };
 
@@ -721,61 +586,11 @@ const NotifCenter = {
         Storage.addNotification({ title, message, type, icon });
         this.updateBadge();
         UI.toast({ message: title, type: type });
-        // Push notification if supported
-        this.sendPush(title, message);
-    },
-
-    // ========== PUSH NOTIFICATIONS ==========
-    sendPush(title, body) {
-        if ('Notification' in window && Notification.permission === 'granted') {
-            navigator.serviceWorker.ready.then(reg => {
-                reg.showNotification(title, {
-                    body: body,
-                    icon: '/icons/icon-192.png',
-                    badge: '/icons/icon-192.png',
-                    vibrate: [200, 100, 200]
-                });
-            });
-        }
-    },
-
-    async requestPushPermission() {
-        if ('Notification' in window) {
-            const permission = await Notification.requestPermission();
-            if (permission === 'granted') {
-                // Subscribe to push (requires VAPID keys)
-                try {
-                    const reg = await navigator.serviceWorker.ready;
-                    const sub = await reg.pushManager.subscribe({
-                        userVisibleOnly: true,
-                        applicationServerKey: this.urlBase64ToUint8Array(
-                            'YOUR_VAPID_PUBLIC_KEY' // Replace with your VAPID public key
-                        )
-                    });
-                    console.log('Push subscription:', sub);
-                    // Send sub to backend
-                    UI.toast({ message: 'Push notifications enabled!', type: 'success' });
-                } catch (err) {
-                    console.error('Push subscription failed:', err);
-                }
-            }
-        }
-    },
-
-    urlBase64ToUint8Array(base64String) {
-        const padding = '='.repeat((4 - base64String.length % 4) % 4);
-        const base64 = (base64String + padding).replace(/\-/g, '+').replace(/_/g, '/');
-        const rawData = window.atob(base64);
-        const outputArray = new Uint8Array(rawData.length);
-        for (let i = 0; i < rawData.length; ++i) {
-            outputArray[i] = rawData.charCodeAt(i);
-        }
-        return outputArray;
     }
 };
 
 // ================================================================
-// MODULE: EXP & Gamification (with multipliers)
+// MODULE: EXP & Gamification
 // ================================================================
 const Gamification = {
     LEVELS: [
@@ -812,36 +627,14 @@ const Gamification = {
         return Math.min(Math.max(progress, 0), 100);
     },
 
-    // ========== EXP MULTIPLIERS ==========
-    getMultiplier() {
-        const data = Storage.getAppData();
-        const settings = data.settings || { multiplier: 1 };
-        let mult = settings.multiplier || 1;
-
-        // Weekend bonus (Saturday/Sunday)
-        const day = new Date().getDay();
-        if (day === 0 || day === 6) mult *= 1.5;
-
-        // Check if any event today gives bonus
-        const today = new Date().toISOString().split('T')[0];
-        const events = data.events || [];
-        const todayEvents = events.filter(e => e.date === today);
-        if (todayEvents.some(e => e.type === 'competition')) mult *= 1.2;
-
-        return Math.round(mult * 10) / 10;
-    },
-
     addExp(studentId, amount, reason) {
         const data = Storage.getAppData();
         const member = data.members.find(m => m.studentId === studentId);
         if (!member) return null;
 
-        const mult = this.getMultiplier();
-        const finalAmount = Math.round(amount * mult);
-
         const oldExp = member.exp;
         const oldLevel = this.getLevel(oldExp);
-        member.exp += finalAmount;
+        member.exp += amount;
         const newLevel = this.getLevel(member.exp);
 
         Storage.saveAppData(data);
@@ -862,10 +655,7 @@ const Gamification = {
             Storage.setCurrentUser(Auth.currentUser);
         }
 
-        // Check quests
-        Quests.updateProgress(studentId, 'exp_gained', finalAmount);
-
-        return { oldExp, newExp: member.exp, gained: finalAmount, level: newLevel, multiplier: mult };
+        return { oldExp, newExp: member.exp, gained: amount, level: newLevel };
     },
 
     getBadgeDefinitions() {
@@ -920,8 +710,6 @@ const Gamification = {
                     'workspace_premium'
                 );
                 UI.confetti({ count: 60 });
-                // Update quest progress
-                Quests.updateProgress(studentId, 'badge_earned', 1);
             }
         });
 
@@ -947,895 +735,7 @@ const Gamification = {
 };
 
 // ================================================================
-// MODULE: Quests
-// ================================================================
-const Quests = {
-    getQuests() {
-        const data = Storage.getAppData();
-        return data.quests || Storage.getDefaultQuests();
-    },
-
-    updateProgress(studentId, type, amount) {
-        const data = Storage.getAppData();
-        const member = data.members.find(m => m.studentId === studentId);
-        if (!member) return;
-
-        let quests = data.quests || Storage.getDefaultQuests();
-        let updated = false;
-
-        // Initialize quest progress if needed
-        if (!member.questProgress) member.questProgress = {};
-
-        quests.forEach(q => {
-            if (q.type !== type) return;
-            // Check if already completed
-            if (member.questProgress[q.id] && member.questProgress[q.id].completed) return;
-
-            const current = member.questProgress[q.id] || { progress: 0, completed: false };
-            // If the quest goal is a specific event type (e.g., "win_debate"), check achievements
-            if (type === 'win_debate' && !member.achievements.includes('Debate Winner')) return;
-            if (type === 'volunteer') {
-                // Count volunteer attendances
-                const volunteerCount = data.events.filter(e => e.type === 'volunteer' && member.attendance.includes(e.date))
-                    .length;
-                if (volunteerCount >= q.goal) {
-                    current.progress = q.goal;
-                } else {
-                    return; // don't update if not enough
-                }
-            } else if (type === 'attendance_monthly') {
-                const now = new Date();
-                const month = now.getMonth();
-                const year = now.getFullYear();
-                const monthlyAttendances = member.attendance.filter(d => {
-                    const dt = new Date(d);
-                    return dt.getMonth() === month && dt.getFullYear() === year;
-                });
-                current.progress = Math.min(monthlyAttendances.length, q.goal);
-            } else if (type === 'checkins_total') {
-                current.progress = Math.min(member.attendance.length, q.goal);
-            } else if (type === 'comments') {
-                // Not implemented, but we can track via a new field
-                current.progress = Math.min((member.commentCount || 0), q.goal);
-            } else if (type === 'create_event') {
-                // Officers only
-                if (Auth.isOfficer()) {
-                    const createdEvents = data.events.filter(e => e.createdBy === studentId).length;
-                    current.progress = Math.min(createdEvents, q.goal);
-                }
-            } else if (type === 'badge_earned') {
-                current.progress = Math.min(member.badges.length, q.goal);
-            } else if (type === 'streak') {
-                current.progress = Math.min(member.streak || 0, q.goal);
-            } else if (type === 'read_resources') {
-                const readCount = data.readResources.filter(r => r.memberId === studentId).length;
-                current.progress = Math.min(readCount, q.goal);
-            } else if (type === 'quiz_high_score') {
-                // Check if any quiz attempt has score >= 80%
-                const attempts = data.quizAttempts.filter(a => a.memberId === studentId && a.score >= 80);
-                current.progress = Math.min(attempts.length, q.goal);
-            } else if (type === 'checkin') {
-                // Count total check-ins
-                current.progress = Math.min(member.attendance.length, q.goal);
-            } else if (type === 'checkin_weekly') {
-                // Count check-ins in the last 7 days
-                const weekAgo = new Date();
-                weekAgo.setDate(weekAgo.getDate() - 7);
-                const recent = member.attendance.filter(d => new Date(d) >= weekAgo);
-                current.progress = Math.min(recent.length, q.goal);
-            } else if (type === 'exp_gained') {
-                // For exp-based quests, we need to track cumulative
-                const totalExp = member.exp;
-                current.progress = Math.min(totalExp, q.goal);
-            } else {
-                // For numeric progress
-                current.progress = Math.min((current.progress || 0) + amount, q.goal);
-            }
-
-            if (current.progress >= q.goal && !current.completed) {
-                current.completed = true;
-                // Reward EXP
-                Gamification.addExp(studentId, q.reward, `Quest completed: ${q.title}`);
-                NotifCenter.add('Quest Completed!', `🎉 ${q.title} - +${q.reward} EXP`, 'success', 'check_circle');
-                UI.confetti({ count: 50 });
-                updated = true;
-            }
-
-            member.questProgress[q.id] = current;
-        });
-
-        if (updated) {
-            Storage.saveAppData(data);
-            if (Auth.currentUser && Auth.currentUser.studentId === studentId) {
-                Auth.currentUser.questProgress = member.questProgress;
-                Storage.setCurrentUser(Auth.currentUser);
-            }
-        }
-    },
-
-    render() {
-        const data = Storage.getAppData();
-        const member = data.members.find(m => m.studentId === Auth.currentUser.studentId);
-        if (!member) return;
-
-        const quests = data.quests || Storage.getDefaultQuests();
-        const progress = member.questProgress || {};
-
-        let html = `
-            <h3 style="margin-bottom:16px;">🎯 Quests</h3>
-            <p style="color:var(--text-light);margin-bottom:16px;">Complete quests to earn bonus EXP!</p>
-        `;
-
-        quests.forEach(q => {
-            const p = progress[q.id] || { progress: 0, completed: false };
-            const percentage = Math.min((p.progress / q.goal) * 100, 100);
-            const status = p.completed ? '✅ Completed' : `${p.progress}/${q.goal}`;
-            html += `
-                <div class="quest-card ${p.completed ? 'completed' : ''}">
-                    <div style="flex:1;">
-                        <div style="display:flex;align-items:center;gap:10px;">
-                            <span style="font-size:28px;">${q.icon}</span>
-                            <div>
-                                <strong>${q.title}</strong>
-                                <p style="font-size:0.85rem;color:var(--text-light);margin:0;">${q.desc}</p>
-                            </div>
-                        </div>
-                        <div class="quest-progress">
-                            <span style="width:${percentage}%;"></span>
-                        </div>
-                        <div style="display:flex;justify-content:space-between;margin-top:4px;">
-                            <span style="font-size:0.8rem;color:var(--text-light);">${status}</span>
-                            <span style="font-size:0.8rem;font-weight:700;color:var(--primary);">+${q.reward} EXP</span>
-                        </div>
-                    </div>
-                </div>
-            `;
-        });
-
-        document.getElementById('content').innerHTML = html;
-    }
-};
-
-// ================================================================
-// MODULE: Quizzes
-// ================================================================
-const Quizzes = {
-    render() {
-        const data = Storage.getAppData();
-        const quizzes = data.quizzes || Storage.getDefaultQuizzes();
-
-        let html = `
-            <h3 style="margin-bottom:16px;">📝 Quizzes</h3>
-            <p style="color:var(--text-light);margin-bottom:16px;">Test your knowledge and earn EXP!</p>
-        `;
-
-        quizzes.forEach(q => {
-            // Check if already attempted
-            const attempts = data.quizAttempts.filter(a => a.quizId === q.id && a.memberId === Auth.currentUser.studentId);
-            const bestScore = attempts.length > 0 ? Math.max(...attempts.map(a => a.score)) : 0;
-            const attempted = attempts.length > 0;
-
-            html += `
-                <div class="card" style="cursor:pointer;" onclick="window.__startQuiz('${q.id}')">
-                    <h4>${q.title}</h4>
-                    <p style="color:var(--text-light);font-size:0.9rem;">${q.description}</p>
-                    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px;">
-                        <span style="font-weight:600;color:var(--primary);">+${q.expReward} EXP</span>
-                        ${attempted ? `<span style="color:var(--success);">Best Score: ${bestScore}%</span>` : ''}
-                        <button class="btn-primary" style="padding:6px 16px;width:auto;font-size:0.8rem;">${attempted ? 'Retry' : 'Start'}</button>
-                    </div>
-                </div>
-            `;
-        });
-
-        document.getElementById('content').innerHTML = html;
-    },
-
-    startQuiz(quizId) {
-        const data = Storage.getAppData();
-        const quiz = data.quizzes.find(q => q.id === quizId);
-        if (!quiz) return;
-
-        let currentQuestion = 0;
-        let score = 0;
-        let answers = [];
-
-        const renderQuestion = () => {
-            const q = quiz.questions[currentQuestion];
-            let optionsHtml = q.options.map((opt, idx) => `
-                <button class="quiz-option" data-idx="${idx}">${opt}</button>
-            `).join('');
-
-            UI.modal(`
-                <div style="max-height:80vh;overflow-y:auto;">
-                    <h3>${quiz.title}</h3>
-                    <p style="color:var(--text-light);">Question ${currentQuestion+1} of ${quiz.questions.length}</p>
-                    <p style="font-weight:600;font-size:1.1rem;margin:12px 0;">${q.q}</p>
-                    <div id="quiz-options">
-                        ${optionsHtml}
-                    </div>
-                    <div style="margin-top:16px;display:flex;justify-content:space-between;">
-                        <span>Score: ${score}/${currentQuestion}</span>
-                        ${currentQuestion > 0 ? `<button class="text-btn" id="quiz-prev">Previous</button>` : ''}
-                        <button class="btn-primary" id="quiz-next" style="display:none;">Next</button>
-                    </div>
-                </div>
-            `);
-
-            document.querySelectorAll('.quiz-option').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const idx = parseInt(this.dataset.idx);
-                    const isCorrect = idx === q.answer;
-                    if (isCorrect) score++;
-                    answers.push(idx);
-                    // Disable all options
-                    document.querySelectorAll('.quiz-option').forEach(b => b.style.pointerEvents = 'none');
-                    // Highlight correct/wrong
-                    document.querySelectorAll('.quiz-option').forEach((b, i) => {
-                        if (i === q.answer) b.classList.add('correct');
-                        else if (i === idx && !isCorrect) b.classList.add('wrong');
-                        if (i === idx) b.classList.add('selected');
-                    });
-                    document.getElementById('quiz-next').style.display = 'block';
-                });
-            });
-
-            document.getElementById('quiz-next')?.addEventListener('click', () => {
-                if (currentQuestion < quiz.questions.length - 1) {
-                    currentQuestion++;
-                    UI.closeModal();
-                    renderQuestion();
-                } else {
-                    // Quiz complete
-                    const percentage = Math.round((score / quiz.questions.length) * 100);
-                    // Save attempt
-                    const attempt = {
-                        quizId: quiz.id,
-                        memberId: Auth.currentUser.studentId,
-                        score: percentage,
-                        answers: answers,
-                        date: new Date().toISOString()
-                    };
-                    data.quizAttempts.push(attempt);
-                    Storage.saveAppData(data);
-
-                    UI.closeModal();
-                    // Reward EXP based on score
-                    if (percentage >= 80) {
-                        const expEarned = quiz.expReward;
-                        Gamification.addExp(Auth.currentUser.studentId, expEarned, `Quiz: ${quiz.title} (${percentage}%)`);
-                        NotifCenter.add('Quiz Master!', `You scored ${percentage}% on ${quiz.title}! +${expEarned} EXP`, 'success', 'school');
-                        UI.confetti({ count: 60 });
-                        // Update quest progress
-                        Quests.updateProgress(Auth.currentUser.studentId, 'quiz_high_score', 1);
-                    } else {
-                        UI.toast({ message: `You scored ${percentage}%. Keep learning!`, type: 'info' });
-                    }
-                    // Refresh quiz list
-                    this.render();
-                }
-            });
-
-            document.getElementById('quiz-prev')?.addEventListener('click', () => {
-                if (currentQuestion > 0) {
-                    currentQuestion--;
-                    // Remove last answer
-                    answers.pop();
-                    UI.closeModal();
-                    renderQuestion();
-                }
-            });
-        };
-
-        renderQuestion();
-    }
-};
-
-// ================================================================
-// MODULE: Resources
-// ================================================================
-const Resources = {
-    render() {
-        const data = Storage.getAppData();
-        const resources = data.resources || Storage.getDefaultResources();
-        const readResources = data.readResources || [];
-
-        let html = `
-            <h3 style="margin-bottom:16px;">📚 Resources</h3>
-            <div style="display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap;">
-                <button class="btn-primary" style="padding:8px 16px;width:auto;font-size:0.85rem;" onclick="window.__uploadResource()">+ Upload Resource</button>
-            </div>
-        `;
-
-        if (resources.length === 0) {
-            html += UI.emptyState('No resources available.', 'menu_book', '__uploadResource()');
-        } else {
-            resources.forEach(r => {
-                const isRead = readResources.some(rr => rr.resourceId === r.id && rr.memberId === Auth.currentUser.studentId);
-                html += `
-                    <div class="resource-item ${isRead ? 'read' : ''}" onclick="window.__openResource('${r.id}')">
-                        <span class="icon">${r.thumbnail}</span>
-                        <div style="flex:1;">
-                            <strong>${r.title}</strong>
-                            <p style="font-size:0.8rem;color:var(--text-light);margin:0;">${r.description || ''}</p>
-                            <small style="color:var(--text-light);">${r.type.toUpperCase()}</small>
-                        </div>
-                        ${isRead ? '<span style="color:var(--success);">✅ Read</span>' : ''}
-                    </div>
-                `;
-            });
-        }
-
-        document.getElementById('content').innerHTML = html;
-    },
-
-    openResource(resourceId) {
-        const data = Storage.getAppData();
-        const resource = data.resources.find(r => r.id === resourceId);
-        if (!resource) return;
-
-        // Mark as read if not already
-        const readResources = data.readResources || [];
-        const alreadyRead = readResources.some(r => r.resourceId === resourceId && r.memberId === Auth.currentUser.studentId);
-        if (!alreadyRead) {
-            readResources.push({
-                resourceId: resourceId,
-                memberId: Auth.currentUser.studentId,
-                readAt: new Date().toISOString()
-            });
-            data.readResources = readResources;
-            Storage.saveAppData(data);
-            // Reward EXP for reading
-            Gamification.addExp(Auth.currentUser.studentId, 10, `Read resource: ${resource.title}`);
-            // Update quest progress
-            Quests.updateProgress(Auth.currentUser.studentId, 'read_resources', 1);
-            UI.toast({ message: `📖 +10 EXP for reading "${resource.title}"`, type: 'success' });
-            // Refresh view
-            this.render();
-        }
-
-        // Open the resource (if URL)
-        if (resource.url && resource.url !== '#') {
-            window.open(resource.url, '_blank');
-        } else {
-            UI.toast({ message: `Resource "${resource.title}" - content not available online.`, type: 'info' });
-        }
-    },
-
-    uploadResource() {
-        UI.modal(`
-            <h3>📤 Upload Resource</h3>
-            <form id="upload-resource-form">
-                <div class="form-group">
-                    <label>Title</label>
-                    <div class="input-box">
-                        <span class="material-symbols-rounded">title</span>
-                        <input type="text" id="resource-title" placeholder="Resource title" required>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label>Type</label>
-                    <div class="input-box">
-                        <span class="material-symbols-rounded">category</span>
-                        <select id="resource-type">
-                            <option value="pdf">PDF</option>
-                            <option value="video">Video</option>
-                            <option value="link">Link</option>
-                            <option value="document">Document</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label>URL / File</label>
-                    <div class="input-box">
-                        <span class="material-symbols-rounded">link</span>
-                        <input type="text" id="resource-url" placeholder="https://..." required>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label>Description (optional)</label>
-                    <div class="input-box" style="align-items:flex-start;">
-                        <span class="material-symbols-rounded" style="margin-top:12px;">description</span>
-                        <textarea id="resource-desc" style="flex:1;border:none;outline:none;background:transparent;resize:vertical;min-height:60px;font-family:inherit;font-size:14px;color:var(--text);" placeholder="Short description..."></textarea>
-                    </div>
-                </div>
-                <button type="submit" class="btn-primary">Upload</button>
-                <button type="button" class="text-btn" data-close-modal>Cancel</button>
-            </form>
-        `);
-
-        document.getElementById('upload-resource-form')?.addEventListener('submit', function(e) {
-            e.preventDefault();
-            const title = document.getElementById('resource-title').value.trim();
-            const type = document.getElementById('resource-type').value;
-            const url = document.getElementById('resource-url').value.trim();
-            const description = document.getElementById('resource-desc').value.trim();
-
-            if (!title || !url) return UI.toast({ message: 'Title and URL are required.', type: 'error' });
-
-            const data = Storage.getAppData();
-            const newResource = {
-                id: 'r' + Date.now(),
-                title,
-                type,
-                url,
-                description: description || '',
-                thumbnail: type === 'pdf' ? '📄' : type === 'video' ? '🎬' : '🔗',
-                uploadedBy: Auth.currentUser.studentId,
-                uploadedAt: new Date().toISOString()
-            };
-            data.resources.push(newResource);
-            Storage.saveAppData(data);
-            UI.closeModal();
-            UI.toast({ message: 'Resource uploaded successfully!', type: 'success' });
-            NotifCenter.add('New Resource', `${title} has been uploaded.`, 'info', 'upload');
-            Resources.render();
-        });
-    }
-};
-
-// ================================================================
-// MODULE: Audit Log
-// ================================================================
-const Audit = {
-    log(action, details) {
-        const data = Storage.getAppData();
-        data.auditLog.push({
-            action,
-            details,
-            officerId: Auth.currentUser?.studentId || 'system',
-            timestamp: new Date().toISOString()
-        });
-        Storage.saveAppData(data);
-    },
-
-    render() {
-        const data = Storage.getAppData();
-        const logs = data.auditLog || [];
-
-        let html = `
-            <h3 style="margin-bottom:16px;">📋 Audit Log</h3>
-            <p style="color:var(--text-light);margin-bottom:12px;">All officer actions are recorded here.</p>
-        `;
-
-        if (logs.length === 0) {
-            html += UI.emptyState('No audit logs yet.', 'history');
-        } else {
-            logs.slice().reverse().forEach(log => {
-                html += `
-                    <div class="card" style="padding:12px 16px;margin-bottom:8px;">
-                        <div style="display:flex;justify-content:space-between;align-items:flex-start;">
-                            <div>
-                                <strong>${log.action}</strong>
-                                <p style="font-size:0.85rem;color:var(--text-light);margin:2px 0;">${log.details}</p>
-                                <small style="color:var(--text-light);">By: ${log.officerId}</small>
-                            </div>
-                            <small style="color:var(--text-light);">${new Date(log.timestamp).toLocaleString()}</small>
-                        </div>
-                    </div>
-                `;
-            });
-        }
-
-        document.getElementById('content').innerHTML = html;
-    }
-};
-
-// ================================================================
-// MODULE: Bulk Actions
-// ================================================================
-const BulkActions = {
-    render() {
-        const data = Storage.getAppData();
-        const members = data.members;
-
-        let html = `
-            <h3 style="margin-bottom:16px;">👥 Bulk Actions</h3>
-            <p style="color:var(--text-light);margin-bottom:16px;">Select multiple members and perform actions.</p>
-            <div id="bulk-member-list">
-        `;
-
-        members.forEach(m => {
-            html += `
-                <div class="card" style="display:flex;align-items:center;gap:12px;padding:12px 16px;">
-                    <input type="checkbox" class="bulk-select" data-id="${m.studentId}">
-                    <span><strong>${m.name}</strong> (${m.studentId})</span>
-                    <span style="margin-left:auto;color:var(--text-light);font-size:0.8rem;">${m.exp} EXP</span>
-                </div>
-            `;
-        });
-
-        html += `
-            </div>
-            <div style="display:flex;gap:10px;margin-top:16px;flex-wrap:wrap;">
-                <button class="btn-primary" id="bulk-award-badge" style="flex:1;">🏅 Award Badge</button>
-                <button class="btn-primary" id="bulk-add-exp" style="flex:1;background:var(--primary-dark);">⭐ Add EXP</button>
-                <button class="btn-primary" id="bulk-send-notif" style="flex:1;background:var(--text-light);">📢 Send Notification</button>
-            </div>
-        `;
-
-        document.getElementById('content').innerHTML = html;
-
-        // Award badge
-        document.getElementById('bulk-award-badge')?.addEventListener('click', () => {
-            const selected = document.querySelectorAll('.bulk-select:checked');
-            if (selected.length === 0) return UI.toast({ message: 'Select at least one member.', type: 'warning' });
-
-            // Show badge selection
-            const definitions = Gamification.getBadgeDefinitions();
-            let options = definitions.map(b => `<option value="${b.id}">${b.icon} ${b.name}</option>`).join('');
-            UI.modal(`
-                <h3>🏅 Award Badge to ${selected.length} members</h3>
-                <div class="form-group">
-                    <label>Select Badge</label>
-                    <div class="input-box">
-                        <span class="material-symbols-rounded">workspace_premium</span>
-                        <select id="bulk-badge-select">${options}</select>
-                    </div>
-                </div>
-                <button class="btn-primary" id="bulk-badge-confirm">Award</button>
-                <button class="text-btn" data-close-modal>Cancel</button>
-            `);
-
-            document.getElementById('bulk-badge-confirm')?.addEventListener('click', () => {
-                const badgeId = document.getElementById('bulk-badge-select').value;
-                selected.forEach(cb => {
-                    const memberId = cb.dataset.id;
-                    const member = data.members.find(m => m.studentId === memberId);
-                    if (member && !member.badges.includes(badgeId)) {
-                        member.badges.push(badgeId);
-                        Gamification.addExp(memberId, 25, 'Bulk badge award');
-                        Audit.log('Bulk Badge Award', `Awarded ${badgeId} to ${member.name}`);
-                    }
-                });
-                Storage.saveAppData(data);
-                UI.closeModal();
-                UI.toast({ message: `Badge awarded to ${selected.length} members.`, type: 'success' });
-                this.render();
-            });
-        });
-
-        // Add EXP
-        document.getElementById('bulk-add-exp')?.addEventListener('click', () => {
-            const selected = document.querySelectorAll('.bulk-select:checked');
-            if (selected.length === 0) return UI.toast({ message: 'Select at least one member.', type: 'warning' });
-
-            UI.modal(`
-                <h3>⭐ Add EXP to ${selected.length} members</h3>
-                <div class="form-group">
-                    <label>Amount</label>
-                    <div class="input-box">
-                        <span class="material-symbols-rounded">stars</span>
-                        <input type="number" id="bulk-exp-amount" value="50" min="10" max="500">
-                    </div>
-                </div>
-                <button class="btn-primary" id="bulk-exp-confirm">Add EXP</button>
-                <button class="text-btn" data-close-modal>Cancel</button>
-            `);
-
-            document.getElementById('bulk-exp-confirm')?.addEventListener('click', () => {
-                const amount = parseInt(document.getElementById('bulk-exp-amount').value) || 50;
-                selected.forEach(cb => {
-                    const memberId = cb.dataset.id;
-                    Gamification.addExp(memberId, amount, 'Bulk EXP award');
-                    Audit.log('Bulk EXP Award', `Added ${amount} EXP to ${memberId}`);
-                });
-                UI.closeModal();
-                UI.toast({ message: `Added ${amount} EXP to ${selected.length} members.`, type: 'success' });
-                this.render();
-            });
-        });
-
-        // Send notification
-        document.getElementById('bulk-send-notif')?.addEventListener('click', () => {
-            const selected = document.querySelectorAll('.bulk-select:checked');
-            if (selected.length === 0) return UI.toast({ message: 'Select at least one member.', type: 'warning' });
-
-            UI.modal(`
-                <h3>📢 Send Notification to ${selected.length} members</h3>
-                <div class="form-group">
-                    <label>Title</label>
-                    <div class="input-box">
-                        <span class="material-symbols-rounded">title</span>
-                        <input type="text" id="bulk-notif-title" placeholder="Notification title">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label>Message</label>
-                    <div class="input-box" style="align-items:flex-start;">
-                        <span class="material-symbols-rounded" style="margin-top:12px;">message</span>
-                        <textarea id="bulk-notif-msg" style="flex:1;border:none;outline:none;background:transparent;resize:vertical;min-height:60px;font-family:inherit;font-size:14px;color:var(--text);" placeholder="Your message..."></textarea>
-                    </div>
-                </div>
-                <button class="btn-primary" id="bulk-notif-confirm">Send</button>
-                <button class="text-btn" data-close-modal>Cancel</button>
-            `);
-
-            document.getElementById('bulk-notif-confirm')?.addEventListener('click', () => {
-                const title = document.getElementById('bulk-notif-title').value.trim() || 'Announcement';
-                const msg = document.getElementById('bulk-notif-msg').value.trim() || 'You have a new notification.';
-                selected.forEach(cb => {
-                    const memberId = cb.dataset.id;
-                    // Send notification to each member
-                    const notif = {
-                        title: title,
-                        message: msg,
-                        type: 'info',
-                        icon: 'campaign',
-                        memberId: memberId
-                    };
-                    Storage.addNotification(notif);
-                });
-                UI.closeModal();
-                UI.toast({ message: `Notification sent to ${selected.length} members.`, type: 'success' });
-                Audit.log('Bulk Notification', `Sent notification to ${selected.length} members`);
-                this.render();
-            });
-        });
-    }
-};
-
-// ================================================================
-// MODULE: Analytics & Charts
-// ================================================================
-const Analytics = {
-    render() {
-        const data = Storage.getAppData();
-        const members = data.members;
-
-        let html = `
-            <h3 style="margin-bottom:16px;">📊 Analytics</h3>
-            <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-bottom:20px;">
-                <div class="card" style="text-align:center;">
-                    <h2>${members.length}</h2>
-                    <p>Total Members</p>
-                </div>
-                <div class="card" style="text-align:center;">
-                    <h2>${members.reduce((sum,m) => sum + m.exp, 0)}</h2>
-                    <p>Total EXP</p>
-                </div>
-                <div class="card" style="text-align:center;">
-                    <h2>${members.filter(m => m.membership === 'Active').length}</h2>
-                    <p>Active Members</p>
-                </div>
-                <div class="card" style="text-align:center;">
-                    <h2>${data.events.length}</h2>
-                    <p>Total Events</p>
-                </div>
-            </div>
-            <div class="card">
-                <h4>Member Growth</h4>
-                <canvas id="member-growth-chart"></canvas>
-            </div>
-            <div class="card">
-                <h4>EXP Distribution</h4>
-                <canvas id="exp-distribution-chart"></canvas>
-            </div>
-            <div class="card">
-                <h4>Attendance Trends</h4>
-                <canvas id="attendance-trend-chart"></canvas>
-            </div>
-        `;
-
-        document.getElementById('content').innerHTML = html;
-
-        // Render charts after DOM update
-        setTimeout(() => {
-            this.renderMemberGrowth();
-            this.renderExpDistribution();
-            this.renderAttendanceTrend();
-        }, 100);
-    },
-
-    renderMemberGrowth() {
-        const canvas = document.getElementById('member-growth-chart');
-        if (!canvas || typeof Chart === 'undefined') return;
-
-        const data = Storage.getAppData();
-        // Simulate growth over last 6 months
-        const months = ['Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'];
-        const counts = [2, 3, 5, 7, 10, data.members.length];
-
-        new Chart(canvas, {
-            type: 'line',
-            data: {
-                labels: months,
-                datasets: [{
-                    label: 'Members',
-                    data: counts,
-                    borderColor: '#759954',
-                    backgroundColor: 'rgba(117,153,84,0.1)',
-                    fill: true,
-                    tension: 0.3
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: { display: false }
-                }
-            }
-        });
-    },
-
-    renderExpDistribution() {
-        const canvas = document.getElementById('exp-distribution-chart');
-        if (!canvas || typeof Chart === 'undefined') return;
-
-        const data = Storage.getAppData();
-        const members = data.members;
-        const ranges = ['0-100', '101-300', '301-500', '501-800', '801+'];
-        const counts = ranges.map(range => {
-            const [min, max] = range.split('-').map(Number);
-            if (range === '801+') return members.filter(m => m.exp >= 801).length;
-            return members.filter(m => m.exp >= min && m.exp <= max).length;
-        });
-
-        new Chart(canvas, {
-            type: 'bar',
-            data: {
-                labels: ranges,
-                datasets: [{
-                    label: 'Members',
-                    data: counts,
-                    backgroundColor: '#A9C88B',
-                    borderColor: '#759954',
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: { display: false }
-                }
-            }
-        });
-    },
-
-    renderAttendanceTrend() {
-        const canvas = document.getElementById('attendance-trend-chart');
-        if (!canvas || typeof Chart === 'undefined') return;
-
-        const data = Storage.getAppData();
-        // Simulate attendance over last 6 months
-        const months = ['Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'];
-        const attendances = [3, 5, 8, 12, 15, data.checkIns?.length || 0];
-
-        new Chart(canvas, {
-            type: 'line',
-            data: {
-                labels: months,
-                datasets: [{
-                    label: 'Check-ins',
-                    data: attendances,
-                    borderColor: '#E7BE45',
-                    backgroundColor: 'rgba(231,190,69,0.1)',
-                    fill: true,
-                    tension: 0.3
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: { display: false }
-                }
-            }
-        });
-    },
-
-    // Personal stats for a member
-    renderPersonalStats(studentId) {
-        const data = Storage.getAppData();
-        const member = data.members.find(m => m.studentId === studentId);
-        if (!member) return;
-
-        // Get attendance dates
-        const attendance = member.attendance || [];
-        const dates = attendance.slice(-10); // last 10
-
-        let html = `
-            <div class="card">
-                <h4>📈 Your Progress</h4>
-                <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:12px;">
-                    <div style="text-align:center;background:var(--accent);padding:12px;border-radius:16px;">
-                        <div style="font-size:1.5rem;font-weight:800;color:var(--primary);">${member.exp}</div>
-                        <small>EXP</small>
-                    </div>
-                    <div style="text-align:center;background:var(--accent);padding:12px;border-radius:16px;">
-                        <div style="font-size:1.5rem;font-weight:800;color:var(--primary);">${member.streak || 0}🔥</div>
-                        <small>Streak</small>
-                    </div>
-                    <div style="text-align:center;background:var(--accent);padding:12px;border-radius:16px;">
-                        <div style="font-size:1.5rem;font-weight:800;color:var(--primary);">${attendance.length}</div>
-                        <small>Check-ins</small>
-                    </div>
-                </div>
-                <div style="margin-top:16px;">
-                    <h5>Recent Activity</h5>
-                    ${dates.length === 0 ? '<p style="color:var(--text-light);">No activity yet.</p>' :
-                        `<ul style="list-style:none;padding:0;">
-                            ${dates.map(d => `<li style="padding:4px 0;border-bottom:1px solid var(--border);">📅 ${d}</li>`).join('')}
-                        </ul>`
-                    }
-                </div>
-                <div style="margin-top:16px;">
-                    <h5>Badges (${member.badges?.length || 0})</h5>
-                    <div style="display:flex;gap:8px;flex-wrap:wrap;">
-                        ${(member.badges || []).map(bid => {
-                            const def = Gamification.getBadgeDefinitions().find(b => b.id === bid);
-                            return def ? `<span style="background:var(--accent);padding:4px 12px;border-radius:20px;font-size:0.8rem;">${def.icon} ${def.name}</span>` : '';
-                        }).join('') || '<span style="color:var(--text-light);">No badges yet</span>'}
-                    </div>
-                </div>
-            </div>
-        `;
-
-        // Append to profile page
-        document.getElementById('content').innerHTML += html;
-    }
-};
-
-// ================================================================
-// MODULE: Onboarding
-// ================================================================
-const Onboarding = {
-    steps: [
-        { title: 'Welcome to SEPOLSCIS!', desc: 'Your all-in-one hub for the Political Science Student Organization. Let\'s get started!', icon: 'rocket_launch' },
-        { title: '📊 Dashboard', desc: 'Track your EXP, level, and quick actions. Check your progress at a glance.', icon: 'dashboard' },
-        { title: '📅 Events', desc: 'View upcoming events, check-in, and earn EXP. Don\'t miss out!', icon: 'event' },
-        { title: '🏅 Quests & Badges', desc: 'Complete quests to earn bonus EXP and unlock badges. Show off your achievements!', icon: 'workspace_premium' },
-        { title: '📚 Learning Center', desc: 'Access resources, take quizzes, and expand your knowledge. Ready to learn?', icon: 'menu_book' },
-    ],
-    currentStep: 0,
-
-    start() {
-        const overlay = document.getElementById('onboarding-overlay');
-        if (!overlay) return;
-        overlay.style.display = 'flex';
-        this.currentStep = 0;
-        this.showStep();
-    },
-
-    showStep() {
-        const step = this.steps[this.currentStep];
-        document.getElementById('onboarding-title').textContent = step.title;
-        document.getElementById('onboarding-desc').textContent = step.desc;
-        document.querySelector('.onboarding-card .material-symbols-rounded').textContent = step.icon;
-
-        // Update dots
-        const dotsContainer = document.getElementById('onboarding-dots');
-        dotsContainer.innerHTML = this.steps.map((_, i) =>
-            `<span style="width:10px;height:10px;border-radius:50%;background:${i === this.currentStep ? 'var(--primary)' : '#ddd'};display:inline-block;"></span>`
-        ).join('');
-
-        const nextBtn = document.getElementById('onboarding-next');
-        if (this.currentStep === this.steps.length - 1) {
-            nextBtn.textContent = 'Finish';
-        } else {
-            nextBtn.textContent = 'Next';
-        }
-    },
-
-    next() {
-        if (this.currentStep < this.steps.length - 1) {
-            this.currentStep++;
-            this.showStep();
-        } else {
-            this.finish();
-        }
-    },
-
-    finish() {
-        document.getElementById('onboarding-overlay').style.display = 'none';
-        const data = Storage.getAppData();
-        data.onboardingCompleted = true;
-        Storage.saveAppData(data);
-        UI.toast({ message: '🎉 You\'re all set! Explore SEPOLSCIS.', type: 'success' });
-    }
-};
-
-// ================================================================
-// MODULE: Dashboard (updated with streaks, quests preview)
+// MODULE: Dashboard
 // ================================================================
 const Dashboard = {
     render() {
@@ -1845,48 +745,28 @@ const Dashboard = {
         const member = data.members.find(m => m.studentId === user.studentId);
         if (!member) return;
 
-        // Show skeleton first
-        document.getElementById('content').innerHTML = UI.skeleton(3);
-        setTimeout(() => {
-            this.renderContent(member, data);
-        }, 300);
-    },
-
-    renderContent(member, data) {
         const level = Gamification.getLevel(member.exp);
         const progress = Gamification.getProgress(member.exp);
         const nextLevel = Gamification.getNextLevel(member.exp);
         const badges = Gamification.getMemberBadges(member.studentId);
         const unlocked = badges.filter(b => b.unlocked);
         const upcoming = data.events.filter(e => new Date(e.date) >= new Date()).slice(0, 3);
-        const streak = member.streak || 0;
-
-        // Get quest progress
-        const quests = data.quests || Storage.getDefaultQuests();
-        const questProgress = member.questProgress || {};
-        const completedQuests = quests.filter(q => questProgress[q.id]?.completed).length;
-        const totalQuests = quests.length;
 
         let html = `
-            <!-- EXP Card with Streak -->
+            <!-- EXP Card -->
             <div class="card exp-card">
                 <div style="position:relative;z-index:1;">
-                    <div style="display:flex;justify-content:space-between;align-items:center;">
-                        <p style="opacity:0.8;">${user.role === 'officer' ? '👋 Officer' : '👋 Member'}</p>
-                        ${streak > 0 ? `<span class="streak-badge">🔥 ${streak} Day Streak</span>` : ''}
-                    </div>
+                    <p style="opacity:0.8;">${user.role === 'officer' ? '👋 Officer' : '👋 Member'}</p>
                     <h2>Hello, ${member.name}</h2>
                     <div style="display:flex;gap:20px;margin-top:6px;flex-wrap:wrap;">
                         <span><strong>${member.exp}</strong> EXP</span>
                         <span><strong>Level ${level.level}</strong> ${level.title}</span>
                         <span><strong>${member.attendance?.length || 0}</strong> Attendances</span>
-                        <span><strong>${completedQuests}/${totalQuests}</strong> Quests</span>
                     </div>
                     <div class="exp-progress" style="margin-top:12px;">
                         <span style="width:${progress}%;"></span>
                     </div>
                     ${nextLevel ? `<p style="margin-top:6px;font-size:0.8rem;opacity:0.7;">${nextLevel.exp - member.exp} EXP until ${nextLevel.title}</p>` : '<p style="margin-top:6px;font-size:0.8rem;opacity:0.7;">🏆 Max Level!</p>'}
-                    ${Gamification.getMultiplier() > 1 ? `<p style="margin-top:4px;font-size:0.8rem;opacity:0.8;">⚡ ${Gamification.getMultiplier()}x EXP Multiplier active!</p>` : ''}
                 </div>
             </div>
 
@@ -1920,35 +800,6 @@ const Dashboard = {
             </div>
         `;
 
-        // Quests preview
-        const activeQuests = quests.filter(q => !questProgress[q.id]?.completed).slice(0, 3);
-        if (activeQuests.length > 0) {
-            html += `
-                <div class="card">
-                    <div class="card-title">
-                        <h3>🎯 Active Quests</h3>
-                        <a href="#" onclick="window.__nav('quests');return false;" style="color:var(--primary);font-weight:600;font-size:0.85rem;">View all</a>
-                    </div>
-                    ${activeQuests.map(q => {
-                        const p = questProgress[q.id] || { progress: 0 };
-                        const perc = Math.min((p.progress / q.goal) * 100, 100);
-                        return `
-                            <div style="padding:8px 0;border-bottom:1px solid var(--border);">
-                                <div style="display:flex;justify-content:space-between;align-items:center;">
-                                    <span>${q.icon} ${q.title}</span>
-                                    <span style="font-size:0.8rem;color:var(--text-light);">${p.progress}/${q.goal}</span>
-                                </div>
-                                <div class="quest-progress">
-                                    <span style="width:${perc}%;"></span>
-                                </div>
-                            </div>
-                        `;
-                    }).join('')}
-                </div>
-            `;
-        }
-
-        // Badges preview
         if (unlocked.length > 0) {
             html += `
                 <div class="card">
@@ -1969,7 +820,6 @@ const Dashboard = {
             `;
         }
 
-        // Officer widget
         if (Auth.isOfficer()) {
             const pendingGrievance = data.grievances.filter(g => g.status === 'submitted' || g.status === 'in-progress')
                 .length;
@@ -2001,13 +851,11 @@ const Dashboard = {
                     </div>
                     <div style="display:flex;gap:10px;margin-top:8px;flex-wrap:wrap;">
                         <button class="btn-primary" style="flex:1;padding:10px;font-size:0.85rem;background:var(--text-light);" onclick="window.__createEvent()">+ Create Event</button>
-                        <button class="btn-primary" style="flex:1;padding:10px;font-size:0.85rem;background:var(--text-light);" onclick="window.__nav('audit')">📋 Audit Log</button>
                     </div>
                 </div>
             `;
         }
 
-        // Announcements
         html += `
             <div class="card">
                 <div class="card-title">
@@ -2024,7 +872,6 @@ const Dashboard = {
             </div>
         `;
 
-        // Upcoming events
         html += `
             <div class="card">
                 <div class="card-title">
@@ -2044,7 +891,6 @@ const Dashboard = {
             </div>
         `;
 
-        // Leaderboard preview
         const sorted = [...data.members].sort((a, b) => b.exp - a.exp).slice(0, 5);
         html += `
             <div class="card">
@@ -2067,7 +913,7 @@ const Dashboard = {
 };
 
 // ================================================================
-// MODULE: Events (with multiplier awareness)
+// MODULE: Events
 // ================================================================
 const Events = {
     render() {
@@ -2093,7 +939,6 @@ const Events = {
         } else {
             events.forEach(e => {
                 const isPast = new Date(e.date) < new Date();
-                const expWithMult = Math.round(e.exp * Gamification.getMultiplier());
                 html += `
                     <div class="event-card" data-title="${e.title.toLowerCase()}" data-type="${e.type}">
                         <div class="event-banner" style="background:${isPast ? 'var(--border)' : 'linear-gradient(135deg,var(--primary),var(--primary-light))'};">
@@ -2111,7 +956,7 @@ const Events = {
                             </div>
                             <p style="color:var(--text-light);font-size:0.9rem;margin:8px 0;">${e.description || 'No description.'}</p>
                             <div style="display:flex;justify-content:space-between;align-items:center;margin-top:12px;flex-wrap:wrap;gap:10px;">
-                                <span class="event-reward">⭐ +${expWithMult} EXP ${Gamification.getMultiplier() > 1 ? `(x${Gamification.getMultiplier()})` : ''}</span>
+                                <span class="event-reward">⭐ +${e.exp} EXP</span>
                                 ${!isPast ? `<button class="btn-primary" style="padding:8px 20px;width:auto;font-size:0.85rem;" onclick="window.__checkinEvent(${e.id})">Check In</button>` : ''}
                             </div>
                         </div>
@@ -2158,9 +1003,6 @@ const Events = {
         if (!member.attendance) member.attendance = [];
         member.attendance.push(today);
 
-        // Update streak
-        Auth.updateStreak(user.studentId);
-
         const result = Gamification.addExp(user.studentId, event.exp, `Attended ${event.title}`);
 
         if (!data.checkIns) data.checkIns = [];
@@ -2171,27 +1013,17 @@ const Events = {
             exp: event.exp
         });
 
-        // Update quest progress for check-in
-        Quests.updateProgress(user.studentId, 'checkin', 1);
-        Quests.updateProgress(user.studentId, 'checkin_weekly', 1);
-        Quests.updateProgress(user.studentId, 'checkins_total', 1);
-        Quests.updateProgress(user.studentId, 'attendance_monthly', 1);
-        // For volunteer quest
-        if (event.type === 'volunteer') {
-            Quests.updateProgress(user.studentId, 'volunteer', 1);
-        }
-
         Storage.saveAppData(data);
 
         Auth.currentUser = { ...Auth.currentUser, ...member };
         Storage.setCurrentUser(Auth.currentUser);
 
-        UI.toast({ message: `✅ Checked in to ${event.title}! +${result.gained} EXP`, type: 'success' });
+        UI.toast({ message: `✅ Checked in to ${event.title}! +${event.exp} EXP`, type: 'success' });
         UI.confetti({ count: 40 });
 
         const rect = document.querySelector('.event-card')?.getBoundingClientRect();
         if (rect) {
-            UI.floatExp(result.gained, rect.left + rect.width / 2, rect.top);
+            UI.floatExp(event.exp, rect.left + rect.width / 2, rect.top);
         }
 
         this.render();
@@ -2200,7 +1032,7 @@ const Events = {
 };
 
 // ================================================================
-// MODULE: Profile (with avatar upload and personal stats)
+// MODULE: Profile
 // ================================================================
 const Profile = {
     render() {
@@ -2214,20 +1046,14 @@ const Profile = {
         const badges = Gamification.getMemberBadges(member.studentId);
         const unlocked = badges.filter(b => b.unlocked);
         const attendanceCount = member.attendance?.length || 0;
-        const streak = member.streak || 0;
 
         let html = `
             <div class="profile-card">
-                <div class="profile-pic-wrapper">
-                    <img src="${member.avatar || 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"%3E%3Ccircle cx="60" cy="60" r="60" fill="%23DDE8CF"/%3E%3Ctext x="60" y="75" font-size="48" text-anchor="middle" fill="%23759954"%3E👤%3C/text%3E%3C/svg%3E'}" alt="Avatar" style="width:120px;height:120px;border-radius:50%;object-fit:cover;border:4px solid var(--primary);">
-                    <label class="profile-pic-upload" for="avatar-upload">
-                        <span class="material-symbols-rounded" style="font-size:20px;">camera_alt</span>
-                        <input type="file" id="avatar-upload" accept="image/*" style="display:none;">
-                    </label>
+                <div class="profile-avatar">
+                    <span class="material-symbols-rounded" style="font-size:60px;">person</span>
                 </div>
                 <h2>${member.name}</h2>
                 <p>${member.position || 'Member'} • ${member.year} Year</p>
-                ${streak > 0 ? `<p style="margin-top:4px;"><span class="streak-badge">🔥 ${streak} Day Streak</span></p>` : ''}
                 <div class="profile-stats">
                     <div class="profile-stat">
                         <h3>${member.exp}</h3>
@@ -2257,17 +1083,6 @@ const Profile = {
             </div>
         `;
 
-        // Personal stats chart (if Chart.js available)
-        if (typeof Chart !== 'undefined') {
-            html += `
-                <div class="card">
-                    <h4>📈 Your Activity</h4>
-                    <canvas id="personal-stats-chart" style="height:200px;"></canvas>
-                </div>
-            `;
-        }
-
-        // Badges
         html += `
             <div class="card">
                 <div class="card-title">
@@ -2288,7 +1103,6 @@ const Profile = {
             </div>
         `;
 
-        // Achievements
         if (member.achievements && member.achievements.length > 0) {
             html += `
                 <div class="card">
@@ -2300,7 +1114,6 @@ const Profile = {
             `;
         }
 
-        // Grade Conversion
         html += `
             <div class="card">
                 <div class="card-title">
@@ -2314,7 +1127,6 @@ const Profile = {
             </div>
         `;
 
-        // Settings
         html += `
             <div class="card">
                 <div class="card-title">
@@ -2336,52 +1148,6 @@ const Profile = {
 
         document.getElementById('content').innerHTML = html;
 
-        // Avatar upload
-        document.getElementById('avatar-upload')?.addEventListener('change', function(e) {
-            const file = e.target.files[0];
-            if (!file) return;
-            UI.uploadAvatar(file, (dataUrl) => {
-                member.avatar = dataUrl;
-                Storage.saveAppData(data);
-                Auth.currentUser.avatar = dataUrl;
-                Storage.setCurrentUser(Auth.currentUser);
-                UI.toast({ message: 'Avatar updated!', type: 'success' });
-                Profile.render();
-            });
-        });
-
-        // Personal stats chart
-        if (typeof Chart !== 'undefined') {
-            const canvas = document.getElementById('personal-stats-chart');
-            if (canvas) {
-                const attend = member.attendance || [];
-                const last10 = attend.slice(-10);
-                const labels = last10.map(d => new Date(d).toLocaleDateString());
-                new Chart(canvas, {
-                    type: 'line',
-                    data: {
-                        labels: labels.length ? labels : ['No data'],
-                        datasets: [{
-                            label: 'Check-ins',
-                            data: labels.length ? labels.map(() => 1) : [0],
-                            borderColor: '#759954',
-                            backgroundColor: 'rgba(117,153,84,0.1)',
-                            fill: true,
-                            tension: 0.3
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        plugins: {
-                            legend: { display: false }
-                        }
-                    }
-                });
-            }
-        }
-
-        // Dark mode toggle
         document.getElementById('dark-mode-toggle')?.addEventListener('change', function() {
             document.body.classList.toggle('dark', this.checked);
             localStorage.setItem('darkMode', this.checked);
@@ -2390,7 +1156,7 @@ const Profile = {
 };
 
 // ================================================================
-// MODULE: Leaderboard (unchanged)
+// MODULE: Leaderboard
 // ================================================================
 const Leaderboard = {
     render() {
@@ -2415,12 +1181,11 @@ const Leaderboard = {
                     <div class="rank" style="${isCurrent ? 'border:2px solid var(--primary);' : ''}">
                         <div class="rank-number" style="background:${i === 0 ? '#FFD700' : i === 1 ? '#C0C0C0' : i === 2 ? '#CD7F32' : 'var(--primary)'};">${medal}</div>
                         <div class="rank-avatar">
-                            <img src="${m.avatar || 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="55" height="55" viewBox="0 0 55 55"%3E%3Ccircle cx="27.5" cy="27.5" r="27.5" fill="%23DDE8CF"/%3E%3Ctext x="27.5" y="35" font-size="24" text-anchor="middle" fill="%23759954"%3E👤%3C/text%3E%3C/svg%3E'}" style="width:55px;height:55px;border-radius:50%;object-fit:cover;">
+                            <span class="material-symbols-rounded">person</span>
                         </div>
                         <div class="rank-info">
                             <strong>${m.name}</strong>
                             <div style="font-size:0.8rem;color:var(--text-light);">${m.position || 'Member'} • ${m.year} Year</div>
-                            ${m.streak > 0 ? `<span class="streak-badge" style="font-size:0.6rem;">🔥 ${m.streak}</span>` : ''}
                         </div>
                         <div class="rank-exp">${m.exp} EXP</div>
                     </div>
@@ -2434,7 +1199,7 @@ const Leaderboard = {
 };
 
 // ================================================================
-// MODULE: Grievance (unchanged but with audit log integration)
+// MODULE: Grievance
 // ================================================================
 const Grievance = {
     render() {
@@ -2549,7 +1314,6 @@ const Grievance = {
             UI.closeModal();
             UI.toast({ message: 'Grievance submitted successfully.', type: 'success' });
             NotifCenter.add('New Grievance Submitted', `${title} - Awaiting review.`, 'info', 'gavel');
-            Audit.log('Grievance Submitted', `New grievance: ${title}`);
             Grievance.render();
         });
     },
@@ -2558,7 +1322,6 @@ const Grievance = {
         const result = Storage.updateGrievance(id, { status });
         if (result) {
             UI.toast({ message: `Grievance updated to ${status}.`, type: 'success' });
-            Audit.log('Grievance Updated', `Grievance ${id} status changed to ${status}`);
             Grievance.render();
         }
     },
@@ -2583,7 +1346,6 @@ const Grievance = {
             if (result) {
                 UI.closeModal();
                 UI.toast({ message: 'Grievance resolved!', type: 'success' });
-                Audit.log('Grievance Resolved', `Grievance ${id} resolved.`);
                 Grievance.render();
             }
         });
@@ -2591,7 +1353,7 @@ const Grievance = {
 };
 
 // ================================================================
-// MODULE: Learning (unchanged)
+// MODULE: Learning
 // ================================================================
 const Learning = {
     currentTab: 'constitution',
@@ -2661,7 +1423,7 @@ const Learning = {
 };
 
 // ================================================================
-// MODULE: Officer (updated with audit log & bulk actions)
+// MODULE: Officer
 // ================================================================
 const Officer = {
     renderDashboard() {
@@ -2720,10 +1482,6 @@ const Officer = {
                 <button class="btn-primary" style="background:var(--primary-dark);" onclick="window.__showAnnouncementForm()">📢 Post Announcement</button>
                 <button class="btn-primary" style="background:var(--text-light);" onclick="window.__awardBadge()">🏅 Award Badge</button>
                 <button class="btn-primary" style="background:var(--success);" onclick="window.__viewGradeRequests()">📝 Grade Requests</button>
-                <button class="btn-primary" style="background:var(--text-light);" onclick="window.__nav('audit')">📋 Audit Log</button>
-                <button class="btn-primary" style="background:var(--text-light);" onclick="window.__nav('bulk')">👥 Bulk Actions</button>
-                <button class="btn-primary" style="background:var(--text-light);" onclick="window.__nav('quizzes')">📝 Quizzes</button>
-                <button class="btn-primary" style="background:var(--text-light);" onclick="window.__nav('resources')">📚 Resources</button>
             </div>
         `;
 
@@ -2748,14 +1506,9 @@ const Officer = {
                 html += `
                     <div class="card" data-name="${m.name.toLowerCase()}" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;">
                         <div>
-                            <div style="display:flex;align-items:center;gap:10px;">
-                                <img src="${m.avatar || 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40"%3E%3Ccircle cx="20" cy="20" r="20" fill="%23DDE8CF"/%3E%3Ctext x="20" y="28" font-size="20" text-anchor="middle" fill="%23759954"%3E👤%3C/text%3E%3C/svg%3E'}" style="width:40px;height:40px;border-radius:50%;object-fit:cover;">
-                                <div>
-                                    <strong>${m.name}</strong>
-                                    <p style="font-size:0.8rem;color:var(--text-light);margin:0;">${m.studentId} • ${m.year} Year • ${m.position || 'Member'}</p>
-                                    <p style="font-size:0.8rem;color:var(--text-light);margin:0;">🏅 ${m.badges?.length || 0} badges • 📅 ${m.attendance?.length || 0} attendances • 🔥 ${m.streak || 0}</p>
-                                </div>
-                            </div>
+                            <strong>${m.name}</strong>
+                            <p style="font-size:0.8rem;color:var(--text-light);margin:0;">${m.studentId} • ${m.year} Year • ${m.position || 'Member'}</p>
+                            <p style="font-size:0.8rem;color:var(--text-light);margin:0;">🏅 ${m.badges?.length || 0} badges • 📅 ${m.attendance?.length || 0} attendances</p>
                         </div>
                         <div style="text-align:right;">
                             <div style="font-weight:700;color:var(--primary);">${m.exp} EXP</div>
@@ -2916,23 +1669,71 @@ const Officer = {
     },
 
     renderAnalytics() {
-        Analytics.render();
-    },
+        const data = Storage.getAppData();
+        const totalMembers = data.members.length;
+        const activeMembers = data.members.filter(m => m.membership === 'Active').length;
+        const totalExp = data.members.reduce((sum, m) => sum + m.exp, 0);
+        const avgExp = totalMembers > 0 ? Math.round(totalExp / totalMembers) : 0;
+        const totalBadges = data.members.reduce((sum, m) => sum + (m.badges?.length || 0), 0);
+        const totalAttendances = data.members.reduce((sum, m) => sum + (m.attendance?.length || 0), 0);
 
-    renderAuditLog() {
-        Audit.render();
-    },
+        const yearGroups = {};
+        data.members.forEach(m => {
+            const y = m.year || '1';
+            yearGroups[y] = (yearGroups[y] || 0) + 1;
+        });
 
-    renderBulkActions() {
-        BulkActions.render();
-    },
+        let html = `
+            <h3 style="margin-bottom:16px;">📊 Analytics</h3>
+            <div class="analytics-grid">
+                <div class="analytics-card">
+                    <span class="material-symbols-rounded">groups</span>
+                    <h2>${totalMembers}</h2>
+                    <p>Total Members</p>
+                    <small style="color:var(--text-light);">${activeMembers} active</small>
+                </div>
+                <div class="analytics-card">
+                    <span class="material-symbols-rounded">stars</span>
+                    <h2>${avgExp}</h2>
+                    <p>Average EXP</p>
+                    <small style="color:var(--text-light);">${totalExp} total</small>
+                </div>
+                <div class="analytics-card">
+                    <span class="material-symbols-rounded">workspace_premium</span>
+                    <h2>${totalBadges}</h2>
+                    <p>Total Badges</p>
+                    <small style="color:var(--text-light);">${data.members.filter(m => m.badges?.length > 0).length} members</small>
+                </div>
+                <div class="analytics-card">
+                    <span class="material-symbols-rounded">check_circle</span>
+                    <h2>${totalAttendances}</h2>
+                    <p>Total Attendances</p>
+                    <small style="color:var(--text-light);">${data.members.filter(m => m.attendance?.length > 0).length} members</small>
+                </div>
+            </div>
+            <div class="card">
+                <h4>Members by Year</h4>
+                <div style="display:flex;gap:16px;margin-top:12px;flex-wrap:wrap;">
+                    ${Object.entries(yearGroups).sort((a,b) => a[0]-b[0]).map(([year,count]) => `
+                        <div style="background:var(--accent);border-radius:16px;padding:12px 20px;text-align:center;flex:1;min-width:80px;">
+                            <div style="font-size:1.8rem;font-weight:800;color:var(--primary);">${count}</div>
+                            <small style="color:var(--text-light);">Year ${year}</small>
+                        </div>
+                    `).join('')}
+                </div>
+            </div>
+            <div class="card">
+                <h4>Top Members</h4>
+                ${[...data.members].sort((a,b) => b.exp - a.exp).slice(0,5).map((m,i) => `
+                    <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:${i<4?'1px solid var(--border)':'none'};">
+                        <span>${i+1}. ${m.name}</span>
+                        <span style="font-weight:700;color:var(--primary);">${m.exp} EXP</span>
+                    </div>
+                `).join('')}
+            </div>
+        `;
 
-    renderQuizzes() {
-        Quizzes.render();
-    },
-
-    renderResources() {
-        Resources.render();
+        document.getElementById('content').innerHTML = html;
     },
 
     showAwardBadge() {
@@ -2974,4 +1775,501 @@ const Officer = {
             const memberId = document.getElementById('award-member').value;
             const badgeId = document.getElementById('award-badge').value;
 
-            const member = data.members.find(m =>
+            const member = data.members.find(m => m.studentId === memberId);
+            if (!member) return UI.toast({ message: 'Member not found.', type: 'error' });
+
+            if (member.badges.includes(badgeId)) {
+                return UI.toast({ message: 'Member already has this badge.', type: 'warning' });
+            }
+
+            member.badges.push(badgeId);
+            Storage.saveAppData(data);
+
+            Gamification.addExp(memberId, 25, `Awarded badge`);
+
+            UI.closeModal();
+            UI.toast({ message: `🏅 Badge awarded to ${member.name}!`, type: 'success' });
+            UI.confetti({ count: 50 });
+            NotifCenter.add('Badge Awarded', `${member.name} received a new badge!`, 'success', 'workspace_premium');
+
+            if (Auth.currentUser?.studentId === memberId) {
+                Auth.currentUser.badges = member.badges;
+                Storage.setCurrentUser(Auth.currentUser);
+            }
+        });
+    },
+
+    showAnnouncementForm() {
+        UI.modal(`
+            <h3>📢 Post Announcement</h3>
+            <form id="announcement-form">
+                <div class="form-group">
+                    <label>Announcement</label>
+                    <div class="input-box" style="align-items:flex-start;">
+                        <span class="material-symbols-rounded" style="margin-top:12px;">edit</span>
+                        <textarea id="announcement-text" style="flex:1;border:none;outline:none;background:transparent;resize:vertical;min-height:80px;font-family:inherit;font-size:14px;color:var(--text);" placeholder="Write your announcement..." required></textarea>
+                    </div>
+                </div>
+                <button type="submit" class="btn-primary">Post Announcement</button>
+                <button type="button" class="text-btn" data-close-modal>Cancel</button>
+            </form>
+        `);
+
+        document.getElementById('announcement-form')?.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const text = document.getElementById('announcement-text').value.trim();
+            if (!text) return UI.toast({ message: 'Please write an announcement.', type: 'error' });
+
+            Storage.addAnnouncement(text);
+            UI.closeModal();
+            UI.toast({ message: '📢 Announcement posted!', type: 'success' });
+            NotifCenter.add('New Announcement', text, 'info', 'campaign');
+            const currentScreen = document.querySelector('.nav-item.active')?.dataset.screen || 'home';
+            window.__nav(currentScreen);
+        });
+    },
+
+    createEvent() {
+        UI.modal(`
+            <h3>📅 Create Event</h3>
+            <form id="create-event-form">
+                <div class="form-group">
+                    <label>Event Title</label>
+                    <div class="input-box">
+                        <span class="material-symbols-rounded">title</span>
+                        <input type="text" id="event-title" placeholder="Event title" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Date</label>
+                    <div class="input-box">
+                        <span class="material-symbols-rounded">calendar_today</span>
+                        <input type="date" id="event-date" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Type</label>
+                    <div class="input-box">
+                        <span class="material-symbols-rounded">category</span>
+                        <select id="event-type">
+                            <option value="assembly">Assembly</option>
+                            <option value="competition">Competition</option>
+                            <option value="sports">Sports</option>
+                            <option value="volunteer">Volunteer</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Location</label>
+                    <div class="input-box">
+                        <span class="material-symbols-rounded">location_on</span>
+                        <input type="text" id="event-location" placeholder="Venue">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>EXP Reward</label>
+                    <div class="input-box">
+                        <span class="material-symbols-rounded">stars</span>
+                        <input type="number" id="event-exp" value="50" min="10" max="200">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Description</label>
+                    <div class="input-box" style="align-items:flex-start;">
+                        <span class="material-symbols-rounded" style="margin-top:12px;">description</span>
+                        <textarea id="event-desc" style="flex:1;border:none;outline:none;background:transparent;resize:vertical;min-height:60px;font-family:inherit;font-size:14px;color:var(--text);" placeholder="Event description..."></textarea>
+                    </div>
+                </div>
+                <button type="submit" class="btn-primary">Create Event</button>
+                <button type="button" class="text-btn" data-close-modal>Cancel</button>
+            </form>
+        `);
+
+        const tomorrow = new Date();
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        document.getElementById('event-date').value = tomorrow.toISOString().split('T')[0];
+
+        document.getElementById('create-event-form')?.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const title = document.getElementById('event-title').value.trim();
+            const date = document.getElementById('event-date').value;
+            const type = document.getElementById('event-type').value;
+            const location = document.getElementById('event-location').value.trim();
+            const exp = parseInt(document.getElementById('event-exp').value) || 50;
+            const description = document.getElementById('event-desc').value.trim();
+
+            if (!title || !date) return UI.toast({ message: 'Title and date are required.', type: 'error' });
+
+            Storage.addEvent({ title, date, type, location, exp, description });
+            UI.closeModal();
+            UI.toast({ message: `✅ Event "${title}" created!`, type: 'success' });
+            NotifCenter.add('New Event Created', `${title} on ${date}`, 'info', 'event');
+            window.__nav('events');
+        });
+    },
+
+    viewMember(studentId) {
+        const data = Storage.getAppData();
+        const member = data.members.find(m => m.studentId === studentId);
+        if (!member) return UI.toast({ message: 'Member not found.', type: 'error' });
+
+        const level = Gamification.getLevel(member.exp);
+        const badges = Gamification.getMemberBadges(member.studentId);
+        const unlocked = badges.filter(b => b.unlocked);
+
+        UI.modal(`
+            <div style="text-align:center;">
+                <div style="width:80px;height:80px;border-radius:50%;background:var(--accent);display:flex;justify-content:center;align-items:center;margin:auto;font-size:40px;color:var(--primary);">
+                    <span class="material-symbols-rounded">person</span>
+                </div>
+                <h3 style="margin-top:12px;">${member.name}</h3>
+                <p style="color:var(--text-light);">${member.studentId} • ${member.year} Year</p>
+                <p style="color:var(--text-light);">${member.position || 'Member'} • ${member.membership}</p>
+                <div style="display:flex;justify-content:center;gap:20px;margin:12px 0;">
+                    <span><strong>${member.exp}</strong> EXP</span>
+                    <span><strong>Level ${level.level}</strong></span>
+                    <span><strong>${member.attendance?.length || 0}</strong> Attendances</span>
+                </div>
+                <div style="display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:8px;">
+                    ${unlocked.map(b => `<span style="background:#EEF6E8;padding:4px 12px;border-radius:20px;font-size:0.8rem;">${b.icon} ${b.name}</span>`).join('')}
+                    ${unlocked.length === 0 ? '<span style="color:var(--text-light);font-size:0.9rem;">No badges yet</span>' : ''}
+                </div>
+                ${member.achievements?.length > 0 ? `
+                    <div style="margin-top:12px;text-align:left;">
+                        <strong>Achievements:</strong>
+                        <ul style="padding-left:20px;margin-top:4px;">
+                            ${member.achievements.map(a => `<li>${a}</li>`).join('')}
+                        </ul>
+                    </div>
+                ` : ''}
+                <button class="btn-primary" style="margin-top:16px;width:auto;padding:10px 24px;display:inline-flex;" data-close-modal>Close</button>
+            </div>
+        `);
+    },
+
+    deleteEvent(id) {
+        if (confirm('Delete this event?')) {
+            Storage.deleteEvent(id);
+            UI.toast({ message: 'Event deleted.', type: 'info' });
+            this.renderManageEvents();
+        }
+    }
+};
+
+// ================================================================
+// MODULE: App - Main Controller
+// ================================================================
+const App = {
+    init() {
+        try {
+            this.setupListeners();
+
+            if (localStorage.getItem('darkMode') === 'true') {
+                document.body.classList.add('dark');
+            }
+
+            this.setupPWA();
+
+            if ('serviceWorker' in navigator) {
+                window.addEventListener('load', () => {
+                    navigator.serviceWorker.register('service-worker.js')
+                        .catch(() => console.log('SW registration failed'));
+                });
+            }
+
+            this.navigate('home');
+            NotifCenter.updateBadge();
+            this.updateGreeting();
+
+            // ✅ FIX: Hide the loading screen
+            UI.hideLoading();
+
+        } catch (err) {
+            console.error('App init error:', err);
+            // Still hide the loading screen even if something fails
+            UI.hideLoading();
+        }
+    },
+
+    setupListeners() {
+        // Logout
+        document.getElementById('logout-btn')?.addEventListener('click', () => {
+            if (confirm('Are you sure you want to logout?')) {
+                Auth.logout();
+                window.location.href = 'login.html';
+            }
+        });
+
+        // Navigation
+        document.querySelectorAll('.nav-item').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                const screen = btn.dataset.screen;
+                this.navigate(screen);
+            });
+        });
+
+        // Officer drawer
+        document.getElementById('officer-menu-btn')?.addEventListener('click', () => {
+            if (!Auth.isOfficer()) {
+                return UI.toast({ message: 'Officer access only.', type: 'warning' });
+            }
+            document.getElementById('officer-drawer').classList.add('open');
+            document.getElementById('overlay').classList.add('show');
+        });
+
+        document.getElementById('close-drawer')?.addEventListener('click', () => {
+            document.getElementById('officer-drawer').classList.remove('open');
+            document.getElementById('overlay').classList.remove('show');
+        });
+
+        document.getElementById('overlay')?.addEventListener('click', () => {
+            document.getElementById('officer-drawer').classList.remove('open');
+            document.getElementById('overlay').classList.remove('show');
+        });
+
+        document.querySelectorAll('.drawer-item').forEach(item => {
+            item.addEventListener('click', () => {
+                const action = item.dataset.officer;
+                document.getElementById('officer-drawer').classList.remove('open');
+                document.getElementById('overlay').classList.remove('show');
+                this.handleOfficerAction(action);
+            });
+        });
+
+        // FAB
+        document.getElementById('fab-checkin')?.addEventListener('click', () => {
+            this.handleCheckin();
+        });
+
+        // Notifications
+        document.getElementById('notif-btn')?.addEventListener('click', () => {
+            NotifCenter.render();
+        });
+
+        // Install prompt
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            window.deferredPrompt = e;
+            document.getElementById('install-banner')?.classList.remove('hidden');
+            document.getElementById('install-btn')?.addEventListener('click', () => {
+                if (window.deferredPrompt) {
+                    window.deferredPrompt.prompt();
+                    window.deferredPrompt.userChoice.then(() => {
+                        document.getElementById('install-banner').classList.add('hidden');
+                    });
+                }
+            });
+        });
+
+        window.addEventListener('appinstalled', () => {
+            document.getElementById('install-banner')?.classList.add('hidden');
+            UI.toast({ message: '🎉 App installed successfully!', type: 'success' });
+        });
+
+        // Global functions
+        window.__nav = (screen) => this.navigate(screen);
+        window.__checkin = () => this.handleCheckin();
+        window.__showGrievance = () => Grievance.showForm();
+        window.__viewGrievances = () => { this.navigate('events');
+            setTimeout(() => Grievance.render(), 100); };
+        window.__viewGradeRequests = () => { this.navigate('events');
+            setTimeout(() => Officer.renderGradeRequests(), 100); };
+        window.__awardBadge = () => Officer.showAwardBadge();
+        window.__showAnnouncementForm = () => Officer.showAnnouncementForm();
+        window.__createEvent = () => Officer.createEvent();
+        window.__checkinEvent = (id) => Events.checkin(id);
+        window.__showLeaderboard = () => { this.navigate('events');
+            setTimeout(() => Leaderboard.render(), 100); };
+        window.__requestGrade = () => {
+            const user = Auth.currentUser;
+            Storage.updateMember(user.studentId, { gradeConvRequested: true });
+            if (Auth.currentUser) Auth.currentUser.gradeConvRequested = true;
+            Storage.setCurrentUser(Auth.currentUser);
+            UI.toast({ message: 'Grade conversion request submitted!', type: 'success' });
+            this.navigate('profile');
+        };
+        window.__resetApp = () => {
+            if (confirm('Reset all app data? This cannot be undone.')) {
+                localStorage.clear();
+                location.reload();
+            }
+        };
+        window.__exportData = () => {
+            const data = Storage.getAppData();
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'polsci_data.json';
+            a.click();
+            URL.revokeObjectURL(url);
+            UI.toast({ message: 'Data exported successfully!', type: 'success' });
+        };
+        window.__updateGrievance = (id, status) => Grievance.updateStatus(id, status);
+        window.__resolveGrievance = (id) => Grievance.resolve(id);
+        window.__deleteEvent = (id) => Officer.deleteEvent(id);
+        window.__viewMember = (id) => Officer.viewMember(id);
+        window.__approveGrade = (id) => {
+            Storage.updateMember(id, { gradeConvRequested: false });
+            UI.toast({ message: 'Grade conversion approved!', type: 'success' });
+            Officer.renderGradeRequests();
+        };
+        window.__rejectGrade = (id) => {
+            Storage.updateMember(id, { gradeConvRequested: false });
+            UI.toast({ message: 'Grade conversion rejected.', type: 'info' });
+            Officer.renderGradeRequests();
+        };
+        window.__downloadReviewer = () => {
+            UI.toast({ message: 'Reviewer PDF download started.', type: 'info' });
+            const data = Storage.getAppData();
+            const content = data.learningResources?.reviewer || 'Reviewer content not available.';
+            const blob = new Blob([content], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'polsci_reviewer.txt';
+            a.click();
+            URL.revokeObjectURL(url);
+        };
+        window.__showGrievanceForm = () => Grievance.showForm();
+    },
+
+    navigate(screen) {
+        const titleMap = {
+            'home': 'Dashboard',
+            'events': 'Events',
+            'learning': 'Learning Center',
+            'profile': 'Profile'
+        };
+        document.getElementById('screen-title').textContent = titleMap[screen] || screen;
+
+        document.querySelectorAll('.nav-item').forEach(b => {
+            b.classList.toggle('active', b.dataset.screen === screen);
+        });
+
+        switch (screen) {
+            case 'home':
+                Dashboard.render();
+                break;
+            case 'events':
+                Events.render();
+                break;
+            case 'learning':
+                Learning.render();
+                break;
+            case 'profile':
+                Profile.render();
+                break;
+            default:
+                Dashboard.render();
+        }
+
+        this.updateGreeting();
+    },
+
+    updateGreeting() {
+        const hour = new Date().getHours();
+        let greeting = 'Good Evening';
+        if (hour < 12) greeting = 'Good Morning';
+        else if (hour < 17) greeting = 'Good Afternoon';
+        document.getElementById('greeting').textContent = greeting;
+    },
+
+    handleOfficerAction(action) {
+        if (!Auth.isOfficer()) return UI.toast({ message: 'Officer access only.', type: 'warning' });
+
+        this.navigate('events');
+
+        setTimeout(() => {
+            switch (action) {
+                case 'dashboard':
+                    Officer.renderDashboard();
+                    break;
+                case 'members':
+                    Officer.renderMembers();
+                    break;
+                case 'manage-events':
+                    Officer.renderManageEvents();
+                    break;
+                case 'announcements':
+                    Officer.renderAnnouncements();
+                    break;
+                case 'badges':
+                    Officer.renderBadges();
+                    break;
+                case 'grade-requests':
+                    Officer.renderGradeRequests();
+                    break;
+                case 'grievances':
+                    Officer.renderGrievances();
+                    break;
+                case 'leaderboard':
+                    Leaderboard.render();
+                    break;
+                case 'analytics':
+                    Officer.renderAnalytics();
+                    break;
+                default:
+                    Officer.renderDashboard();
+            }
+        }, 50);
+    },
+
+    handleCheckin() {
+        const data = Storage.getAppData();
+        const upcoming = data.events.filter(e => new Date(e.date) >= new Date());
+
+        if (upcoming.length === 0) {
+            return UI.toast({ message: 'No upcoming events to check in to.', type: 'warning' });
+        }
+
+        let options = upcoming.map(e =>
+            `<option value="${e.id}">${e.title} (${e.date})</option>`
+        ).join('');
+
+        UI.modal(`
+            <h3>✅ Check In</h3>
+            <p style="color:var(--text-light);margin-bottom:12px;">Select an event to check in:</p>
+            <div class="form-group">
+                <div class="input-box">
+                    <span class="material-symbols-rounded">event</span>
+                    <select id="checkin-event">${options}</select>
+                </div>
+            </div>
+            <button class="btn-primary" id="checkin-submit">Check In</button>
+            <button class="text-btn" data-close-modal>Cancel</button>
+        `);
+
+        document.getElementById('checkin-submit')?.addEventListener('click', () => {
+            const eventId = parseInt(document.getElementById('checkin-event').value);
+            UI.closeModal();
+            Events.checkin(eventId);
+        });
+    },
+
+    setupPWA() {
+        const meta = document.querySelector('meta[name="theme-color"]');
+        if (meta) meta.content = '#759954';
+    }
+};
+
+// ================================================================
+// EXPORT all modules
+// ================================================================
+export {
+    Storage,
+    Auth,
+    UI,
+    NotifCenter,
+    Gamification,
+    Dashboard,
+    Events,
+    Profile,
+    Leaderboard,
+    Grievance,
+    Learning,
+    Officer,
+    App
+};

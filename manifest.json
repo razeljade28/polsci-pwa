@@ -8,13 +8,8 @@
   "theme_color": "#759954",
   "orientation": "portrait",
   "icons": [
-    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
-    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png" }
   ],
-  "categories": ["education", "productivity"],
-  "shortcuts": [
-    { "name": "Dashboard", "url": "/index.html#home", "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }] },
-    { "name": "Events", "url": "/index.html#events", "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }] },
-    { "name": "Profile", "url": "/index.html#profile", "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }] }
-  ]
+  "categories": ["education", "productivity"]
 }
