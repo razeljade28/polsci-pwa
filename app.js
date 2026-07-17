@@ -131,7 +131,7 @@ const Storage = {
                 resolution: ''
             }],
             announcements: [
-                'Welcome to PolSci Org! Please complete your profile.',
+                'Welcome to SEPOLSCIS! Please complete your profile.',
                 'General Assembly on July 20 at Room 101. See you there!',
                 'Debate Competition registration is now open until July 22.'
             ],
@@ -1957,7 +1957,7 @@ const Officer = {
 };
 
 // ================================================================
-// MODULE: App - Main Controller
+// MODULE: App - Main Controller (with loading fix)
 // ================================================================
 const App = {
     init() {
@@ -1986,7 +1986,6 @@ const App = {
 
         } catch (err) {
             console.error('App init error:', err);
-            // Still hide the loading screen even if something fails
             UI.hideLoading();
         }
     },
