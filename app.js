@@ -51,6 +51,9 @@ const Storage = {
         }
       });
       if (!data.learningProgress) data.learningProgress = {};
+      if (!data.learningResources?.sepolscisConstitution) {
+        data.learningResources = { ...data.learningResources, sepolscisConstitution: learningResources.sepolscisConstitution };
+      }
       if (!data.opportunities) data.opportunities = this.getDefaultData().opportunities;
       if (!data.eventFeedback) data.eventFeedback = [];
       data.events.forEach(event => { event.rsvps ||= {}; event.capacity ||= 50; });
@@ -1665,6 +1668,7 @@ const Learning = {
     { id: 'government', title: 'Government at a Glance', category: 'government', icon: 'account_balance', takeaway: 'The legislative, executive, and judicial branches have distinct responsibilities.' },
     { id: 'news', title: 'Current Affairs', category: 'current', icon: 'newspaper', takeaway: 'Connect reliable reporting to political-science concepts and evidence.' },
     { id: 'bylaws', title: 'SEPOLSCIS By-Laws', category: 'organization', icon: 'groups', takeaway: 'Know the organization’s rules, rights, responsibilities, and opportunities.' },
+    { id: 'sepolscisConstitution', title: 'SEPOLSCIS Constitution', category: 'organization', icon: 'description', takeaway: 'Read the complete constitution and bylaws, including membership, officers, elections, and finances.' },
     { id: 'reviewer', title: 'Exam Reviewer', category: 'review', icon: 'school', takeaway: 'Use the reviewer to refresh core political-science concepts before assessments.' }
   ],
   quizzes: {

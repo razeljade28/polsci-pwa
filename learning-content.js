@@ -762,5 +762,133 @@ VII. AMENDMENT PROCESS
 • De Leon, H. Textbook on the Philippine Constitution
 • Cruz, I. Philippine Political Law
 • Official Gazette of the Republic of the Philippines
+`,
+
+  sepolscisConstitution: `
+SEPOLSCIS CONSTITUTION
+
+ARTICLE I - NAME
+The official name of the organization shall be the Society of Empowered Political Science Students, otherwise known as "SEPOLSCIS" and Political Science Society.
+
+ARTICLE II - MOTTO
+Section I. Motto - the motto of the organization shall be "Concordia et Excellentia", latin for harmony and excellence.
+
+ARTICLE III - PURPOSE
+Section I. To provide the political science students of SMC a home - a venue for academic interactivity and non-academic interconnectivity.
+Section II. To foster harmonious relationship, forge a bond, and maintain closer ties among political science students of SMC in the spirit of friendship and camaraderie.
+Section III. To encourage mutual assistance among members to strive for excellence in all aspect of a student's life.
+Section IV. To empower its members by way of developing their leadership skills and enhancing their God-given talents, among others.
+Section V. To preserve and maintain the honor and prestige of Political Science as one of the most revered and respected courses in SMC and in any collegiate educational institution.
+Section VI. To conduct activities to promote the academic course in and out of the school community with the end view of attracting more enrollees.
+Section VII. To do all of these and more without sacrificing the adherence and obedience to the established policies, rules and regulations of SMC.
+
+ARTICLE IV - MEMBERSHIP AND DUES
+Section I. Membership - Membership in the organization shall be open to all Political Science students who are regularly enrolled in SMC.
+Section II. Active Member - an active member shall be defined as any member who is in good standing with the school and has paid the annual membership fee.
+Section III. Annual Membership Dues - there shall be collected from among all members an annual membership fee of One Hundred Pesos (P100.00). The amount of the annual membership fee may be changed from year to year subject to the approval of the majority of the officers in quorum assembled.
+
+ARTICLE V - OFFICERS
+Section I. The officers of the organization shall be: President; Vice President; Secretary; Treasurer; Auditor; Public Relations Officer (P.R.O); Public Information Officer (P.I.O); and Directors.
+Section II. All student voting members of the organization in good academic standing shall be eligible to hold office.
+Section III. The officers shall be elected by having majority or plurality of votes of the voting members at the annual elections.
+Section IV. Vacancies in office shall be filled in to serve for the remaining term by appointment or election at the discretion of the president.
+Section V. Whenever necessary, the President upon his/her discretion may create other officer positions and appoint the officer/s thereto.
+
+ARTICLE VI - BOARD OF DIRECTORS
+Section I. Board of Directors shall consist of at least four members of the organization.
+Section II. The Board of Directors shall be elected by the majority or plurality of votes of the voting members at the annual elections.
+
+ARTICLE VII - EXECUTIVE BOARD
+Section I. Executive Board shall consist of the President, Vice President, Secretary, Treasurer, Auditor, P.R.O, P.I.O.
+Section II. All executive power granted herein shall be vested in the Executive Board.
+Section III. The Executive Board shall be empowered to recommend priorities for various projects and to plan activities for the organization.
+
+ARTICLE VIII - MEETINGS
+Section I. The regular meetings of the membership shall be held at least once a month or whenever necessary.
+Section II. Special meetings of the organization may be called by the President, or by the Executive Board, or upon written request of majority of the members of the organization.
+Section III. A quorum for the conduct of official business shall be defined as attendance of 50 percent plus one of all elected officers including the directors.
+
+ARTICLE IX - COMMITTEES
+Section I. Ways and means Committee.
+Section II. Finance Committee.
+Section III. Publicity Committee.
+Section IV. Upon the discretion of the President, any committee necessary for the conduct of activities may be created from time to time.
+
+ARTICLE X - RULES OF PROCEDURE
+Section I. Parliamentary.
+Section II. In order to maintain active status, the organization agrees to abide by those rules and procedures, including financial regulations which pertain to all student organizations.
+
+ARTICLE XI - AMENDMENTS
+Section I. Amendments to this Constitution may be proposed either by majority of the Executive Board or by a petition submitted by 1/3 of the voting members.
+Section II. 3/4 of the voting members shall be necessary to approve amendments to this Constitution.
+Section III. Amendments to this Constitution shall be recommended for approval to the Dean of Students.
+
+BYLAWS
+
+ARTICLE I - DUTIES OF OFFICERS
+Section I. The duties of the President shall be to:
+a. Preside over all Executive Board and regular membership meetings.
+b. Call all special meetings.
+c. Sign all financial documents of the organization.
+d. The President shall be the organization representative to all necessary coordinating meetings with the Campus Life Office and/or Student Government Association.
+
+Section II. The duties of the Vice President shall be to:
+a. Succeed the President should the President for any reason be unable to carry out the Presidential duties.
+b. Assist the President in administering the business of the organization.
+
+Section III. The duties of Secretary/Treasurer/Auditor shall be to:
+a. Take brief minutes of each meeting and take care of any major correspondence concerning the organization as a whole.
+b. Keep a record of all financial and historical documents and submit all financial records to the Dean of Students when required for audit.
+c. Turn in all financial records for re-issue to the new Secretary/Treasurer when required or appropriate.
+
+Section IV. The duties of the Public Relations Officer shall be to:
+a. Establish communication between the institution and its audiences.
+b. Planning publicity strategies and campaigns.
+c. Working closely with the President and coordinating with other administrators to determine the broad messages to be conveyed to internal and external audiences.
+
+Section V. The duties of the Public Information Officer shall be to:
+In charge of interacting with the public, the media, and other agencies as needed to coordinate communications.
+Notifying the news media, as well as other pertinent institutions and organizations, about the situation.
+
+Section VI. All legislative power granted herein shall be vested in the Board of Directors.
+
+ARTICLE II - ADVISOR
+Section I. A faculty/staff advisor shall be appointed at the discretion of the Dean of the Department.
+
+ARTICLE III - ELECTIONS
+Section I. Elections shall be held during the first month of the semester of each academic year.
+Section II. The next election shall be held in August of academic year 2025-2026 and every August of every academic year thereafter.
+Section III. Candidates for offices shall be eligible provided they have met the requirements for that office as stated in Article IV of the Constitution.
+Section IV. Candidates running for office shall be members of the organization at the time of their election and during their term of office.
+Section V. Violations of election procedures shall be heard by a sub-committee of the Executive Board.
+
+ARTICLE IV - FINANCES
+Section I. Dues will be paid by members of the organization as set by 50% plus 1 of the voting members.
+Section II. Funds will be used for the operation of the organization as directed by majority of the voting members.
+Section III. All finance shall be handled in accordance with the established fiscal procedure in effect for the school as outlined in written procedures.
+Section IV. In the event of loss of organization recognition, any funds remaining in the organization’s campus account shall revert to Student Government Association.
+
+Approved for adoption this 6th of March, 2024 at Southern Mindanao Colleges, Pagadian City, Philippines.
+
+SIGNATORIES
+Jasmine B. Singedas - Vice-President
+Trixy Mae E. Lagud - Secretary
+Regelyn T. Blancia - Treasurer
+Lallaine D. Dela Peña - Auditor
+Francis Xavier B. Escol - P.I.O
+Harmony B. Cañete - P.R.O
+Bricaniel King R. Dionaldo - Director
+Maverick Estrada - Director
+Phoebe Kaye E. Morano - Director
+Angel T. Tallafer - Director
+Arrianne Angelie M. Tinglao - Director
+Mhent Dymphnathalie B. Conejos - President
+
+ATTESTED
+Prince Jessmark M. Adiong - Associate Adviser
+Don Andres M. Bersales - Adviser
+
+APPROVED
+Prof. Victor M. Asuelo - Dean of Student Affairs, Southern Mindanao Colleges
 `
 };
