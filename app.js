@@ -1041,6 +1041,52 @@ const Dashboard = {
 // ================================================================
 // VIEW: Events
 // ================================================================
+const DashboardV2 = {
+  render() {
+    const data = Storage.getAppData();
+    const member = data.members.find(m => m.studentId === Auth.currentUser?.studentId);
+    if (!member) return;
+    const level = Gamification.getLevel(member.exp);
+    const progress = Gamification.getProgress(member.exp);
+    const nextLevel = Gamification.getNextLevel(member.exp);
+    const quests = Storage.getQuests();
+    const upcoming = data.events.filter(e => new Date(`${e.date}T23:59:59`) >= new Date()).sort((a, b) => new Date(a.date) - new Date(b.date));
+    const event = upcoming[0];
+    const ranked = [...data.members].sort((a, b) => b.exp - a.exp);
+    const firstName = sanitizeHTML(member.name.split(' ')[0]);
+    const completion = quests.filter(q => q.completed).length;
+    const dateLabel = event ? new Date(`${event.date}T12:00:00`).toLocaleDateString(undefined, { month: 'short', day: 'numeric' }) : 'Coming soon';
+    const used = event ? Object.keys(event.rsvps || {}).length : 0;
+    const capacity = event?.capacity || 50;
+
+    document.getElementById('content').innerHTML = `
+      <section class="student-hero">
+        <div class="hero-brand"><img src="logo.png" alt="SEPOLSCIS"><span>SEPOLSCIS</span></div>
+        <p class="eyebrow">YOUR STUDENT HOME</p>
+        <div class="hero-heading"><div><h1>Hello, ${firstName} <span>👋</span></h1><p>Small steps make a meaningful record.</p></div><div class="level-orb"><small>LEVEL</small><strong>${level.level}</strong></div></div>
+        <div class="hero-exp"><div><span>${member.exp} EXP</span><small>${nextLevel ? `${nextLevel.exp - member.exp} EXP to ${nextLevel.title}` : 'Maximum level reached'}</small></div><div class="hero-progress"><i style="width:${progress}%"></i></div></div>
+      </section>
+
+      <section class="dashboard-section"><div class="section-title"><div><p class="eyebrow">TODAY'S MISSION</p><h3>${completion}/${quests.length} completed</h3></div><span class="mission-reward">+${quests.filter(q => !q.completed).reduce((sum, q) => sum + q.expReward, 0)} EXP left</span></div>
+        <div class="mission-list">${quests.map((q, index) => `<button class="mission-item ${q.completed ? 'done' : ''}" onclick="${index === 0 ? "window.__nav('events')" : index === 1 ? "window.__nav('learning')" : "window.__showGrievance()"}"><span class="mission-check material-symbols-rounded">${q.completed ? 'check' : 'radio_button_unchecked'}</span><span><strong>${sanitizeHTML(q.title)}</strong><small>${q.completed ? 'Mission complete' : `${q.progress}/${q.target} · +${q.expReward} EXP`}</small></span><span class="material-symbols-rounded mission-arrow">chevron_right</span></button>`).join('')}</div>
+      </section>
+
+      <section class="event-feature" onclick="window.__nav('events')"><div class="event-date"><strong>${event ? dateLabel.split(' ')[1] : '—'}</strong><small>${event ? dateLabel.split(' ')[0] : ''}</small></div><div class="event-copy"><p>UPCOMING EVENT</p><h3>${event ? sanitizeHTML(event.title) : 'No event scheduled'}</h3><small>${event ? `${sanitizeHTML(event.location)} · ${used}/${capacity} seats reserved` : 'Browse the calendar for activities'}</small><div class="seat-meter"><i style="width:${event ? Math.min(100, used / capacity * 100) : 0}%"></i></div></div><span class="material-symbols-rounded">arrow_forward</span></section>
+
+      <section class="dashboard-section"><div class="section-title"><div><p class="eyebrow">SHORTCUTS</p><h3>Quick actions</h3></div></div><div class="action-grid">
+        <button onclick="window.__nav('learning')"><span class="material-symbols-rounded">menu_book</span><small>Learn</small></button>
+        <button onclick="window.__nav('events')"><span class="material-symbols-rounded">event</span><small>Events</small></button>
+        <button onclick="window.__checkin()"><span class="material-symbols-rounded">qr_code_scanner</span><small>Check in</small></button>
+        <button onclick="window.__showGrievance()"><span class="material-symbols-rounded">gavel</span><small>Grievance</small></button>
+      </div></section>
+
+      <section class="dashboard-section leaderboard-preview"><div class="section-title"><div><p class="eyebrow">COMMUNITY</p><h3>Leaderboard</h3></div><button class="text-action" onclick="window.__showLeaderboard()">See all</button></div>
+        ${ranked.slice(0, 3).map((m, index) => `<div class="leader-row ${m.studentId === member.studentId ? 'is-you' : ''}"><span class="leader-medal">${['🥇','🥈','🥉'][index]}</span><span class="leader-avatar">${sanitizeHTML(m.name.charAt(0))}</span><span><strong>${sanitizeHTML(m.name)}${m.studentId === member.studentId ? ' <small>(You)</small>' : ''}</strong><small>Level ${Gamification.getLevel(m.exp).level}</small></span><b>${m.exp} EXP</b></div>`).join('')}
+      </section>
+      <section class="announcement-strip"><span class="material-symbols-rounded">campaign</span><p>${sanitizeHTML(data.announcements[0] || 'No announcements yet.')}</p></section>`;
+  }
+};
+
 const EventsLegacy = {
   render() {
     const data = Storage.getAppData();
@@ -1285,6 +1331,12 @@ const Profile = {
                     </div>
                 </div>
             </div>
+
+            <section class="digital-id-card">
+                <div class="id-topline"><img src="logo.png" alt="SEPOLSCIS logo"><div><strong>SEPOLSCIS</strong><small>Digital Member ID</small></div><span class="material-symbols-rounded">verified</span></div>
+                <div class="id-body"><div class="id-avatar">${sanitizeHTML(member.name.charAt(0))}</div><div><h3>${sanitizeHTML(member.name)}</h3><p>${sanitizeHTML(member.course || 'B.A. Political Science')}</p><span>${sanitizeHTML(member.studentId)} · ${member.year} Year</span></div><div class="id-qr" aria-label="Member QR identity code"><i></i><i></i><i></i></div></div>
+                <div class="id-footer"><span>MEMBER SINCE 2026</span><span>${sanitizeHTML(member.membership || 'Active')} MEMBER</span></div>
+            </section>
 
             <div class="card">
                 <h4>📋 Member Details</h4>
@@ -2376,32 +2428,12 @@ const App = {
       });
     });
 
-    // Officer drawer
+    // Officer dashboard
     document.getElementById('officer-menu-btn')?.addEventListener('click', () => {
       if (!Auth.isOfficer()) {
         return UI.toast({ message: 'Officer access only.', type: 'warning' });
       }
-      document.getElementById('officer-drawer').classList.add('open');
-      document.getElementById('overlay').classList.add('show');
-    });
-
-    document.getElementById('close-drawer')?.addEventListener('click', () => {
-      document.getElementById('officer-drawer').classList.remove('open');
-      document.getElementById('overlay').classList.remove('show');
-    });
-
-    document.getElementById('overlay')?.addEventListener('click', () => {
-      document.getElementById('officer-drawer').classList.remove('open');
-      document.getElementById('overlay').classList.remove('show');
-    });
-
-    document.querySelectorAll('.drawer-item').forEach(item => {
-      item.addEventListener('click', () => {
-        const action = item.dataset.officer;
-        document.getElementById('officer-drawer').classList.remove('open');
-        document.getElementById('overlay').classList.remove('show');
-        this.handleOfficerAction(action);
-      });
+      this.navigate('officer');
     });
 
     // FAB – QR Check-in
@@ -2506,6 +2538,7 @@ const App = {
     window.__toggleLearningSave = (id) => Learning.toggleSaved(id);
     window.__answerLearningQuiz = (id, answer) => Learning.answerQuiz(id, answer);
     window.__showGrievanceForm = () => Grievance.showForm();
+    window.__handleOfficer = (action) => this.handleOfficerAction(action);
   },
 
   navigate(screen) {
@@ -2516,7 +2549,8 @@ const App = {
       'opportunities': 'Opportunities Hub',
       'learning': 'Learning Center',
       'profile': 'Profile',
-      'portfolio': 'Student Portfolio'
+      'portfolio': 'Rewards & Portfolio',
+      'officer': 'Officer Dashboard'
     };
     document.getElementById('screen-title').textContent = titleMap[screen] || screen;
 
@@ -2526,7 +2560,7 @@ const App = {
 
     switch (screen) {
       case 'home':
-        Dashboard.render();
+        DashboardV2.render();
         break;
       case 'events':
         Events.render();
@@ -2546,8 +2580,12 @@ const App = {
       case 'portfolio':
         Portfolio.render();
         break;
+      case 'officer':
+        if (Auth.isOfficer()) Officer.renderDashboard();
+        else DashboardV2.render();
+        break;
       default:
-        Dashboard.render();
+        DashboardV2.render();
     }
 
     this.updateGreeting();
