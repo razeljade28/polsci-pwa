@@ -838,8 +838,28 @@ const Dashboard = {
     const unlocked = badges.filter(b => b.unlocked);
     const upcoming = data.events.filter(e => new Date(e.date) >= new Date()).slice(0, 3);
     const quests = Storage.getQuests();
+    const nextEvent = upcoming[0];
+    const learning = data.learningProgress?.[member.studentId] || { viewed: [], quizPassed: [] };
+    const savedOpportunities = data.opportunities?.filter(item => item.savedBy?.includes(member.studentId)) || [];
+    const nearestOpportunity = [...savedOpportunities].sort((a, b) => new Date(a.deadline) - new Date(b.deadline))[0];
+    const attendance = data.checkIns?.filter(item => item.memberId === member.studentId).length || member.attendance?.length || 0;
+    const daysUntil = date => Math.max(0, Math.ceil((new Date(date) - new Date()) / 86400000));
 
     let html = `
+            <section class="today-hero">
+                <div class="today-hero-copy"><p class="eyebrow">YOUR STUDENT HUB</p><h2>Good to see you, ${sanitizeHTML(member.name.split(' ')[0])}.</h2><p>Keep learning, show up, and build a record you can be proud of.</p></div>
+                <div class="today-level"><span>Level</span><strong>${level.level}</strong><small>${level.title}</small></div>
+                <div class="today-progress"><div><span>Progress to next level</span><strong>${member.exp} EXP</strong></div><div class="today-progress-bar"><span style="width:${progress}%;"></span></div>${nextLevel ? `<small>${nextLevel.exp - member.exp} EXP to ${nextLevel.title}</small>` : '<small>Maximum level reached</small>'}</div>
+            </section>
+
+            <section class="today-section-heading"><div><p class="eyebrow">AT A GLANCE</p><h3>Your next steps</h3></div><button class="text-action" onclick="window.__nav('portfolio')">View portfolio</button></section>
+            <section class="today-grid">
+                <article class="today-card event-today" onclick="window.__nav('events')"><span class="material-symbols-rounded">event_upcoming</span><p>Next event</p><h4>${nextEvent ? sanitizeHTML(nextEvent.title) : 'No event scheduled'}</h4><small>${nextEvent ? `${nextEvent.date} · ${daysUntil(nextEvent.date)} day${daysUntil(nextEvent.date) === 1 ? '' : 's'} away` : 'Explore upcoming activities'}</small><b>${nextEvent ? 'View event →' : 'Browse events →'}</b></article>
+                <article class="today-card opportunity-today" onclick="window.__nav('opportunities')"><span class="material-symbols-rounded">rocket_launch</span><p>Deadline watch</p><h4>${nearestOpportunity ? sanitizeHTML(nearestOpportunity.title) : 'Find an opportunity'}</h4><small>${nearestOpportunity ? `Due ${nearestOpportunity.deadline}` : 'Scholarships, internships and more'}</small><b>${savedOpportunities.length} saved ${savedOpportunities.length === 1 ? 'opportunity' : 'opportunities'} →</b></article>
+                <article class="today-card learning-today" onclick="window.__nav('learning')"><span class="material-symbols-rounded">auto_stories</span><p>Learning</p><h4>${learning.quizPassed?.length || 0} topics completed</h4><small>${learning.viewed?.length || 0} lessons explored</small><b>Continue learning →</b></article>
+                <article class="today-card portfolio-today" onclick="window.__nav('portfolio')"><span class="material-symbols-rounded">workspace_premium</span><p>Portfolio</p><h4>${attendance} event attendance${attendance === 1 ? '' : 's'}</h4><small>${unlocked.length} badges earned</small><b>See your record →</b></article>
+            </section>
+
             <!-- EXP Card -->
             <div class="card exp-card">
                 <div style="position:relative;z-index:1;">
