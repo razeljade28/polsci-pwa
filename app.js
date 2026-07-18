@@ -43,6 +43,15 @@ const Storage = {
       data = this.getDefaultData();
       this.set('appData', data);
     } else {
+      // Older saved data did not have roles. Everyone remains a student unless
+      // an administrator explicitly assigns a staff role to their account.
+      data.members.forEach(member => {
+        if (!member.role) {
+          member.role = ['President', 'Secretary'].includes(member.position) ? 'officer' : 'member';
+        }
+      });
+      if (!data.learningProgress) data.learningProgress = {};
+      this.saveAppData(data);
       // Migration: replace old learningResources with full content
       if (data.learningResources && data.learningResources.constitution === 'The Political Science Student Organization Constitution...') {
         data.learningResources = learningResources;
@@ -73,7 +82,7 @@ const Storage = {
         name: 'Juan dela Cruz',
         year: '2',
         course: 'B.A. Political Science',
-        position: '',
+        position: '', role: 'member',
         membership: 'Active',
         exp: 320,
         attendance: ['2026-07-01', '2026-07-08', '2026-07-15'],
@@ -86,7 +95,7 @@ const Storage = {
         name: 'Maria Santos',
         year: '3',
         course: 'B.A. Political Science',
-        position: 'President',
+        position: 'President', role: 'officer',
         membership: 'Active',
         exp: 560,
         attendance: ['2026-07-01', '2026-07-08', '2026-07-15', '2026-07-22'],
@@ -99,7 +108,7 @@ const Storage = {
         name: 'Pedro Reyes',
         year: '1',
         course: 'B.A. Political Science',
-        position: '',
+        position: '', role: 'member',
         membership: 'Active',
         exp: 180,
         attendance: ['2026-07-01', '2026-07-15'],
@@ -112,7 +121,7 @@ const Storage = {
         name: 'Ana Flores',
         year: '2',
         course: 'B.A. Political Science',
-        position: 'Secretary',
+        position: 'Secretary', role: 'officer',
         membership: 'Active',
         exp: 420,
         attendance: ['2026-07-01', '2026-07-08', '2026-07-15', '2026-07-22'],
@@ -125,7 +134,7 @@ const Storage = {
         name: 'Carlos Mendoza',
         year: '3',
         course: 'B.A. Political Science',
-        position: '',
+        position: '', role: 'member',
         membership: 'Active',
         exp: 720,
         attendance: ['2026-07-01', '2026-07-08', '2026-07-15', '2026-07-22', '2026-07-29'],
@@ -134,6 +143,7 @@ const Storage = {
         gradeConvRequested: true,
         email: 'carlos@example.com',
       }],
+      learningProgress: {},
       grievances: [{
         id: 'g1',
         memberId: '2024-0001',
@@ -302,7 +312,8 @@ const Auth = {
     if (this.currentUser) {
       const member = Storage.getMember(this.currentUser.studentId);
       if (member) {
-        this.currentUser = { ...member, role: this.currentUser.role || 'member' };
+        // Roles always come from the approved member record, never from the browser session.
+        this.currentUser = { ...member, role: member.role || 'member' };
         Storage.setCurrentUser(this.currentUser);
         return true;
       } else {
@@ -314,7 +325,7 @@ const Auth = {
     return false;
   },
 
-  async login(studentId, password, role) {
+  async login(studentId, password) {
     if (!studentId) return { success: false, message: 'Student ID is required.' };
     if (!password) return { success: false, message: 'Password is required.' };
 
@@ -332,27 +343,10 @@ const Auth = {
         return { success: false, message: 'Invalid password.' };
       }
     } else {
-      const hashed = await hashPassword(password);
-      member = {
-        studentId,
-        name: studentId,
-        year: '1',
-        course: 'B.A. Political Science',
-        position: '',
-        membership: 'Active',
-        exp: 0,
-        attendance: [],
-        badges: [],
-        achievements: [],
-        gradeConvRequested: false,
-        email: '',
-        passwordHash: hashed,
-      };
-      data.members.push(member);
-      Storage.saveAppData(data);
+      return { success: false, message: 'Account not found. Please create a student account first.' };
     }
 
-    this.currentUser = { ...member, role };
+    this.currentUser = { ...member, role: member.role || 'member' };
     Storage.setCurrentUser(this.currentUser);
 
     if ('Notification' in window && Notification.permission === 'default') {
@@ -383,6 +377,7 @@ const Auth = {
       year: year || '1',
       course: course || 'B.A. Political Science',
       position: '',
+      role: 'member',
       membership: 'Active',
       exp: 0,
       attendance: [],
@@ -1461,7 +1456,7 @@ const Grievance = {
 // ================================================================
 // VIEW: Learning (with all 6 constitutions)
 // ================================================================
-const Learning = {
+const LearningLegacy = {
   currentTab: 'constitution',
 
   render() {
@@ -1536,6 +1531,101 @@ const Learning = {
         </div>
       ` : ''}
     `;
+  }
+};
+
+// ================================================================
+// VIEW: Learning — organized, interactive study hub
+// ================================================================
+const Learning = {
+  currentCategory: 'all',
+  currentTopic: 'constitution',
+  searchTerm: '',
+  topics: [
+    { id: 'constitution', title: '1987 Constitution', category: 'constitutions', icon: 'gavel', takeaway: 'The Constitution is the country’s highest law and protects fundamental rights.' },
+    { id: 'constitution1899', title: '1899 Malolos Constitution', category: 'constitutions', icon: 'history', takeaway: 'It established the First Philippine Republic and placed sovereignty in the people.' },
+    { id: 'constitution1935', title: '1935 Commonwealth', category: 'constitutions', icon: 'history', takeaway: 'It created the Commonwealth government that prepared the country for independence.' },
+    { id: 'constitution1943', title: '1943 Occupation', category: 'constitutions', icon: 'history', takeaway: 'It was adopted during the Japanese occupation of the Philippines.' },
+    { id: 'constitution1973', title: '1973 Constitution', category: 'constitutions', icon: 'history', takeaway: 'It changed the structure of government during the Marcos era.' },
+    { id: 'constitution1986', title: '1986 Freedom Constitution', category: 'constitutions', icon: 'history', takeaway: 'It was a provisional constitution after the People Power Revolution.' },
+    { id: 'government', title: 'Government at a Glance', category: 'government', icon: 'account_balance', takeaway: 'The legislative, executive, and judicial branches have distinct responsibilities.' },
+    { id: 'news', title: 'Current Affairs', category: 'current', icon: 'newspaper', takeaway: 'Connect reliable reporting to political-science concepts and evidence.' },
+    { id: 'bylaws', title: 'SEPOLSCIS By-Laws', category: 'organization', icon: 'groups', takeaway: 'Know the organization’s rules, rights, responsibilities, and opportunities.' },
+    { id: 'reviewer', title: 'Exam Reviewer', category: 'review', icon: 'school', takeaway: 'Use the reviewer to refresh core political-science concepts before assessments.' }
+  ],
+  quizzes: {
+    constitution: { question: 'Where does sovereignty reside under the 1987 Constitution?', options: ['In Congress', 'In the people', 'In the President', 'In the Supreme Court'], answer: 1, explanation: 'Article II states that sovereignty resides in the people.' },
+    constitution1899: { question: 'What did the Malolos Constitution establish?', options: ['A colonial government', 'The First Philippine Republic', 'A federal state', 'The Commonwealth'], answer: 1, explanation: 'It established the First Philippine Republic in 1899.' },
+    government: { question: 'Which branch interprets laws?', options: ['Legislative', 'Executive', 'Judicial', 'Local government'], answer: 2, explanation: 'The judicial branch interprets laws and resolves cases.' },
+    news: { question: 'Which source is best for checking a public policy claim?', options: ['An anonymous post', 'An official government source', 'A viral comment', 'An unverified screenshot'], answer: 1, explanation: 'Start with primary and official sources, then compare credible reporting.' }
+  },
+  getProgress() {
+    const data = Storage.getAppData();
+    const userId = Auth.currentUser?.studentId;
+    if (!userId) return { viewed: [], saved: [], quizPassed: [] };
+    data.learningProgress ||= {};
+    if (!data.learningProgress[userId]) {
+      data.learningProgress[userId] = { viewed: [], saved: [], quizPassed: [] };
+      Storage.saveAppData(data);
+    }
+    return data.learningProgress[userId];
+  },
+  saveProgress(progress) {
+    const data = Storage.getAppData();
+    data.learningProgress ||= {};
+    data.learningProgress[Auth.currentUser.studentId] = progress;
+    Storage.saveAppData(data);
+  },
+  markViewed(id) {
+    const progress = this.getProgress();
+    if (!progress.viewed.includes(id)) {
+      progress.viewed.push(id);
+      this.saveProgress(progress);
+      Storage.updateQuestProgress('read');
+    }
+  },
+  toggleSaved(id) {
+    const progress = this.getProgress();
+    progress.saved = progress.saved.includes(id) ? progress.saved.filter(topic => topic !== id) : [...progress.saved, id];
+    this.saveProgress(progress);
+    this.render();
+  },
+  render() {
+    const progress = this.getProgress();
+    const categories = [['all', 'All topics'], ['constitutions', 'Constitutions'], ['government', 'Government'], ['current', 'Current affairs'], ['organization', 'SEPOLSCIS'], ['review', 'Reviewer']];
+    const filtered = this.topics.filter(topic => (this.currentCategory === 'all' || topic.category === this.currentCategory) && topic.title.toLowerCase().includes(this.searchTerm.toLowerCase()));
+    const active = this.topics.find(topic => topic.id === this.currentTopic) || filtered[0] || this.topics[0];
+    document.getElementById('content').innerHTML = `
+      <section class="learning-hero"><p class="eyebrow">YOUR STUDY SPACE</p><h3>Learn in small, useful steps.</h3><p>${progress.quizPassed.length} quizzes completed · ${progress.saved.length} saved topics</p></section>
+      <label class="learning-search"><span class="material-symbols-rounded">search</span><input id="learning-search-input" placeholder="Search a topic" value="${sanitizeHTML(this.searchTerm)}"></label>
+      <div class="learning-categories">${categories.map(([id, label]) => `<button class="learning-category ${this.currentCategory === id ? 'active' : ''}" data-learning-category="${id}">${label}</button>`).join('')}</div>
+      <section class="learning-layout"><div class="topic-list">${filtered.length ? filtered.map(topic => `<button class="topic-card ${active.id === topic.id ? 'selected' : ''}" data-topic="${topic.id}"><span class="material-symbols-rounded">${topic.icon}</span><span><strong>${topic.title}</strong><small>${progress.quizPassed.includes(topic.id) ? 'Quiz complete' : progress.viewed.includes(topic.id) ? 'In progress' : 'Start lesson'}</small></span><span class="material-symbols-rounded">chevron_right</span></button>`).join('') : '<p class="empty-copy">No topic matches that search.</p>'}</div><article class="card lesson-card">${this.renderTopic(active, progress)}</article></section>`;
+    document.querySelectorAll('[data-learning-category]').forEach(button => button.addEventListener('click', () => { this.currentCategory = button.dataset.learningCategory; this.render(); }));
+    document.querySelectorAll('[data-topic]').forEach(button => button.addEventListener('click', () => { this.currentTopic = button.dataset.topic; this.markViewed(this.currentTopic); this.render(); }));
+    document.getElementById('learning-search-input')?.addEventListener('input', event => { this.searchTerm = event.target.value; this.render(); });
+  },
+  renderTopic(topic, progress) {
+    const resources = Storage.getAppData().learningResources || {};
+    const quiz = this.quizzes[topic.id];
+    return `<div class="lesson-heading"><div><span class="lesson-icon material-symbols-rounded">${topic.icon}</span><p class="eyebrow">${topic.category}</p><h3>${topic.title}</h3></div><button class="icon-text-btn" onclick="window.__toggleLearningSave('${topic.id}')"><span class="material-symbols-rounded">${progress.saved.includes(topic.id) ? 'bookmark' : 'bookmark_add'}</span>${progress.saved.includes(topic.id) ? 'Saved' : 'Save'}</button></div><div class="takeaway"><span class="material-symbols-rounded">lightbulb</span><div><strong>Key takeaway</strong><p>${topic.takeaway}</p></div></div><details class="lesson-reader"><summary>Read the lesson <span class="material-symbols-rounded">expand_more</span></summary><div>${sanitizeHTML(resources[topic.id] || 'This lesson is being prepared.').replace(/\n/g, '<br>')}</div></details>${quiz ? this.renderQuiz(topic, quiz, progress) : '<div class="practice-card"><span class="material-symbols-rounded">auto_stories</span><div><strong>Study tip</strong><p>Read the key takeaway, then make a note in your own words before moving on.</p></div></div>'}${topic.id === 'reviewer' ? '<button class="btn-primary lesson-download" onclick="window.__downloadReviewer()"><span class="material-symbols-rounded">download</span> Download reviewer</button>' : ''}`;
+  },
+  renderQuiz(topic, quiz, progress) {
+    if (progress.quizPassed.includes(topic.id)) return '<div class="quiz-complete"><span class="material-symbols-rounded">workspace_premium</span><div><strong>Quiz complete</strong><p>Nice work—this topic is now marked complete.</p></div></div>';
+    return `<section class="quiz-card"><p class="eyebrow">QUICK CHECK · +20 EXP</p><h4>${quiz.question}</h4><div class="quiz-options">${quiz.options.map((option, index) => `<button onclick="window.__answerLearningQuiz('${topic.id}', ${index})">${option}</button>`).join('')}</div></section>`;
+  },
+  answerQuiz(topicId, answer) {
+    const quiz = this.quizzes[topicId];
+    if (!quiz) return;
+    if (answer !== quiz.answer) return UI.toast({ message: 'Not quite—try again and reread the key takeaway.', type: 'warning' });
+    const progress = this.getProgress();
+    if (!progress.quizPassed.includes(topicId)) {
+      progress.quizPassed.push(topicId);
+      this.saveProgress(progress);
+      Gamification.addExp(Auth.currentUser.studentId, 20, `Completed ${this.topics.find(topic => topic.id === topicId)?.title} quiz`);
+      UI.confetti({ count: 25 });
+    }
+    UI.toast({ message: `Correct! ${quiz.explanation} +20 EXP`, type: 'success' });
+    this.render();
   }
 };
 
@@ -2087,6 +2177,7 @@ const App = {
     }
 
     this.setupPWA();
+    document.getElementById('officer-menu-btn')?.classList.toggle('hidden', !Auth.isOfficer());
 
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
@@ -2270,6 +2361,8 @@ const App = {
       a.click();
       URL.revokeObjectURL(url);
     };
+    window.__toggleLearningSave = (id) => Learning.toggleSaved(id);
+    window.__answerLearningQuiz = (id, answer) => Learning.answerQuiz(id, answer);
     window.__showGrievanceForm = () => Grievance.showForm();
   },
 

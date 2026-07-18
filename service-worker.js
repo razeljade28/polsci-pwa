@@ -1,4 +1,4 @@
-const CACHE_NAME = 'sepolscis-v2';
+const CACHE_NAME = 'sepolscis-v3';
 const STATIC_ASSETS = [
   '/',
   '/index.html',
@@ -6,6 +6,7 @@ const STATIC_ASSETS = [
   '/signup.html',
   '/style.css',
   '/app.js',
+  '/learning-content.js',
   '/manifest.json',
   '/icons/icon-192.png',
   '/icons/icon-512.png'

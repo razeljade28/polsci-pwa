@@ -1241,6 +1241,45 @@ body.dark .bottom-nav {
 .install-banner.hidden {
   display: none !important;
 }
+
+.hidden { display: none !important; }
+
+.login-help {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 2px 0 16px;
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  background: var(--primary-glow);
+  color: var(--primary-dark);
+  font-size: 0.78rem;
+  line-height: 1.4;
+}
+.login-help .material-symbols-rounded { font-size: 19px; }
+
+/* ----- LEARNING HUB ----- */
+.learning-hero { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white; padding: 22px; border-radius: var(--radius-lg); margin-bottom: 14px; }
+.learning-hero h3 { font-size: 1.35rem; margin: 4px 0; }
+.learning-hero p:last-child { opacity: .82; font-size: .85rem; }
+.eyebrow { text-transform: uppercase; letter-spacing: .09em; font-size: .66rem; font-weight: 800; opacity: .72; }
+.learning-search { display: flex; align-items: center; gap: 10px; background: var(--surface); border: 1px solid var(--border); padding: 12px 14px; border-radius: var(--radius-md); margin-bottom: 12px; box-shadow: var(--shadow-sm); }
+.learning-search span { color: var(--primary); }
+.learning-search input { border: 0; outline: 0; background: transparent; width: 100%; color: var(--text); font: inherit; }
+.learning-categories { display: flex; gap: 8px; overflow-x: auto; padding: 2px 1px 12px; margin-bottom: 4px; }
+.learning-category { white-space: nowrap; border: 1px solid var(--border); background: var(--surface); color: var(--text-muted); padding: 8px 13px; border-radius: 999px; font: 700 .76rem inherit; }
+.learning-category.active { background: var(--primary); border-color: var(--primary); color: white; }
+.learning-layout { display: grid; gap: 14px; }
+.topic-list { display: grid; gap: 8px; }
+.topic-card { text-align: left; display: flex; align-items: center; gap: 11px; border: 1px solid var(--border); background: var(--surface); border-radius: var(--radius-sm); padding: 13px; color: var(--text); }
+.topic-card > .material-symbols-rounded:first-child, .lesson-icon { color: var(--primary); background: var(--primary-glow); border-radius: 12px; padding: 8px; }
+.topic-card > span:nth-child(2) { flex: 1; display: grid; gap: 2px; }
+.topic-card strong { font-size: .88rem; }.topic-card small { color: var(--text-muted); font-size: .71rem; }.topic-card.selected { border: 2px solid var(--primary); background: var(--primary-glow); }
+.lesson-card { margin-bottom: 0; }.lesson-heading { display: flex; justify-content: space-between; align-items: flex-start; gap: 14px; }.lesson-heading h3 { margin-top: 4px; }.icon-text-btn { display: inline-flex; align-items: center; gap: 5px; border: 0; border-radius: 999px; padding: 8px 11px; color: var(--primary-dark); background: var(--primary-glow); font-weight: 700; font-size: .75rem; }.icon-text-btn .material-symbols-rounded { font-size: 18px; }
+.takeaway, .practice-card, .quiz-complete { display: flex; gap: 12px; padding: 14px; margin: 18px 0; background: #fff8df; border-radius: var(--radius-sm); }.takeaway > .material-symbols-rounded { color: #b8860b; }.takeaway p, .practice-card p, .quiz-complete p { color: var(--text-muted); font-size: .85rem; margin-top: 3px; }
+.lesson-reader { border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 13px 0; }.lesson-reader summary { display: flex; justify-content: space-between; cursor: pointer; font-weight: 700; }.lesson-reader summary::marker { content: ''; }.lesson-reader > div { max-height: 360px; overflow-y: auto; margin-top: 14px; padding-right: 5px; color: var(--text-muted); font-size: .88rem; line-height: 1.75; }
+.quiz-card { margin-top: 18px; padding: 16px; border: 1px solid var(--primary-glow); border-radius: var(--radius-sm); background: var(--bg); }.quiz-card h4 { margin: 4px 0 12px; line-height: 1.4; }.quiz-options { display: grid; gap: 8px; }.quiz-options button { background: var(--surface); border: 1px solid var(--border); color: var(--text); padding: 11px; border-radius: 10px; text-align: left; font: 600 .82rem inherit; }.quiz-options button:hover { border-color: var(--primary); background: var(--primary-glow); }.quiz-complete { background: #e8f6ea; color: var(--success); }.lesson-download { width: auto; margin-top: 18px; }
+@media (min-width: 900px) { .learning-layout { grid-template-columns: minmax(260px, .8fr) minmax(0, 1.6fr); align-items: start; }.topic-list { position: sticky; top: 20px; } }
 .install-banner h4 {
   font-size: 0.95rem;
   font-weight: 700;
