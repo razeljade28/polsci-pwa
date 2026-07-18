@@ -826,6 +826,42 @@ body.dark .bottom-nav {
   font-weight: 700;
   font-size: 0.85rem;
 }
+.my-schedule-card, .portfolio-hero, .page-intro {
+  background: linear-gradient(145deg, var(--primary-glow), var(--surface));
+  border-radius: var(--radius-md);
+  padding: 20px;
+  margin-bottom: 16px;
+}
+.my-schedule-card { display:flex; justify-content:space-between; gap:16px; align-items:center; }
+.my-schedule-card > .material-symbols-rounded { font-size:48px; color:var(--primary); }
+.eyebrow { color:var(--primary); font-size:.72rem; font-weight:800; letter-spacing:.1em; margin:0 0 5px; }
+.text-action { border:0; background:none; padding:8px 0 0; color:var(--primary); font-weight:700; }
+.event-tools { display:flex; gap:10px; margin-bottom:16px; }
+.event-tools select, .reminder-label select, #event-feedback-form select, #event-feedback-form textarea { border:1px solid var(--border); border-radius:10px; padding:9px; background:var(--surface); color:var(--text); }
+.event-attendance, .attendee-list { color:var(--text-muted); font-size:.85rem; margin:10px 0; }
+.event-rsvp { display:flex; gap:8px; margin:12px 0; }
+.event-rsvp button, .calendar-btn, .save-opportunity { border:1px solid var(--border); background:var(--surface); border-radius:10px; padding:8px 10px; color:var(--text); font-weight:700; }
+.event-rsvp button.selected, .save-opportunity.selected, .opportunity-filters button.selected { background:var(--primary); color:white; border-color:var(--primary); }
+.event-footer { display:flex; justify-content:space-between; gap:8px; align-items:center; flex-wrap:wrap; margin-top:14px; }
+.event-footer > div { display:flex; gap:7px; flex-wrap:wrap; }
+.schedule-item, .opportunity-card, .portfolio-section { background:var(--surface); border-radius:var(--radius-md); padding:18px; box-shadow:var(--shadow-sm); margin-bottom:14px; }
+.schedule-item, .opportunity-card { display:flex; justify-content:space-between; gap:16px; align-items:flex-start; }
+.schedule-item p, .opportunity-card p { margin:8px 0; }
+.reminder-label { display:flex; flex-direction:column; gap:5px; font-size:.8rem; color:var(--text-muted); margin-bottom:8px; }
+.opportunity-filters { display:flex; gap:8px; overflow:auto; margin-bottom:16px; }
+.opportunity-filters button { white-space:nowrap; border:1px solid var(--border); background:var(--surface); border-radius:999px; padding:8px 12px; color:var(--text); }
+.opportunity-type { color:var(--primary); font-size:.75rem; font-weight:800; text-transform:uppercase; }
+.muted { color:var(--text-muted); }
+.save-opportunity { display:flex; align-items:center; gap:5px; white-space:nowrap; }
+.portfolio-hero { background:linear-gradient(145deg, var(--primary), var(--primary-dark)); color:white; }
+.portfolio-hero .eyebrow { color:#e6f1da; }
+.portfolio-hero .btn-primary { background:white; color:var(--primary-dark); margin-top:8px; }
+.portfolio-stats { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-bottom:16px; }
+.portfolio-stats div { text-align:center; background:var(--surface); padding:15px 8px; border-radius:var(--radius-sm); box-shadow:var(--shadow-sm); }
+.portfolio-stats strong { display:block; color:var(--primary); font-size:1.35rem; }.portfolio-stats span { font-size:.72rem; color:var(--text-muted); }
+.portfolio-section h3 { margin-top:0; }.portfolio-section ul { list-style:none; padding:0; margin:0; }.portfolio-section li { display:flex; justify-content:space-between; gap:10px; padding:9px 0; border-bottom:1px solid var(--border); }.portfolio-section li span { color:var(--text-muted); font-size:.85rem; }
+.badge-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(130px,1fr)); gap:10px; }.badge-grid div { border:1px solid var(--border); border-radius:10px; padding:10px; display:flex; flex-direction:column; gap:4px; }.badge-grid small { color:var(--text-muted); }
+#event-feedback-form { display:flex; flex-direction:column; gap:12px; } #event-feedback-form label { display:flex; flex-direction:column; gap:5px; }
 
 /* =====================================================
    PROFILE

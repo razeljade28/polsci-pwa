@@ -51,6 +51,9 @@ const Storage = {
         }
       });
       if (!data.learningProgress) data.learningProgress = {};
+      if (!data.opportunities) data.opportunities = this.getDefaultData().opportunities;
+      if (!data.eventFeedback) data.eventFeedback = [];
+      data.events.forEach(event => { event.rsvps ||= {}; event.capacity ||= 50; });
       this.saveAppData(data);
       // Migration: replace old learningResources with full content
       if (data.learningResources && data.learningResources.constitution === 'The Political Science Student Organization Constitution...') {
@@ -76,6 +79,12 @@ const Storage = {
           description: 'Political Science quiz bee.' },
         { id: 5, title: 'Volunteer Drive', date: '2026-08-15', type: 'volunteer', exp: 50,
           location: 'Community Center', description: 'Community outreach program.' },
+      ],
+      opportunities: [
+        { id: 'o1', type: 'Scholarship', title: 'Future Public Leaders Scholarship', organization: 'Civic Futures Foundation', deadline: '2026-07-30', location: 'Online application', description: 'Tuition support for students with a record of community leadership.', savedBy: [] },
+        { id: 'o2', type: 'Internship', title: 'Local Government Policy Internship', organization: 'City Legislative Office', deadline: '2026-08-05', location: 'City Hall', description: 'A four-week placement supporting policy research and public consultations.', savedBy: [] },
+        { id: 'o3', type: 'Debate', title: 'Inter-University Debate Invitational', organization: 'Philippine Debate Union', deadline: '2026-08-12', location: 'University Auditorium', description: 'Open call for student debate teams and adjudicator volunteers.', savedBy: [] },
+        { id: 'o4', type: 'Volunteer', title: 'Voter Education Weekend', organization: 'Youth Civic Network', deadline: '2026-08-18', location: 'Barangay Learning Hub', description: 'Help facilitate non-partisan voter education sessions.', savedBy: [] }
       ],
       members: [{
         studentId: '2024-0001',
@@ -174,6 +183,7 @@ const Storage = {
       ],
       notifications: [],
       checkIns: [],
+      eventFeedback: [],
       learningResources: learningResources, // from imported file
       quests: [
         { id: 'q1', title: 'Attend an event', requirement: 'checkin', progress: 0, target: 1, expReward: 20, completed: false, date: new Date().toDateString() },
@@ -1008,7 +1018,7 @@ const Dashboard = {
 // ================================================================
 // VIEW: Events
 // ================================================================
-const Events = {
+const EventsLegacy = {
   render() {
     const data = Storage.getAppData();
     const events = [...data.events].sort((a, b) => new Date(a.date) - new Date(b.date));
@@ -1111,8 +1121,112 @@ const Events = {
 };
 
 // ================================================================
+// VIEW: Events — RSVP, calendar, and personal schedule
+// ================================================================
+const EventsLegacyRsvp = {
+  render() {
+    const data = Storage.getAppData();
+    const userId = Auth.currentUser?.studentId;
+    const events = [...data.events].sort((a, b) => new Date(a.date) - new Date(b.date));
+    const upcoming = events.filter(event => new Date(event.date) >= new Date());
+    const scheduled = upcoming.filter(event => event.rsvps?.[userId] === 'going');
+    document.getElementById('content').innerHTML = `
+      <section class="my-schedule-card"><div><p class="eyebrow">MY SCHEDULE</p><h3>${scheduled.length ? `You’re going to ${scheduled.length} upcoming event${scheduled.length === 1 ? '' : 's'}.` : 'Build your event schedule.'}</h3><p>${scheduled.length ? scheduled.slice(0, 2).map(event => `${sanitizeHTML(event.title)} · ${event.date}`).join('<br>') : 'RSVP “Going” to see confirmed events here.'}</p></div><span class="material-symbols-rounded">calendar_month</span></section>
+      <div class="event-tools"><label class="learning-search"><span class="material-symbols-rounded">search</span><input id="event-search" placeholder="Search events..."></label><select id="event-filter"><option value="all">All types</option><option value="assembly">Assembly</option><option value="competition">Competition</option><option value="sports">Sports</option><option value="volunteer">Volunteer</option></select></div>
+      <div id="event-list">${events.length ? events.map(event => this.renderCard(event, userId)).join('') : UI.emptyState('No events scheduled yet.', 'event', '__createEvent()')}</div>`;
+    document.querySelectorAll('[data-rsvp]').forEach(button => button.addEventListener('click', () => this.rsvp(Number(button.dataset.eventId), button.dataset.rsvp)));
+    document.getElementById('event-search')?.addEventListener('input', this.filterList);
+    document.getElementById('event-filter')?.addEventListener('change', this.filterList);
+  },
+  renderCard(event, userId) {
+    const past = new Date(event.date) < new Date();
+    const status = event.rsvps?.[userId] || '';
+    const going = Object.values(event.rsvps || {}).filter(value => value === 'going').length;
+    const capacity = event.capacity || 50;
+    const full = going >= capacity && status !== 'going';
+    return `<article class="event-card" data-title="${sanitizeHTML(event.title).toLowerCase()}" data-type="${event.type}"><div class="event-banner ${past ? 'past' : ''}"><span class="material-symbols-rounded">${past ? 'event_busy' : 'event'}</span></div><div class="event-content"><div class="event-title"><h3>${sanitizeHTML(event.title)}</h3><span class="status ${past ? 'past' : ''}">${past ? 'Past' : 'Upcoming'}</span></div><div class="event-meta"><span>📅 ${event.date}</span><span>📍 ${sanitizeHTML(event.location || 'TBA')}</span><span>🏷️ ${event.type}</span></div><p class="event-description">${sanitizeHTML(event.description || 'No description.')}</p>${past ? '' : `<div class="event-attendance"><span class="material-symbols-rounded">groups</span>${going}/${capacity} going${full ? ' · Full' : ''}</div><div class="event-rsvp"><button class="${status === 'going' ? 'selected' : ''}" data-rsvp="going" data-event-id="${event.id}" ${full ? 'disabled' : ''}>Going</button><button class="${status === 'maybe' ? 'selected' : ''}" data-rsvp="maybe" data-event-id="${event.id}">Maybe</button><button class="${status === 'no' ? 'selected' : ''}" data-rsvp="no" data-event-id="${event.id}">Can’t go</button></div>`}<div class="event-footer"><span class="event-reward">⭐ +${event.exp} EXP</span>${past ? '' : `<div><button class="calendar-btn" onclick="window.__downloadEventCalendar(${event.id})"><span class="material-symbols-rounded">event_available</span> Calendar</button><button class="btn-primary event-checkin" data-checkin="${event.id}">Check In</button></div>`}</div></div></article>`;
+  },
+  filterList() {
+    const query = document.getElementById('event-search')?.value.toLowerCase() || '';
+    const type = document.getElementById('event-filter')?.value || 'all';
+    document.querySelectorAll('#event-list .event-card').forEach(card => { card.style.display = card.dataset.title.includes(query) && (type === 'all' || card.dataset.type === type) ? '' : 'none'; });
+  },
+  rsvp(eventId, status) {
+    const data = Storage.getAppData(); const event = data.events.find(item => item.id === eventId); const userId = Auth.currentUser?.studentId;
+    if (!event || !userId) return;
+    event.rsvps ||= {};
+    const going = Object.values(event.rsvps).filter(value => value === 'going').length;
+    if (status === 'going' && event.rsvps[userId] !== 'going' && going >= (event.capacity || 50)) return UI.toast({ message: 'This event is full. You can still choose Maybe.', type: 'warning' });
+    event.rsvps[userId] = status; Storage.saveAppData(data);
+    UI.toast({ message: status === 'going' ? 'You’re going!' : status === 'maybe' ? 'Marked as maybe.' : 'You’re marked as unable to attend.', type: status === 'going' ? 'success' : 'info' }); this.render();
+  },
+  downloadCalendar(eventId) {
+    const event = Storage.getAppData().events.find(item => item.id === eventId); if (!event) return;
+    const date = event.date.replaceAll('-', ''); const escape = value => String(value || '').replace(/[\\,;]/g, '\\$&').replace(/\n/g, '\\n');
+    const ics = `BEGIN:VCALENDAR\r\nVERSION:2.0\r\nBEGIN:VEVENT\r\nUID:sepolscis-${event.id}@sepolscis\r\nDTSTAMP:${new Date().toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '')}\r\nDTSTART:${date}T090000\r\nDTEND:${date}T110000\r\nSUMMARY:${escape(event.title)}\r\nLOCATION:${escape(event.location || 'TBA')}\r\nDESCRIPTION:${escape(event.description || '')}\r\nEND:VEVENT\r\nEND:VCALENDAR`;
+    const url = URL.createObjectURL(new Blob([ics], { type: 'text/calendar;charset=utf-8' })); const link = document.createElement('a'); link.href = url; link.download = `${event.title.toLowerCase().replace(/[^a-z0-9]+/g, '-')}.ics`; link.click(); URL.revokeObjectURL(url); UI.toast({ message: 'Calendar file downloaded.', type: 'success' });
+  },
+  checkin(eventId) {
+    const user = Auth.currentUser; if (!user) return; const data = Storage.getAppData(); const event = data.events.find(item => item.id === eventId); const member = data.members.find(item => item.studentId === user.studentId);
+    if (!event || !member) return UI.toast({ message: 'Event not found.', type: 'error' }); const today = new Date().toISOString().split('T')[0];
+    if (member.attendance?.includes(today)) return UI.toast({ message: 'You already checked in today!', type: 'warning' });
+    member.attendance ||= []; member.attendance.push(today); Gamification.addExp(user.studentId, event.exp, `Attended ${event.title}`); data.checkIns ||= []; data.checkIns.push({ memberId: user.studentId, eventId: event.id, date: today, exp: event.exp }); Storage.saveAppData(data); Auth.currentUser = { ...Auth.currentUser, ...member }; Storage.setCurrentUser(Auth.currentUser); UI.toast({ message: `Checked in to ${event.title}! +${event.exp} EXP`, type: 'success' }); UI.confetti({ count: 40 }); Storage.updateQuestProgress('checkin'); this.render();
+  }
+};
+
+// ================================================================
+// VIEW: Events — RSVP, calendar, and personal schedule
+// ================================================================
+const Events = {
+  get data() { return Storage.getAppData(); },
+  render() {
+    const data = this.data, userId = Auth.currentUser?.studentId;
+    const events = [...data.events].sort((a, b) => new Date(a.date) - new Date(b.date));
+    const going = events.filter(e => new Date(e.date) >= new Date() && e.rsvps?.[userId] === 'going');
+    document.getElementById('content').innerHTML = `<section class="my-schedule-card"><div><p class="eyebrow">MY SCHEDULE</p><h3>${going.length ? `You are going to ${going.length} upcoming event${going.length === 1 ? '' : 's'}.` : 'Build your event schedule.'}</h3><p>${going.length ? going.slice(0, 2).map(e => `${sanitizeHTML(e.title)} · ${e.date}`).join('<br>') : 'RSVP Going to place an event on your schedule.'}</p><button class="text-action" onclick="window.__nav('schedule')">Open My Schedule</button></div><span class="material-symbols-rounded">calendar_month</span></section><div class="event-tools"><label class="learning-search"><span class="material-symbols-rounded">search</span><input id="event-search" placeholder="Search events..."></label><select id="event-filter"><option value="all">All types</option><option value="assembly">Assembly</option><option value="competition">Competition</option><option value="sports">Sports</option><option value="volunteer">Volunteer</option></select></div><div id="event-list">${events.length ? events.map(e => this.card(e, userId)).join('') : UI.emptyState('No events scheduled yet.', 'event', '__createEvent()')}</div>`;
+    document.querySelectorAll('[data-rsvp]').forEach(b => b.addEventListener('click', () => this.rsvp(Number(b.dataset.eventId), b.dataset.rsvp)));
+    document.getElementById('event-search')?.addEventListener('input', () => this.filter());
+    document.getElementById('event-filter')?.addEventListener('change', () => this.filter());
+  },
+  card(event, userId) {
+    const past = new Date(event.date) < new Date(), status = event.rsvps?.[userId] || '';
+    const attendees = Object.entries(event.rsvps || {}).filter(([, value]) => value === 'going').map(([id]) => this.data.members.find(m => m.studentId === id)?.name).filter(Boolean);
+    const capacity = event.capacity || 50, full = attendees.length >= capacity && status !== 'going';
+    const confirmed = this.data.checkIns?.some(i => i.memberId === userId && i.eventId === event.id);
+    return `<article class="event-card" data-title="${sanitizeHTML(event.title).toLowerCase()}" data-type="${event.type}"><div class="event-banner ${past ? 'past' : ''}"><span class="material-symbols-rounded">${past ? 'event_busy' : 'event'}</span></div><div class="event-content"><div class="event-title"><h3>${sanitizeHTML(event.title)}</h3><span class="status ${past ? 'past' : ''}">${past ? 'Past' : 'Upcoming'}</span></div><div class="event-meta"><span>📅 ${event.date}</span><span>📍 ${sanitizeHTML(event.location || 'TBA')}</span><span>🏷️ ${event.type}</span></div><p class="event-description">${sanitizeHTML(event.description || 'No description.')}</p><div class="event-attendance"><span class="material-symbols-rounded">groups</span>${attendees.length}/${capacity} going · ${Math.max(capacity - attendees.length, 0)} slots available</div><p class="attendee-list">${attendees.length ? `<strong>Attending:</strong> ${attendees.map(sanitizeHTML).join(', ')}` : 'Be the first to RSVP.'}</p>${past ? '' : `<div class="event-rsvp"><button class="${status === 'going' ? 'selected' : ''}" data-rsvp="going" data-event-id="${event.id}" ${full ? 'disabled' : ''}>Going</button><button class="${status === 'maybe' ? 'selected' : ''}" data-rsvp="maybe" data-event-id="${event.id}">Maybe</button><button class="${status === 'no' ? 'selected' : ''}" data-rsvp="no" data-event-id="${event.id}">Can't attend</button></div>`}<div class="event-footer"><span class="event-reward">⭐ +${event.exp} EXP</span><div>${!past ? `<button class="calendar-btn" onclick="window.__downloadEventCalendar(${event.id})">Calendar</button><button class="btn-primary event-checkin" data-checkin="${event.id}">${confirmed ? 'Attendance confirmed' : 'Confirm attendance'}</button>` : ''}${confirmed ? `<button class="calendar-btn" onclick="window.__eventFeedback(${event.id})">Feedback</button>` : ''}</div></div></div></article>`;
+  },
+  filter() { const q = document.getElementById('event-search')?.value.toLowerCase() || '', type = document.getElementById('event-filter')?.value || 'all'; document.querySelectorAll('#event-list .event-card').forEach(c => c.style.display = c.dataset.title.includes(q) && (type === 'all' || c.dataset.type === type) ? '' : 'none'); },
+  rsvp(eventId, status) { const data = this.data, event = data.events.find(e => e.id === eventId), userId = Auth.currentUser?.studentId; if (!event || !userId) return; event.rsvps ||= {}; const count = Object.values(event.rsvps).filter(x => x === 'going').length; if (status === 'going' && event.rsvps[userId] !== 'going' && count >= (event.capacity || 50)) return UI.toast({ message: 'This event is full. You can still select Maybe.', type: 'warning' }); event.rsvps[userId] = status; Storage.saveAppData(data); UI.toast({ message: status === 'going' ? 'Added to My Schedule.' : 'RSVP updated.', type: 'success' }); this.render(); },
+  downloadCalendar(eventId) { const event = this.data.events.find(e => e.id === eventId); if (!event) return; const date = event.date.replaceAll('-', ''); const esc = v => String(v || '').replace(/[\\,;]/g, '\\$&').replace(/\n/g, '\\n'); const ics = `BEGIN:VCALENDAR\r\nVERSION:2.0\r\nBEGIN:VEVENT\r\nUID:sepolscis-${event.id}@sepolscis\r\nDTSTART:${date}T090000\r\nDTEND:${date}T110000\r\nSUMMARY:${esc(event.title)}\r\nLOCATION:${esc(event.location)}\r\nDESCRIPTION:${esc(event.description)}\r\nEND:VEVENT\r\nEND:VCALENDAR`; const url = URL.createObjectURL(new Blob([ics], { type: 'text/calendar;charset=utf-8' })); const a = document.createElement('a'); a.href = url; a.download = `${event.title}.ics`; a.click(); URL.revokeObjectURL(url); },
+  checkin(eventId) { const user = Auth.currentUser, data = this.data, event = data.events.find(e => e.id === eventId), member = data.members.find(m => m.studentId === user?.studentId); if (!event || !member) return UI.toast({ message: 'Event not found.', type: 'error' }); if (data.checkIns?.some(i => i.memberId === user.studentId && i.eventId === eventId)) return UI.toast({ message: 'Attendance is already confirmed for this event.', type: 'warning' }); const today = new Date().toISOString().split('T')[0]; member.attendance ||= []; member.attendance.push(today); data.checkIns ||= []; data.checkIns.push({ memberId: user.studentId, eventId, date: today, exp: event.exp }); Storage.saveAppData(data); Gamification.addExp(user.studentId, event.exp, `Attended ${event.title}`); Auth.currentUser = { ...user, ...member }; Storage.setCurrentUser(Auth.currentUser); Storage.updateQuestProgress('checkin'); UI.toast({ message: `Attendance confirmed. +${event.exp} EXP`, type: 'success' }); this.render(); },
+  schedule() { const data = this.data, userId = Auth.currentUser?.studentId, entries = data.events.filter(e => ['going', 'maybe'].includes(e.rsvps?.[userId]) && new Date(e.date) >= new Date()).sort((a,b) => new Date(a.date)-new Date(b.date)); document.getElementById('content').innerHTML = `<section class="page-intro"><p class="eyebrow">MY SCHEDULE</p><h2>Your registered events</h2><p>Set a reminder and add any event to your phone calendar.</p></section>${entries.length ? entries.map(e => `<article class="schedule-item"><div><strong>${sanitizeHTML(e.title)}</strong><p>📅 ${e.date} · ${sanitizeHTML(e.location || 'TBA')}</p><span class="status">${e.rsvps[userId] === 'going' ? 'Going' : 'Maybe'}</span></div><div><label class="reminder-label">Reminder <select data-reminder="${e.id}"><option value="none">None</option><option value="1 day">1 day before</option><option value="1 hour">1 hour before</option></select></label><button class="calendar-btn" onclick="window.__downloadEventCalendar(${e.id})">Add to calendar</button></div></article>`).join('') : UI.emptyState('Your schedule is empty. RSVP to an event to get started.', 'event', '__nav(\'events\')')}`; document.querySelectorAll('[data-reminder]').forEach(s => { const e = data.events.find(x => x.id === Number(s.dataset.reminder)); s.value = e.reminders?.[userId] || 'none'; s.addEventListener('change', () => { e.reminders ||= {}; e.reminders[userId] = s.value; Storage.saveAppData(data); UI.toast({ message: s.value === 'none' ? 'Reminder removed.' : `Reminder set for ${s.value}.`, type: 'success' }); }); }); },
+  feedback(eventId) { const event = this.data.events.find(e => e.id === eventId); UI.modal(`<h3>Event feedback</h3><p>How was ${sanitizeHTML(event?.title || 'the event')}?</p><form id="event-feedback-form"><label>Rating <select id="feedback-rating"><option value="5">5 — Excellent</option><option value="4">4 — Good</option><option value="3">3 — Okay</option><option value="2">2 — Needs work</option><option value="1">1 — Poor</option></select></label><label>Comments<textarea id="feedback-comment" placeholder="What should we keep or improve?"></textarea></label><button class="btn-primary" type="submit">Submit feedback</button></form>`); document.getElementById('event-feedback-form')?.addEventListener('submit', e => { e.preventDefault(); const data = this.data; data.eventFeedback.push({ id: Date.now(), eventId, memberId: Auth.currentUser.studentId, rating: Number(document.getElementById('feedback-rating').value), comment: document.getElementById('feedback-comment').value.trim(), createdAt: new Date().toISOString() }); Storage.saveAppData(data); UI.closeModal(); UI.toast({ message: 'Thanks for your feedback!', type: 'success' }); }); }
+};
+
+// ================================================================
 // VIEW: Profile
 // ================================================================
+const Opportunities = {
+  render() {
+    const data = Storage.getAppData(), userId = Auth.currentUser?.studentId;
+    const items = [...data.opportunities].sort((a, b) => new Date(a.deadline) - new Date(b.deadline));
+    document.getElementById('content').innerHTML = `<section class="page-intro"><p class="eyebrow">OPPORTUNITIES HUB</p><h2>Open doors for your next chapter</h2><p>Scholarships, internships, debate invitations, volunteer work, and deadlines in one place.</p></section><div class="opportunity-filters">${['All', 'Scholarship', 'Internship', 'Debate', 'Volunteer'].map(type => `<button data-opportunity-filter="${type}" class="${type === 'All' ? 'selected' : ''}">${type}</button>`).join('')}</div><div id="opportunity-list">${items.map(item => this.card(item, userId)).join('')}</div>`;
+    document.querySelectorAll('[data-opportunity-filter]').forEach(button => button.addEventListener('click', () => { document.querySelectorAll('[data-opportunity-filter]').forEach(x => x.classList.toggle('selected', x === button)); document.querySelectorAll('.opportunity-card').forEach(card => card.style.display = button.dataset.opportunityFilter === 'All' || card.dataset.type === button.dataset.opportunityFilter ? '' : 'none'); }));
+  },
+  card(item, userId) { const saved = item.savedBy?.includes(userId); return `<article class="opportunity-card" data-type="${item.type}"><div><span class="opportunity-type">${item.type}</span><h3>${sanitizeHTML(item.title)}</h3><p class="muted">${sanitizeHTML(item.organization)} · Deadline: <strong>${item.deadline}</strong></p><p>${sanitizeHTML(item.description)}</p><p class="muted">📍 ${sanitizeHTML(item.location)}</p></div><button class="save-opportunity ${saved ? 'selected' : ''}" onclick="window.__saveOpportunity('${item.id}')"><span class="material-symbols-rounded">${saved ? 'bookmark' : 'bookmark_add'}</span>${saved ? 'Saved' : 'Save deadline'}</button></article>`; },
+  save(id) { const data = Storage.getAppData(), item = data.opportunities.find(x => x.id === id), userId = Auth.currentUser?.studentId; if (!item || !userId) return; item.savedBy ||= []; item.savedBy.includes(userId) ? item.savedBy = item.savedBy.filter(x => x !== userId) : item.savedBy.push(userId); Storage.saveAppData(data); UI.toast({ message: item.savedBy.includes(userId) ? 'Opportunity saved to your portfolio.' : 'Opportunity removed from saved items.', type: 'success' }); this.render(); }
+};
+
+const Portfolio = {
+  render() {
+    const data = Storage.getAppData(), member = data.members.find(m => m.studentId === Auth.currentUser?.studentId); if (!member) return;
+    const checkIns = data.checkIns?.filter(x => x.memberId === member.studentId) || [], badges = Gamification.getMemberBadges(member.studentId).filter(x => x.unlocked), saved = data.opportunities.filter(x => x.savedBy?.includes(member.studentId));
+    const roles = member.position ? [member.position] : [], hours = checkIns.reduce((total, checkIn) => total + (data.events.find(e => e.id === checkIn.eventId)?.type === 'volunteer' ? 4 : 0), 0);
+    document.getElementById('content').innerHTML = `<section class="portfolio-hero"><p class="eyebrow">STUDENT PORTFOLIO</p><h2>${sanitizeHTML(member.name)}</h2><p>A growing record of participation, leadership, and achievement.</p><button class="btn-primary" onclick="window.__downloadCertificate()"><span class="material-symbols-rounded">download</span> Download participation certificate</button></section><div class="portfolio-stats"><div><strong>${checkIns.length}</strong><span>Events attended</span></div><div><strong>${badges.length}</strong><span>Badges earned</span></div><div><strong>${hours}</strong><span>Service hours</span></div></div><section class="portfolio-section"><h3>Attendance</h3>${checkIns.length ? `<ul>${checkIns.map(x => `<li>${sanitizeHTML(data.events.find(e => e.id === x.eventId)?.title || 'Organization event')} <span>${x.date}</span></li>`).join('')}</ul>` : '<p class="muted">Confirm attendance at events to grow this record.</p>'}</section><section class="portfolio-section"><h3>Badges & achievements</h3><div class="badge-grid">${badges.length ? badges.map(b => `<div> ${b.icon} <strong>${sanitizeHTML(b.name)}</strong><small>${sanitizeHTML(b.desc)}</small></div>`).join('') : '<p class="muted">Complete activities to earn badges.</p>'}</div>${member.achievements?.length ? `<p><strong>Highlights:</strong> ${member.achievements.map(sanitizeHTML).join(' · ')}</p>` : ''}</section><section class="portfolio-section"><h3>Leadership & service</h3><p>${roles.length ? `Leadership role: <strong>${sanitizeHTML(roles.join(', '))}</strong>` : 'No leadership role recorded yet.'}</p><p>${hours} verified volunteer service hours from confirmed volunteer events.</p></section><section class="portfolio-section"><h3>Saved opportunities</h3>${saved.length ? `<ul>${saved.map(x => `<li>${sanitizeHTML(x.title)} <span>Due ${x.deadline}</span></li>`).join('')}</ul>` : '<p class="muted">Save an opportunity to keep it in your portfolio.</p>'}</section>`;
+  },
+  certificate() { const data = Storage.getAppData(), member = data.members.find(m => m.studentId === Auth.currentUser?.studentId), count = data.checkIns?.filter(x => x.memberId === member?.studentId).length || 0; const page = window.open('', '_blank'); if (!page) return UI.toast({ message: 'Please allow pop-ups to download your certificate.', type: 'warning' }); page.document.write(`<title>Participation Certificate</title><style>body{font-family:Georgia;text-align:center;padding:80px;color:#29431d}h1{font-size:42px}main{border:8px solid #759954;padding:65px;max-width:700px;margin:auto}small{color:#555}</style><main><h1>Certificate of Participation</h1><p>This certifies that</p><h2>${sanitizeHTML(member.name)}</h2><p>has actively participated in SEPOLSCIS activities, with <strong>${count}</strong> confirmed event attendance record${count === 1 ? '' : 's'}.</p><p>Issued ${new Date().toLocaleDateString()}</p><br><small>SEPOLSCIS · Student Excellence in Political Science</small></main>`); page.document.close(); page.focus(); setTimeout(() => page.print(), 250); }
+};
+
 const Profile = {
   render() {
     const user = Auth.currentUser;
@@ -2308,6 +2422,10 @@ const App = {
     window.__showAnnouncementForm = () => Officer.showAnnouncementForm();
     window.__createEvent = () => Officer.createEvent();
     window.__checkinEvent = (id) => Events.checkin(id);
+    window.__downloadEventCalendar = (id) => Events.downloadCalendar(id);
+    window.__eventFeedback = (id) => Events.feedback(id);
+    window.__saveOpportunity = (id) => Opportunities.save(id);
+    window.__downloadCertificate = () => Portfolio.certificate();
     window.__showLeaderboard = () => { this.navigate('events');
       setTimeout(() => Leaderboard.render(), 100); };
     window.__requestGrade = () => {
@@ -2370,8 +2488,11 @@ const App = {
     const titleMap = {
       'home': 'Dashboard',
       'events': 'Events',
+      'schedule': 'My Schedule',
+      'opportunities': 'Opportunities Hub',
       'learning': 'Learning Center',
-      'profile': 'Profile'
+      'profile': 'Profile',
+      'portfolio': 'Student Portfolio'
     };
     document.getElementById('screen-title').textContent = titleMap[screen] || screen;
 
@@ -2386,11 +2507,20 @@ const App = {
       case 'events':
         Events.render();
         break;
+      case 'schedule':
+        Events.schedule();
+        break;
+      case 'opportunities':
+        Opportunities.render();
+        break;
       case 'learning':
         Learning.render();
         break;
       case 'profile':
         Profile.render();
+        break;
+      case 'portfolio':
+        Portfolio.render();
         break;
       default:
         Dashboard.render();
