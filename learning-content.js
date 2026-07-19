@@ -890,5 +890,5 @@ Don Andres M. Bersales - Adviser
 
 APPROVED
 Prof. Victor M. Asuelo - Dean of Student Affairs, Southern Mindanao Colleges
-`
+`,
 };
