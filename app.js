@@ -3390,37 +3390,44 @@ const App = {
       b.classList.toggle("active", b.dataset.screen === screen);
     });
 
-    switch (screen) {
-      case "home":
-        DashboardV2.render();
-        break;
-      case "events":
-        Events.render();
-        break;
-      case "schedule":
-        Events.schedule();
-        break;
-      case "opportunities":
-        Opportunities.render();
-        break;
-      case "learning":
-        Learning.render();
-        break;
-      case "profile":
-        Profile.render();
-        break;
-      case "portfolio":
-        Portfolio.render();
-        break;
-      case "officer":
-        if (Auth.isOfficer()) Officer.renderDashboard();
-        else DashboardV2.render();
-        break;
-      default:
-        DashboardV2.render();
-    }
-
-    this.updateGreeting();
+    // Perform render asynchronously so the browser can update navigation UI immediately
+    UI.showLoading(true);
+    setTimeout(() => {
+      try {
+        switch (screen) {
+          case "home":
+            DashboardV2.render();
+            break;
+          case "events":
+            Events.render();
+            break;
+          case "schedule":
+            Events.schedule();
+            break;
+          case "opportunities":
+            Opportunities.render();
+            break;
+          case "learning":
+            Learning.render();
+            break;
+          case "profile":
+            Profile.render();
+            break;
+          case "portfolio":
+            Portfolio.render();
+            break;
+          case "officer":
+            if (Auth.isOfficer()) Officer.renderDashboard();
+            else DashboardV2.render();
+            break;
+          default:
+            DashboardV2.render();
+        }
+      } finally {
+        UI.hideLoading();
+        this.updateGreeting();
+      }
+    }, 10);
   },
 
   updateGreeting() {
