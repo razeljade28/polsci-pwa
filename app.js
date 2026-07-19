@@ -430,9 +430,22 @@ const Auth = {
 };
 
 // ================================================================
-// MODULE: UI Helpers
+// MODULE: UI Helpers (FIX: Delegated close buttons)
 // ================================================================
 const UI = {
+  init() {
+    // Set up delegated event listener for all modals
+    const container = document.getElementById('modal-container');
+    if (container) {
+      container.addEventListener('click', (e) => {
+        const closeBtn = e.target.closest('[data-close-modal]');
+        if (closeBtn) {
+          this.closeModal();
+        }
+      });
+    }
+  },
+
   toast(opt) {
     const container = document.getElementById('toast-container');
     if (!container) return;
@@ -467,24 +480,30 @@ const UI = {
     overlay.classList.add('show');
 
     const close = () => {
-      div.classList.remove('show');
-      overlay.classList.remove('show');
-      setTimeout(() => { container.innerHTML = ''; }, 300);
+      this.closeModal();
     };
 
     overlay.onclick = close;
 
-    div.querySelectorAll('[data-close-modal]').forEach(el => {
-      el.addEventListener('click', close);
-    });
-
+    // No need to attach listeners to [data-close-modal] – handled by delegation
     return { close, element: div };
   },
 
   closeModal() {
     const container = document.getElementById('modal-container');
     const overlay = document.getElementById('overlay');
-    if (container) container.innerHTML = '';
+    if (container) {
+      // Animate out
+      const modal = container.querySelector('.modal');
+      if (modal) {
+        modal.classList.remove('show');
+        setTimeout(() => {
+          container.innerHTML = '';
+        }, 300);
+      } else {
+        container.innerHTML = '';
+      }
+    }
     if (overlay) overlay.classList.remove('show');
   },
 
@@ -2424,6 +2443,9 @@ const Officer = {
 // ================================================================
 const App = {
   init() {
+    // Initialize UI delegation for modals
+    UI.init();
+
     // Safety timer: force hide loading after 3 seconds
     setTimeout(() => {
       UI.hideLoading();
