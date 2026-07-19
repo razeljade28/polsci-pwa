@@ -1076,6 +1076,7 @@ const DashboardV2 = {
       <section class="dashboard-section"><div class="section-title"><div><p class="eyebrow">SHORTCUTS</p><h3>Quick actions</h3></div></div><div class="action-grid">
         <button onclick="window.__nav('learning')"><span class="material-symbols-rounded">menu_book</span><small>Learn</small></button>
         <button onclick="window.__nav('events')"><span class="material-symbols-rounded">event</span><small>Events</small></button>
+        <button onclick="window.__nav('opportunities')"><span class="material-symbols-rounded">rocket_launch</span><small>Opportunities</small></button>
         <button onclick="window.__checkin()"><span class="material-symbols-rounded">qr_code_scanner</span><small>Check in</small></button>
         <button onclick="window.__showGrievance()"><span class="material-symbols-rounded">gavel</span><small>Grievance</small></button>
       </div></section>
