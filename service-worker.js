@@ -5,12 +5,26 @@ const STATIC_ASSETS = [
   '/login.html',
   '/signup.html',
   '/style.css',
-  '/app.js',
   '/learning-content.js',
   '/logo.png',
   '/manifest.json',
   '/icons/icon-192.png',
-  '/icons/icon-512.png'
+  '/icons/icon-512.png',
+  // New modular scripts
+  '/scripts/app.js',
+  '/scripts/utils.js',
+  '/scripts/storage.js',
+  '/scripts/auth.js',
+  '/scripts/gamification.js',
+  '/scripts/notifications.js',
+  '/scripts/views/dashboard.js',
+  '/scripts/views/learning.js',
+  '/scripts/views/events.js',
+  '/scripts/views/opportunities.js',
+  '/scripts/views/portfolio.js',
+  '/scripts/views/profile.js',
+  '/scripts/views/officer.js',
+  '/scripts/views/grievance.js'
 ];
 
 self.addEventListener('install', event => {

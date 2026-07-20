@@ -1132,3 +1132,192 @@ main { flex: 1; padding: 16px 0 100px; overflow-y: auto; max-width: 900px; margi
   main { padding: 24px 0 100px; }
   .bottom-nav { max-width: 700px; }
 }
+
+/* =====================================================
+   DARK MODE – Overrides for dark theme
+====================================================== */
+
+body.dark {
+  --bg: #1a2218;
+  --surface: #243020;
+  --surface-glass: rgba(36, 48, 32, 0.85);
+  --text: #e8ede5;
+  --text-secondary: #b8c8b0;
+  --text-muted: #8a9a82;
+  --border: #3a4a34;
+}
+
+body.dark .bottom-nav {
+  background: rgba(36, 48, 32, 0.9);
+  border-color: var(--border);
+}
+body.dark .top-header {
+  background: rgba(36, 48, 32, 0.85);
+  border-bottom-color: var(--border);
+}
+body.dark .circle-btn {
+  background: var(--surface);
+  color: var(--text);
+}
+body.dark .circle-btn .material-symbols-rounded {
+  color: var(--text);
+}
+body.dark .event-card,
+body.dark .opps-card,
+body.dark .badge-item,
+body.dark .profile-config,
+body.dark .grade-request,
+body.dark .database-actions,
+body.dark .daily-missions,
+body.dark .featured-event,
+body.dark .broadcasts,
+body.dark .top-standings,
+body.dark .analytics-card,
+body.dark .active-enrollment,
+body.dark .topic-content,
+body.dark .login-card {
+  background: var(--surface);
+  border-color: var(--border);
+}
+body.dark .input-box {
+  background: var(--surface);
+  border-color: var(--border);
+}
+body.dark .input-box input,
+body.dark .input-box select {
+  color: var(--text);
+}
+body.dark .input-box input::placeholder {
+  color: var(--text-muted);
+}
+body.dark .advisor-state-policies {
+  background: #2a3a28;
+  border-left-color: var(--gold);
+}
+body.dark .mission-item {
+  border-bottom-color: var(--border);
+}
+body.dark .standings-item {
+  border-bottom-color: var(--border);
+}
+body.dark .standings-item.highlight {
+  background: rgba(44, 94, 58, 0.3);
+}
+body.dark .config-item {
+  border-bottom-color: var(--border);
+}
+body.dark .toast {
+  background: var(--surface);
+  color: var(--text);
+}
+body.dark .toast-success {
+  background: #2e7d32;
+  color: white;
+}
+body.dark .toast-warning {
+  background: #b76e1e;
+  color: white;
+}
+body.dark .toast-error {
+  background: #c62828;
+  color: white;
+}
+body.dark .toast-info {
+  background: #0d47a1;
+  color: white;
+}
+body.dark .modal {
+  background: var(--surface);
+  border-color: var(--border);
+}
+body.dark .overlay {
+  background: rgba(0, 0, 0, 0.6);
+}
+body.dark .hero-dashboard,
+body.dark .learning-header,
+body.dark .events-header,
+body.dark .opps-header,
+body.dark .portfolio-header,
+body.dark .admin-header,
+body.dark .digital-id {
+  background: linear-gradient(135deg, #1a2a18, #2a4028);
+}
+body.dark .quick-grid button {
+  background: var(--surface);
+  border-color: var(--border);
+  color: var(--text);
+}
+body.dark .quick-grid button .material-symbols-rounded {
+  color: var(--primary-light);
+}
+body.dark .event-date-block {
+  background: var(--gold-dark);
+  color: white;
+}
+body.dark .badge-item.locked {
+  opacity: 0.6;
+}
+body.dark .search-filter,
+body.dark .search-box {
+  background: var(--surface);
+  border-color: var(--border);
+}
+body.dark .search-filter input,
+body.dark .search-box input {
+  color: var(--text);
+}
+body.dark .filter-btn {
+  background: var(--surface);
+  border-color: var(--border);
+  color: var(--text-muted);
+}
+body.dark .filter-btn.active {
+  background: var(--primary);
+  color: white;
+  border-color: var(--primary);
+}
+body.dark .tab-btn {
+  background: var(--surface);
+  border-color: var(--border);
+  color: var(--text-muted);
+}
+body.dark .tab-btn.active {
+  background: var(--primary);
+  color: white;
+  border-color: var(--primary);
+}
+body.dark .rsvp-btn {
+  background: var(--surface);
+  border-color: var(--border);
+  color: var(--text-muted);
+}
+body.dark .rsvp-btn.selected {
+  background: var(--primary);
+  color: white;
+  border-color: var(--primary);
+}
+body.dark .track-btn {
+  background: var(--surface);
+  border-color: var(--border);
+  color: var(--text-muted);
+}
+body.dark .track-btn.saved {
+  background: var(--primary);
+  color: white;
+  border-color: var(--primary);
+}
+body.dark .btn-outline {
+  border-color: var(--border);
+  color: var(--text);
+}
+body.dark .btn-outline.danger {
+  border-color: #E57373;
+  color: #E57373;
+}
+body.dark .id-avatar {
+  background: rgba(255,255,255,0.1);
+}
+body.dark .install-banner {
+  background: var(--surface);
+  border-color: var(--border);
+}
