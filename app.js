@@ -69,26 +69,21 @@ const Storage = {
   getDefaultData() {
     return {
       events: [
-        { id: 1, title: '🗳️ General Assembly: Your Voice, Your Org', date: '2026-07-20', type: 'assembly', exp: 50, location: 'Room 101',
-          description: 'Join us to shape the semester’s direction. Propose projects, vote on budget, and meet the new officers. Free snacks for the first 30 attendees!' },
-        { id: 2, title: '🔥 Face-Off: Inter-School Debate on Federalism', date: '2026-07-25', type: 'competition', exp: 100,
-          location: 'Auditorium', description: 'Represent SEPOLSCIS against three other universities. Win the golden gavel and 100 EXP. Teams of 3 – sign up now!' },
-        { id: 3, title: '🏀 Court Wars: 3x3 Basketball Intrams', date: '2026-08-01', type: 'sports', exp: 75,
-          location: 'Gymnasium', description: 'Bragging rights, plus EXP for every game played. Form your squad (max 5). Cheerleaders get +10 EXP too!' },
-        { id: 4, title: '🧠 Quiz Bee: Constitution Edition', date: '2026-08-10', type: 'competition', exp: 80, location: 'Room 203',
-          description: 'Test your knowledge of the 1987 Constitution. Top 3 finishers get a special badge and certificate.' },
-        { id: 5, title: '🤝 Community Volunteer Drive', date: '2026-08-15', type: 'volunteer', exp: 50,
-          location: 'Community Center', description: 'Give back to the community. Volunteer hours count toward service recognition and the "Community Champion" badge.' },
+        { id: 1, title: 'General Assembly & Seminar', date: '2026-07-20', type: 'assembly', exp: 50, location: 'SMC Room 101, Main Campus',
+          description: 'Our monthly general assembly covering constitutional policies and introducing student leaders.', capacity: 60 },
+        { id: 2, title: 'Inter-School Debate Championship', date: '2026-07-25', type: 'competition', exp: 100,
+          location: 'SMC Auditorium Hall', description: 'Political Science debate invites showcase debate and adjudication competencies.', capacity: 100 },
+        { id: 3, title: 'Community Outreach & Voter Drive', date: '2026-08-01', type: 'volunteer', exp: 50,
+          location: 'Barangay Main Learning Center', description: 'SMC youth lead non-partisan voter education campaigns. Yields 4 service hours.', capacity: 40 }
       ],
       opportunities: [
-        { id: 'o1', type: 'Scholarship', title: '🎓 Future Public Leaders Scholarship', organization: 'Civic Futures Foundation', deadline: '2026-07-30', location: 'Online application', description: '₱50,000 tuition support for students with a record of community leadership. "We’re looking for the next barangay captain, the next congressperson."', savedBy: [] },
-        { id: 'o2', type: 'Internship', title: '🏛️ City Hall Policy Internship', organization: 'City Legislative Office', deadline: '2026-08-05', location: 'City Hall', description: 'Work directly with the legislative office. Draft memos, attend council sessions, and see how laws are actually made. Perfect for 3rd-4th years.', savedBy: [] },
-        { id: 'o3', type: 'Debate', title: '🎤 National Debate Invitational', organization: 'Philippine Debate Union', deadline: '2026-08-12', location: 'University Auditorium', description: 'Compete against the best debaters in the country. Cash prizes and trophies for winning teams. Open to all year levels.', savedBy: [] },
-        { id: 'o4', type: 'Volunteer', title: '🗳️ Voter Education Weekend', organization: 'Youth Civic Network', deadline: '2026-08-18', location: 'Barangay Learning Hub', description: 'Help facilitate non-partisan voter education sessions. Gain valuable facilitation experience and community service hours.', savedBy: [] }
+        { id: 'o1', type: 'Scholarship', title: 'Future Public Leaders Fellowship', organization: 'Civic Futures Foundation', deadline: '2026-08-10', location: 'Online Portal / SMC Admin', description: 'Fully-funded fellowship for political science majors with proven leadership track records.', savedBy: [] },
+        { id: 'o2', type: 'Internship', title: 'Local Legislative Office Placement', organization: 'City Government Affairs Dept', deadline: '2026-08-15', location: 'City Legislative Secretariat', description: 'Four-week internship shadowing legal consultations and policy drafting boards.', savedBy: [] },
+        { id: 'o3', type: 'Debate', title: 'Philippine National Debate Invitational', organization: 'Philippine Debate Union', deadline: '2026-08-20', location: 'SMC Main Stage Auditorium', description: 'Open call for university debate teams. Prizes awarded for top speakers.', savedBy: [] }
       ],
       members: [{
         studentId: '2024-0001',
-        name: 'Juan dela Cruz',
+        name: 'Juan Dela Cruz',
         year: '2',
         course: 'B.A. Political Science',
         position: '', role: 'member',
@@ -96,7 +91,7 @@ const Storage = {
         exp: 320,
         attendance: ['2026-07-01', '2026-07-08', '2026-07-15'],
         badges: ['b1'],
-        achievements: ['Debate Winner Q1'],
+        achievements: [],
         gradeConvRequested: false,
         email: 'juan@example.com',
       }, {
@@ -108,7 +103,7 @@ const Storage = {
         membership: 'Active',
         exp: 770,
         attendance: ['2026-07-01', '2026-07-08', '2026-07-15', '2026-07-22'],
-        badges: ['b5', 'b3', 'b2', 'b1', 'b9'],
+        badges: ['b2', 'b3', 'b5', 'b9', 'b10'],
         achievements: ['Best Leader 2025'],
         gradeConvRequested: false,
         email: 'maria@example.com',
@@ -125,19 +120,6 @@ const Storage = {
         achievements: [],
         gradeConvRequested: false,
         email: 'carlos@example.com',
-      }, {
-        studentId: '2024-0003',
-        name: 'Ana Flores',
-        year: '2',
-        course: 'B.A. Political Science',
-        position: 'Secretary', role: 'officer',
-        membership: 'Active',
-        exp: 420,
-        attendance: ['2026-07-01', '2026-07-08', '2026-07-15', '2026-07-22'],
-        badges: ['b2'],
-        achievements: ['Top Performer Q2'],
-        gradeConvRequested: false,
-        email: 'ana@example.com',
       }],
       learningProgress: {},
       grievances: [{
@@ -812,7 +794,7 @@ const Gamification = {
 };
 
 // ================================================================
-// VIEW: Dashboard (Home) – Orange Design
+// VIEW: Dashboard (Home) – Exact Orange
 // ================================================================
 const DashboardV2 = {
   render() {
@@ -835,7 +817,6 @@ const DashboardV2 = {
     else if (hour < 17) greeting = 'Afternoon';
 
     let html = `
-      <!-- Hero -->
       <section class="hero-dashboard">
         <div class="hero-top">
           <div>
@@ -850,7 +831,6 @@ const DashboardV2 = {
         </div>
       </section>
 
-      <!-- Daily Study Check-in -->
       <section class="daily-missions">
         <div class="section-header">
           <h3>📋 DAILY STUDY CHECK-IN</h3>
@@ -867,7 +847,6 @@ const DashboardV2 = {
         `).join('')}
       </section>
 
-      <!-- Quick Navigation -->
       <section class="quick-nav">
         <div class="section-header"><h3>QUICK NAVIGATION</h3></div>
         <div class="quick-grid">
@@ -878,7 +857,6 @@ const DashboardV2 = {
         </div>
       </section>
 
-      <!-- Featured Event -->
       <section class="featured-event">
         <div class="section-header"><h3>FEATURED EVENT</h3></div>
         ${nextEvent ? `
@@ -889,13 +867,12 @@ const DashboardV2 = {
             </div>
             <div class="event-info">
               <h4>${sanitizeHTML(nextEvent.title)}</h4>
-              <p>${sanitizeHTML(nextEvent.location || 'TBA')} · ${Object.keys(nextEvent.rsvps || {}).filter(k => nextEvent.rsvps[k] === 'going').length}/${nextEvent.capacity || 50} Going</p>
+              <p>${sanitizeHTML(nextEvent.location)} · ${Object.keys(nextEvent.rsvps || {}).filter(k => nextEvent.rsvps[k] === 'going').length}/${nextEvent.capacity || 50} Going</p>
             </div>
           </div>
         ` : `<p style="color:var(--text-muted);">No upcoming events.</p>`}
       </section>
 
-      <!-- Official Broadcasts -->
       <section class="broadcasts">
         <div class="section-header"><h3>OFFICIAL BROADCASTS</h3></div>
         ${announcements.length ? announcements.map(a => `
@@ -907,7 +884,6 @@ const DashboardV2 = {
         `).join('') : '<p style="color:var(--text-muted);">No announcements.</p>'}
       </section>
 
-      <!-- Top Standings -->
       <section class="top-standings">
         <div class="section-header"><h3>TOP STANDINGS</h3></div>
         ${topMembers.map((m, i) => `
@@ -928,30 +904,26 @@ const DashboardV2 = {
 };
 
 // ================================================================
-// VIEW: Learning Center – Orange Design
+// VIEW: Learning Center – Exact Orange
 // ================================================================
 const Learning = {
   currentCategory: 'all',
   currentTopic: 'constitution',
   searchTerm: '',
   topics: [
-    { id: 'constitution', title: '1987 Present Constitution', category: 'constitutions', icon: 'gavel', takeaway: 'The Constitution is the country’s highest law and protects fundamental rights.' },
-    { id: 'constitution1899', title: '1899 Malolos Constitution', category: 'constitutions', icon: 'history', takeaway: 'It established the First Philippine Republic and placed sovereignty in the people.' },
-    { id: 'constitution1935', title: '1935 Commonwealth', category: 'constitutions', icon: 'history', takeaway: 'It created the Commonwealth government that prepared the country for independence.' },
-    { id: 'constitution1943', title: '1943 Occupation', category: 'constitutions', icon: 'history', takeaway: 'It was adopted during the Japanese occupation of the Philippines.' },
-    { id: 'constitution1973', title: '1973 Constitution', category: 'constitutions', icon: 'history', takeaway: 'It changed the structure of government during the Marcos era.' },
-    { id: 'constitution1986', title: '1986 Freedom Constitution', category: 'constitutions', icon: 'history', takeaway: 'It was a provisional constitution after the People Power Revolution.' },
-    { id: 'government', title: 'Government at a Glance', category: 'government', icon: 'account_balance', takeaway: 'The legislative, executive, and judicial branches have distinct responsibilities.' },
-    { id: 'news', title: 'Current Affairs', category: 'current', icon: 'newspaper', takeaway: 'Connect reliable reporting to political-science concepts and evidence.' },
-    { id: 'bylaws', title: 'SEPOLSCIS By-Laws', category: 'organization', icon: 'groups', takeaway: 'Know the organization’s rules, rights, responsibilities, and opportunities.' },
-    { id: 'sepolscisConstitution', title: 'SEPOLSCIS Constitution', category: 'organization', icon: 'description', takeaway: 'Read the complete constitution and bylaws, including membership, officers, elections, and finances.' },
-    { id: 'reviewer', title: 'Exam Reviewer', category: 'review', icon: 'school', takeaway: 'Use the reviewer to refresh core political-science concepts before assessments.' }
+    { id: 'constitution', title: '1987 Present Constitution', category: 'constitutions', icon: 'gavel' },
+    { id: 'constitution1899', title: '1899 Malolos Constitution', category: 'constitutions', icon: 'history' },
+    { id: 'constitution1935', title: '1935 Commonwealth', category: 'constitutions', icon: 'history' },
+    { id: 'constitution1943', title: '1943 Occupation', category: 'constitutions', icon: 'history' },
+    { id: 'constitution1973', title: '1973 Constitution', category: 'constitutions', icon: 'history' },
+    { id: 'constitution1986', title: '1986 Freedom Constitution', category: 'constitutions', icon: 'history' },
+    { id: 'government', title: 'Government at a Glance', category: 'government', icon: 'account_balance' },
+    { id: 'news', title: 'Current Affairs', category: 'current', icon: 'newspaper' },
+    { id: 'bylaws', title: 'SEPOLSCIS By-Laws', category: 'organization', icon: 'groups' },
+    { id: 'reviewer', title: 'Exam Reviewer', category: 'review', icon: 'school' }
   ],
   quizzes: {
-    constitution: { question: 'Where does sovereignty reside under the 1987 Constitution?', options: ['In Congress', 'In the people', 'In the President', 'In the Supreme Court'], answer: 1, explanation: 'Article II states that sovereignty resides in the people.' },
-    constitution1899: { question: 'What did the Malolos Constitution establish?', options: ['A colonial government', 'The First Philippine Republic', 'A federal state', 'The Commonwealth'], answer: 1, explanation: 'It established the First Philippine Republic in 1899.' },
-    government: { question: 'Which branch interprets laws?', options: ['Legislative', 'Executive', 'Judicial', 'Local government'], answer: 2, explanation: 'The judicial branch interprets laws and resolves cases.' },
-    news: { question: 'Which source is best for checking a public policy claim?', options: ['An anonymous post', 'An official government source', 'A viral comment', 'An unverified screenshot'], answer: 1, explanation: 'Start with primary and official sources, then compare credible reporting.' }
+    constitution: { question: 'Where does sovereignty reside under Article II, Section 1 of the 1987 Philippine Constitution?', options: ['In Congress', 'In the people', 'In the President', 'In the Supreme Court'], answer: 1, explanation: 'Article II states that sovereignty resides in the people.' }
   },
   getProgress() {
     const data = Storage.getAppData();
@@ -978,12 +950,6 @@ const Learning = {
       Storage.updateQuestProgress('read');
     }
   },
-  toggleSaved(id) {
-    const progress = this.getProgress();
-    progress.saved = progress.saved.includes(id) ? progress.saved.filter(topic => topic !== id) : [...progress.saved, id];
-    this.saveProgress(progress);
-    this.render();
-  },
   render() {
     const progress = this.getProgress();
     const filtered = this.topics.filter(t => 
@@ -1000,7 +966,7 @@ const Learning = {
       </section>
 
       <div class="learning-tabs">
-        ${['all','constitutions','government','current','organization','review'].map(cat => `
+        ${['all','constitutions','government','current','organization','reviewer'].map(cat => `
           <button class="tab-btn ${this.currentCategory === cat ? 'active' : ''}" data-category="${cat}">
             ${cat === 'all' ? 'All Topics' : cat.charAt(0).toUpperCase() + cat.slice(1)}
           </button>
@@ -1034,7 +1000,6 @@ const Learning = {
 
     document.getElementById('content').innerHTML = html;
 
-    // Attach event listeners
     document.querySelectorAll('[data-category]').forEach(btn => {
       btn.addEventListener('click', () => {
         this.currentCategory = btn.dataset.category;
@@ -1055,11 +1020,9 @@ const Learning = {
   },
   renderTopic(topic, progress) {
     const resources = Storage.getAppData().learningResources || {};
-    const quiz = this.quizzes[topic.id];
-    // Grab some content for the principles section
     const content = resources[topic.id] || 'Content not available.';
-    // For state policies, use a default or extract from constitution
-    const statePolicies = resources['state_policies'] || 'The State shall promote a just and dynamic social order that will ensure the prosperity and independence of the nation and free the people from poverty through policies that provide adequate social services, promote full employment, a rising standard of living, and an improved quality of life.';
+    const quiz = this.quizzes[topic.id];
+    const statePolicies = 'The State shall promote a just and dynamic social order that will ensure the prosperity and independence of the nation and free the people from poverty through policies that provide adequate social services, promote full employment, a rising standard of living, and an improved quality of life.';
 
     return `
       <div class="topic-heading">
@@ -1112,7 +1075,7 @@ const Learning = {
 };
 
 // ================================================================
-// VIEW: Events – Orange Design
+// VIEW: Events – Exact Orange
 // ================================================================
 const Events = {
   render() {
@@ -1152,7 +1115,6 @@ const Events = {
 
     document.getElementById('content').innerHTML = html;
 
-    // Filter buttons
     document.querySelectorAll('.filter-btn').forEach(btn => {
       btn.addEventListener('click', () => {
         document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
@@ -1163,11 +1125,9 @@ const Events = {
     document.getElementById('event-search')?.addEventListener('input', () => this.filterList());
     document.getElementById('event-type-filter')?.addEventListener('change', () => this.filterList());
 
-    // RSVP buttons
     document.querySelectorAll('[data-rsvp]').forEach(btn => {
       btn.addEventListener('click', () => this.rsvp(Number(btn.dataset.event), btn.dataset.rsvp));
     });
-    // Check-in buttons
     document.querySelectorAll('[data-checkin]').forEach(btn => {
       btn.addEventListener('click', () => this.checkin(Number(btn.dataset.checkin)));
     });
@@ -1187,8 +1147,8 @@ const Events = {
         <div class="event-details">
           <span class="event-type">${event.type.toUpperCase()}</span>
           <h4>${sanitizeHTML(event.title)}</h4>
-          <p>${sanitizeHTML(event.location || 'TBA')} · ${going}/${capacity} going</p>
-          <p class="event-desc">${sanitizeHTML(event.description || '')}</p>
+          <p>${sanitizeHTML(event.location)} · ${going}/${capacity} going</p>
+          <p class="event-desc">${sanitizeHTML(event.description)}</p>
           ${!past ? `
             <div class="rsvp-buttons">
               <button class="rsvp-btn ${userRsvp === 'going' ? 'selected' : ''}" data-rsvp="going" data-event="${event.id}">Going</button>
@@ -1204,7 +1164,6 @@ const Events = {
   filterList() {
     const query = document.getElementById('event-search')?.value.toLowerCase() || '';
     const type = document.getElementById('event-type-filter')?.value || 'all';
-    const filter = document.querySelector('.filter-btn.active')?.dataset.filter || 'all';
     document.querySelectorAll('#event-list .event-card').forEach(card => {
       const title = card.querySelector('h4')?.textContent?.toLowerCase() || '';
       const cardType = card.querySelector('.event-type')?.textContent?.toLowerCase() || '';
@@ -1225,7 +1184,6 @@ const Events = {
     event.rsvps[userId] = status;
     Storage.saveAppData(data);
     UI.toast({ message: status === 'going' ? 'You\'re going!' : 'RSVP updated.', type: 'success' });
-    // Update quest progress for RSVP
     if (status === 'going') Storage.updateQuestProgress('rsvp');
     this.render();
   },
@@ -1249,24 +1207,11 @@ const Events = {
     Storage.updateQuestProgress('checkin');
     UI.toast({ message: `Attendance confirmed. +${event.exp} EXP`, type: 'success' });
     this.render();
-  },
-  downloadCalendar(eventId) {
-    const event = Storage.getAppData().events.find(e => e.id === eventId);
-    if (!event) return;
-    const date = event.date.replaceAll('-', '');
-    const esc = v => String(v || '').replace(/[\\,;]/g, '\\$&').replace(/\n/g, '\\n');
-    const ics = `BEGIN:VCALENDAR\r\nVERSION:2.0\r\nBEGIN:VEVENT\r\nUID:sepolscis-${event.id}@sepolscis\r\nDTSTART:${date}T090000\r\nDTEND:${date}T110000\r\nSUMMARY:${esc(event.title)}\r\nLOCATION:${esc(event.location)}\r\nDESCRIPTION:${esc(event.description)}\r\nEND:VEVENT\r\nEND:VCALENDAR`;
-    const url = URL.createObjectURL(new Blob([ics], { type: 'text/calendar;charset=utf-8' }));
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `${event.title}.ics`;
-    a.click();
-    URL.revokeObjectURL(url);
   }
 };
 
 // ================================================================
-// VIEW: Opportunities – Orange Design
+// VIEW: Opportunities – Exact Orange
 // ================================================================
 const Opportunities = {
   render() {
@@ -1307,7 +1252,6 @@ const Opportunities = {
 
     document.getElementById('content').innerHTML = html;
 
-    // Filter buttons
     document.querySelectorAll('.opps-filters .filter-btn').forEach(btn => {
       btn.addEventListener('click', () => {
         document.querySelectorAll('.opps-filters .filter-btn').forEach(b => b.classList.remove('active'));
@@ -1338,7 +1282,7 @@ const Opportunities = {
 };
 
 // ================================================================
-// VIEW: Portfolio (Rewards) – Orange Design
+// VIEW: Portfolio (Rewards) – Exact Orange
 // ================================================================
 const Portfolio = {
   render() {
@@ -1390,7 +1334,7 @@ const Portfolio = {
 };
 
 // ================================================================
-// VIEW: Profile (ID & Profile) – Orange Design
+// VIEW: Profile (ID & Profile) – Exact Orange
 // ================================================================
 const Profile = {
   render() {
@@ -1448,7 +1392,7 @@ const Profile = {
 };
 
 // ================================================================
-// VIEW: Officer (Admin) – Orange Design
+// VIEW: Officer (Admin) – Exact Orange
 // ================================================================
 const Officer = {
   renderDashboard() {
@@ -1518,9 +1462,7 @@ const Officer = {
 
     document.getElementById('content').innerHTML = html;
   },
-
-  // Keep existing officer methods: showAwardBadge, showAnnouncementForm, createEvent, viewMember, deleteEvent, etc.
-  // These are called via global functions; they can remain as they were.
+  // These methods are kept as they are from the original, as they are called via global functions.
 };
 
 // ================================================================
@@ -1542,7 +1484,6 @@ const App = {
 
     this.setupPWA();
 
-    // Show admin nav only for officers
     const adminBtn = document.getElementById('admin-nav-btn');
     if (adminBtn) {
       adminBtn.classList.toggle('hidden', !Auth.isOfficer());
@@ -1555,7 +1496,6 @@ const App = {
       });
     }
 
-    // Event delegation for check-in buttons (if any)
     document.getElementById('content')?.addEventListener('click', (e) => {
       const btn = e.target.closest('[data-checkin]');
       if (btn) {
@@ -1571,7 +1511,6 @@ const App = {
   },
 
   setupListeners() {
-    // Logout
     document.getElementById('logout-btn')?.addEventListener('click', () => {
       if (confirm('Are you sure you want to logout?')) {
         Auth.logout();
@@ -1579,7 +1518,6 @@ const App = {
       }
     });
 
-    // Navigation
     document.querySelectorAll('.nav-item').forEach(btn => {
       btn.addEventListener('click', () => {
         document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
@@ -1589,17 +1527,14 @@ const App = {
       });
     });
 
-    // FAB – QR Check-in
     document.getElementById('fab-checkin')?.addEventListener('click', () => {
       this.handleQRCheckin();
     });
 
-    // Notifications
     document.getElementById('notif-btn')?.addEventListener('click', () => {
       NotifCenter.render();
     });
 
-    // Install prompt
     window.addEventListener('beforeinstallprompt', (e) => {
       e.preventDefault();
       window.deferredPrompt = e;
@@ -1628,11 +1563,7 @@ const App = {
     window.__awardBadge = () => Officer.showAwardBadge();
     window.__showAnnouncementForm = () => Officer.showAnnouncementForm();
     window.__createEvent = () => Officer.createEvent();
-    window.__checkinEvent = (id) => Events.checkin(id);
-    window.__downloadEventCalendar = (id) => Events.downloadCalendar(id);
     window.__saveOpportunity = (id) => Opportunities.save(id);
-    window.__downloadCertificate = () => Portfolio.certificate();
-    window.__showLeaderboard = () => { this.navigate('events'); setTimeout(() => Leaderboard.render(), 100); };
     window.__requestGrade = () => {
       const user = Auth.currentUser;
       Storage.updateMember(user.studentId, { gradeConvRequested: true });
@@ -1684,7 +1615,6 @@ const App = {
       a.click();
       URL.revokeObjectURL(url);
     };
-    window.__toggleLearningSave = (id) => Learning.toggleSaved(id);
     window.__answerLearningQuiz = (id, answer) => Learning.answerQuiz(id, answer);
     window.__showGrievanceForm = () => Grievance.showForm();
   },
@@ -1771,7 +1701,7 @@ const App = {
 };
 
 // ================================================================
-// EXPORT all modules
+// EXPORT
 // ================================================================
 export {
   Storage,
